@@ -7,8 +7,9 @@ from book.models import Book, BOOK_TYPE_DESC
 
 
 class SendKindleEmail:
-    def __init__(self, book_id):
+    def __init__(self, book_id, to: list):
         self.book_id = book_id
+        self.to_email = to
         self.email = ""
         self.attach_file = ""
 
@@ -52,7 +53,7 @@ class SendKindleEmail:
         username = os.getenv("EMAIL_HOST_USER", "")
         password = os.getenv("EMAIL_HOST_PASSWORD", "")
         from_email = os.getenv("EMAIL_FROM_EMAIL", "")
-        to_email = os.getenv("EMAIL_TO_EMAIL", "").replace(" ", "").split(",")
+        to_email = self.to_email
         backend = EmailBackend(host=host,
                                port=port,
                                username=username,

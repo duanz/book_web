@@ -2,20 +2,21 @@
 from book_web import celery_app as app
 from celery import shared_task
 from book_web.spiders.sheduler.novelSheduler import NovelSheduler, NovelChapterSheduler
-from book_web.spiders.sheduler.test_aiohttp import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient
-# from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient
+from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient
 
 from book_web.utils import spider_utils as parser_utils
 from book_web.utils.validator import check_url
 from book_web.makeBook.makeWord import MakeMyWord
 from book_web.sendEmail.sendKindle import SendKindleEmail
 from task.models import Task, TASK_STATUS_DESC, TASK_TYPE_DESC
-from book.models import Book
+from book.models import Book, SubscribeBook, Chapter
 
 import re
 import time
 import requests
 from django.core.cache import cache
+from django.contrib.auth.models import User
+from django.db import transaction
 from pyquery import PyQuery as pq
 
 from book_web.utils.base_logger import logger as logging
@@ -45,25 +46,61 @@ def auto_insert_books():
 
 @shared_task
 def subscribe_books_mark():
-    logging.info('推送订阅书本任务开始')
+    logging.info('检查订阅书本是否可推送任务开始')
     start = time.time()
-    # TODO
-    '''
-    遍历被订阅的book,找到对应的最新chapter
-    subscribe.chapter==chapter?'':ready=True
-    '''
+    total = 0
+    subs = SubscribeBook.normal.filter(ready=False)
+    if subs.chapter != subs.book.latest_chapter():
+        count = Chapter.normal.filter(book=subs.book, book_type=subs.book.book_type, number__gte=subs.chapter.number).count()
+        if count >= subs.chapter_num:
+            total+=1
+            subs.ready = True
+            subs.save()
+
     stop =  time.time()
-    logging.info('推送订阅书本任务结束， 共耗时{}秒'.format(stop-start))
+    logging.info('检查订阅书本是否可推送任务结束，共标记{}本, 共耗时{}秒'.format(total, stop-start))
+
+
+@shared_task
+def send_book_to_kindle():
+    logging.info('推送订阅书本至kindle任务开始')
+    start = time.time()
+    total = 0
+    fail = 0
+    look = 0
+    book_ids = SubscribeBook.normal.filter(ready=True).values('book_id').distinct()
+    for book_id in book_ids:
+        subs = SubscribeBook.normal.filter(ready=True, book_id=book_id)
+        to_email = [sub.user.email for sub in subs]
+        try:
+            # 开启事务
+            with transaction.atomic():
+                MakeMyWord(book_id, subs[0].chapter_id, subs[0].book.latest_chapter().id)
+                SendKindleEmail(book_id, list(set(to_email))).run()
+                for sub in subs:
+                    sub.chapter_id = subs[0].book.latest_chapter().id
+                    sub.ready = False
+                    sub.count = sub.count+1
+                    sub.save()
+        except Exception as e:
+            fail += 1
+            look += len(to_email)
+            logging.info('推送订阅书本至kindle任务book_id：{}失败'.format(book_id))
+            continue
+
+            
+    stop =  time.time()
+    logging.info('推送订阅书本至kindle任务结束，共推送{}本, 失败{}本， 受影响用户{}位， 共耗时{}秒'.format(total-fail, fail, look, stop-start))
 
 
 
 @shared_task
 def auto_update_books():
-    logging.info('自动更新书本开始')
+    logging.info('自动更新所有书本开始')
     start = time.time()
-    query_set = Book.normal.filter(on_shelf=True).values_list('id')
-
-    for book in query_set:
+    book_ids = SubscribeBook.normal.filter(active=True, ready=False).values('book_id')
+    id_list = list(set([i['book_id'] for i in book_ids]))
+    for book in id_list:
         book_id = book[0]
         s = BookUpdateClient(book_id=book_id, insert_type='with_content')
         s.run()
@@ -74,48 +111,10 @@ def auto_update_books():
 
 @shared_task
 def cache_proxy_ip():
-    """定时任务：缓存代理IP任务"""
-
-    logging.info("get proxy ip list start ")
-    url = "http://127.0.0.1:5010/get"
-    res = []
-    try:
-        for i in range(10):
-            res.append(requests.get(url, timeout=3).json())
-    except:
-        return []
-    if not res:
-        return
-    
-    ips = []
-    for info in res:
-        ips.append('http://{}'.format(info['proxy']))
-
-    ok_ips = available_ip(set(ips))
-    ok_ips = set((ips))
-    # 存储到缓存
-    # cache.delete('proxy_ips')
-    cache.set("proxy_ips", list(ok_ips))
-    logging.info("set proxy ip list to cache finished")
-    return cache.get('proxy_ips')
-
-
-def available_ip(ip_list):
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
-        (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36',
-        }
-    sesseion = requests.session()
-    ips = []
-    for ip in ip_list:
-        try:
-            response = sesseion.get('https://www.baidu.com', headers=headers,
-                            proxies={'http': ip}, verify=False, timeout=3)
-            # logging.info('检查代理IP%s: %s'% (ip, response.status_code))
-            if response.status_code==200:
-                ips.append(ip)
-        except TimeoutError:
-            continue
-    return ips
+    logging.info("获取代理ip任务开始")
+    ips = parser_utils.get_proxy_ip()
+    cache.set("proxy_ips", ips)
+    logging.info("获取代理ip任务结束，共找到{}条可用数据".format(len(ips)))
 
 
 
@@ -133,8 +132,8 @@ def asyncio_task():
         task.save()
 
 
-        # try:
-        if True:
+        try:
+        # if True:
             content = eval(task.content)
 
             if task.task_type == TASK_TYPE_DESC.NOVEL_INSERT:
@@ -161,13 +160,13 @@ def asyncio_task():
             
             s.run()
             
-        # except Exception as e:
-        #     error_info = "执行任务失败： {}".format(e)
-        #     logging.info(error_info)
-        #     task.markup = error_info
-        #     task.task_status = TASK_STATUS_DESC.FAILD
-        #     task.save()
-        #     return
+        except Exception as e:
+            error_info = "执行任务失败： {}".format(e)
+            logging.info(error_info)
+            task.markup = error_info
+            task.task_status = TASK_STATUS_DESC.FAILD
+            task.save()
+            return
 
         task.task_status = TASK_STATUS_DESC.FINISH
         task.save()

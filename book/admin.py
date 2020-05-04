@@ -16,3 +16,8 @@ class ChapterAdmin(admin.ModelAdmin):
 @admin.register(ChapterImage)
 class ChapterImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'book', 'chapter', 'image')
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'key', 'img_type')

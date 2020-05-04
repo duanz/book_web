@@ -109,8 +109,10 @@ from book_web.utils.photo import split_photo_fit_kindle
 
 
 class MakeMyWord:
-    def __init__(self, book_id):
+    def __init__(self, book_id, start_chapter_id=None, end_chapter_id=None):
         self.book_id = book_id
+        self.start_chapter_id = start_chapter_id
+        self.end_chapter_id = end_chapter_id
         self.book = Book.normal.get(id=book_id)
         self.content_type = self.book.book_type
         self.title = self.book.title
@@ -134,7 +136,17 @@ class MakeMyWord:
 
         with open(filename, 'w+') as book_handler:
             # 设置章节
+            start = Chapter.normal.get(
+                id=self.start_chapter_id) if self.start_chapter_id else None
+            end = Chapter.normal.get(
+                id=self.end_chapter_id) if self.end_chapter_id else None
+
             chapters = Chapter.normal.filter(book=self.book)
+            if start:
+                chapters = chapters.filter(number__gte=start.number)
+            if end:
+                chapters = chapters.filter(number__lte=end.number)
+
             for chapter in chapters:
                 book_handler.writelines(chapter.title + '\n')
                 book_handler.writelines(chapter.content + '\n')

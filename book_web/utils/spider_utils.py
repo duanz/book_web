@@ -1,5 +1,6 @@
 import re
 import os
+import requests
 
 
 def decode_packed_codes(code):
@@ -45,3 +46,50 @@ def mkdir(path):
         p = '/'.join(path_[0:i + 1])
         if p and not os.path.exists(p):
             os.mkdir(p)
+
+
+def get_proxy_ip():
+    """定时任务：缓存代理IP任务"""
+
+    url = "http://127.0.0.1:5010/get"
+    res = []
+    try:
+        for i in range(10):
+            res.append(requests.get(url, timeout=3).json())
+    except:
+        return []
+    if not res:
+        return
+
+    ips = []
+    for info in res:
+        ips.append('http://{}'.format(info['proxy']))
+
+    ok_ips = available_ip(set(ips))
+    ok_ips = set((ips))
+    # 存储到缓存
+    # cache.delete('proxy_ips')
+    return list(ok_ips)
+
+
+def available_ip(ip_list):
+    headers = {
+        'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
+        (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36',
+    }
+    sesseion = requests.session()
+    ips = []
+    for ip in ip_list:
+        try:
+            response = sesseion.get('https://www.baidu.com',
+                                    headers=headers,
+                                    proxies={'http': ip},
+                                    verify=False,
+                                    timeout=3)
+            # logging.info('检查代理IP%s: %s'% (ip, response.status_code))
+            if response.status_code == 200:
+                ips.append(ip)
+        except TimeoutError:
+            continue
+    return ips

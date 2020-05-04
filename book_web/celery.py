@@ -45,8 +45,18 @@ app.conf.update(
         },
         'schedule-auto-insert-books': {
             'task': 'task.tasks.auto_insert_books',
-            'schedule': timedelta(seconds=30)  #定时执行的间隔时间
-            # 'schedule': crontab('0', '1,3,5,7,9,11,13,15,17,19,21,23')
+            # 'schedule': timedelta(seconds=30)  #定时执行的间隔时间
+            'schedule': crontab('0', '1,3,5,7,9,11,13,15,17,19,21,23')
+        },
+        'schedule-mark-subscribe-book': {
+            'task': 'task.tasks.subscribe_books_mark',
+            # 'schedule': timedelta(seconds=30)  #定时执行的间隔时间
+            'schedule': crontab('30', '1,3,5,7,9,11,13,15,17,19,21,23')
+        },
+        'schedule-send-to-kindle': {
+            'task': 'task.tasks.send_book_to_kindle',
+            # 'schedule': timedelta(seconds=30)  #定时执行的间隔时间
+            'schedule': crontab('0', '2,4,6,8,10,12,14,16,18,20,22,0')
         },
     })
 

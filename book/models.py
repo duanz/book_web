@@ -142,6 +142,12 @@ class Book(BaseModel):
             ('book_delete', '删除书本'),
         )
 
+    def latest_chapter(self):
+        chapter = Chapter.normal.filter(
+            book_id=self.id,
+            book_type=self.book_type).order_by('-create_at').first()
+        return chapter
+
 
 class Chapter(BaseModel):
     '''章节表'''
@@ -236,7 +242,7 @@ class ChapterImage(BaseModel):
 class SubscribeBook(BaseModel):
     user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, null=True)
     active = models.BooleanField('生效', default=True)
     ready = models.BooleanField('可推送', default=False)
     chapter_num = models.IntegerField('章节每更新次数推送', default=1)

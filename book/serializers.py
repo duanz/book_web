@@ -24,6 +24,8 @@ class SubscribeBookSerializer(serializers.ModelSerializer):
     update_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S",
                                           required=False)
     book_id = serializers.IntegerField(required=True)
+    title = serializers.SerializerMethodField()
+    subscribe_id = serializers.SerializerMethodField()
 
     class Meta:
         model = SubscribeBook
@@ -49,6 +51,12 @@ class SubscribeBookSerializer(serializers.ModelSerializer):
             },
         }
 
+    def get_title(self, obj):
+        return obj.book.title
+
+    def get_subscribe_id(self, obj):
+        return obj.id
+
     def validated_book_id(self, value):
         if Book.normal.filter(id=value).exists():
             return value
@@ -64,7 +72,6 @@ class SubscribeBookSerializer(serializers.ModelSerializer):
         validated_data["chapter"] = Chapter.normal.filter(
             book_id=validated_data['book_id']).first()
         validated_data["book"] = Book.normal.get(id=validated_data['book_id'])
-        print(validated_data)
 
         instance = super().create(validated_data)
         return instance
@@ -180,6 +187,7 @@ class BookSerializer(serializers.ModelSerializer):
     update_at = serializers.DateTimeField(format="%Y-%m-%d", required=False)
     author = serializers.SerializerMethodField()
     download_url = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
     subscribe_id = serializers.SerializerMethodField(required=False)
 
     class Meta:
@@ -187,12 +195,21 @@ class BookSerializer(serializers.ModelSerializer):
         fields = ("id", "create_at", "status", "update_at", "title",
                   "book_type", "author", "cover", "collection_num",
                   "click_num", "desc", "markup", "on_shelf", "is_finished",
-                  "download_url", "is_download", "subscribe_id")
-        read_only_fields = ("cover", "download_url", "is_download",
+                  "download_url", "is_download", "subscribe_id", "cover")
+        read_only_fields = ("cover", "download_url", "is_download", "cover",
                             "subscribe_id")
 
     def get_author(self, obj):
         return str(obj.author)
+
+    def get_cover(self, obj):
+        data = ImageOnlyUrlSerializer(obj.cover.all(),
+                                      many=True,
+                                      context={
+                                          'quality': 'title'
+                                      }).data
+        urls = [url['url'] for url in data] if data else []
+        return urls
 
     def get_subscribe_id(self, obj):
         if not self.context['request'].user.id:
@@ -234,7 +251,8 @@ class BookDetailSerializer(serializers.ModelSerializer):
 
     def get_cover(self, obj):
         data = ImageOnlyUrlSerializer(obj.cover.all(), many=True).data
-        return data
+        urls = [url['url'] for url in data] if data else []
+        return urls
 
     def get_is_subscribe(self, obj):
         if not self.context['request'].get('user', False):

@@ -1,9 +1,9 @@
 from book.models import Book, Chapter, SubscribeBook
 from book.serializers import BookSerializer, BookDetailSerializer, ChapterSerializer, ChapterDetailSerializer, SubscribeBookSerializer
 from book.api_filters import ChapterListFilter, BookListFilter
-from book_web.utils.permission import IsAuthorization, BaseGenericAPIView
+from book_web.utils.permission import IsAuthorization, BaseGenericAPIView, BaseApiView
 from rest_framework.permissions import AllowAny, SAFE_METHODS
-# from rest_framework.response import Response
+from rest_framework.response import Response
 from rest_framework import mixins
 from django_filters import rest_framework
 
@@ -11,7 +11,7 @@ from django_filters import rest_framework
 class BookListApiView(mixins.ListModelMixin, BaseGenericAPIView):
     """获取小说列表"""
 
-    queryset = Book.normal.filter(on_shelf=True)
+    queryset = Book.normal.filter()
     serializer_class = BookSerializer
 
     filter_backends = (rest_framework.DjangoFilterBackend, )
@@ -26,6 +26,41 @@ class BookListApiView(mixins.ListModelMixin, BaseGenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class BookListStateApiView(mixins.ListModelMixin, BaseGenericAPIView):
+    """获取小说统计列表
+    state_type: 
+        new:    最近新增的30本
+        subscribe:    订阅最多的30本
+    """
+
+    queryset = Book.normal.filter()
+    serializer_class = BookSerializer
+
+    filter_backends = (rest_framework.DjangoFilterBackend, )
+    filter_class = BookListFilter
+
+    permission_classes = (AllowAny, )
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def get_queryset(self):
+        state_type = self.request.GET['state_type']
+        if state_type == 'new':
+            books = self.state_new()
+        elif state_type == 'subscribe':
+            books = self.state_subscribe()
+        return books
+
+    def state_new(self):
+        books = Book.normal.filter().order_by('-create_at')[:30]
+        return books
+
+    def state_subscribe(self):
+        books = Book.normal.filter().order_by('-click_num')[:30]
+        return books
 
 
 class BookDetailApiView(mixins.RetrieveModelMixin, mixins.DestroyModelMixin,

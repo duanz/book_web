@@ -7,6 +7,9 @@ app_name = "book_api"
 
 urlpatterns = [
     url(r'^book/$', api_views.BookListApiView.as_view(), name='book-list'),
+    url(r'^book/state/$',
+        api_views.BookListStateApiView.as_view(),
+        name='book-state'),
     url(r'^book/(?P<pk>(\d+))/$',
         api_views.BookDetailApiView.as_view(),
         name='book-detail'),
