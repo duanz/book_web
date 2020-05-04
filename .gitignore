@@ -1,0 +1,6 @@
+*__pycache__
+*/migrations
+.vscode
+*.log
+celerybeat*
+book_web/settings_local.py

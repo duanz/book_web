@@ -64,7 +64,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     # 白名单:
-    "http://192.168.0.103:8002", )
+    "http://192.168.0.103:8002",
+    "http://192.168.0.103:8080",
+)
 
 ROOT_URLCONF = 'book_web.urls'
 

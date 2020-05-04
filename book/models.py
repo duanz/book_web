@@ -115,7 +115,7 @@ class Book(BaseModel):
                                  default='',
                                  choices=BOOK_TYPE_CHOICES)
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
-    cover = models.ManyToManyField(Image)
+    cover = models.ManyToManyField(Image, null=True)
     collection_num = models.IntegerField('收藏数量', null=True, default=0)
     click_num = models.IntegerField('点击数量', null=True, default=0)
     desc = models.CharField('描述', max_length=500, default="")
@@ -208,7 +208,7 @@ class Chapter(BaseModel):
         """获取当前对象章节内容"""
         if self.book_type == BOOK_TYPE_DESC.Novel:
             content = ''
-            with open(self.save_path(), 'r', encoding='gbk') as f:
+            with open(self.save_path(), 'r', encoding='utf-8') as f:
                 content = f.read()
             return content
         elif self.book_type == BOOK_TYPE_DESC.Comic:

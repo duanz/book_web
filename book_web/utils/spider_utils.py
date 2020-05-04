@@ -49,7 +49,7 @@ def mkdir(path):
 
 
 def get_proxy_ip():
-    """定时任务：缓存代理IP任务"""
+    """鑾峰彇浠ｇ悊ip"""
 
     url = "http://127.0.0.1:5010/get"
     res = []
@@ -67,8 +67,6 @@ def get_proxy_ip():
 
     ok_ips = available_ip(set(ips))
     ok_ips = set((ips))
-    # 存储到缓存
-    # cache.delete('proxy_ips')
     return list(ok_ips)
 
 
@@ -87,7 +85,6 @@ def available_ip(ip_list):
                                     proxies={'http': ip},
                                     verify=False,
                                     timeout=3)
-            # logging.info('检查代理IP%s: %s'% (ip, response.status_code))
             if response.status_code == 200:
                 ips.append(ip)
         except TimeoutError:

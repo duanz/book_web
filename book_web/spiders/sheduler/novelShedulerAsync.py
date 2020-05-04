@@ -20,10 +20,8 @@ class BaseClient(metaclass=ABCMeta):
         if ips is None:
             return None
 
-        logging.info(ips)
         ips.append(None)
         ip = random.choice(ips)
-        logging.info(ip)
         return ip
 
     def do_request(self, url):
@@ -50,14 +48,17 @@ class BaseClient(metaclass=ABCMeta):
         async with aiohttp.ClientSession(connector=conn) as session:
             while retry >= 0:
                 try:
+                    # if True:
                     async with session.get(url,
                                            proxy=proxy,
                                            verify_ssl=False,
                                            headers=headers,
                                            timeout=5) as res:
+
                         logging.info(
                             'current asyncio requests is {}:proxy:{}<<<{}>>> {}'
-                            .format(retry, proxy, res.status, url))
+                            .format(str(retry), proxy, str(res.status), url))
+
                         if res.status > 400:
                             if res.status == 403:
                                 raise aiohttp.ClientHttpProxyError
@@ -140,10 +141,11 @@ class BaseClient(metaclass=ABCMeta):
 
 
 class BookInfoClient(BaseClient):
-    def __init__(self, url, book_type, on_shelf=True):
+    def __init__(self, url, book_type, on_shelf=True, book=None):
         self.url = url
         self.book_type = book_type
         self.on_shelf = on_shelf
+        self.book = book
 
         parser = parser_selector.get_parser(url)
         self.parser = parser.parse_info
@@ -161,9 +163,12 @@ class BookInfoClient(BaseClient):
         logging.info('保存<<{}>>信息到数据库'.format(info['name']))
 
         author = self.save_or_get_author_db(info)
-        book, flag = Book.normal.get_or_create(title=info['name'],
-                                               author=author,
-                                               book_type=self.book_type)
+
+        book = self.book
+        if not self.book:
+            book, flag = Book.normal.get_or_create(title=info['name'],
+                                                   author=author,
+                                                   book_type=self.book_type)
         book.book_type = self.book_type
         book.title = info.get('name')
         book.author = author
@@ -184,7 +189,9 @@ class BookInfoClient(BaseClient):
         self.save_book_info_to_db(self.book_info)
         cover_list = await self.save_image(self.book_info['cover'],
                                            headers=self.headers)
-        self.book.cover.add(*cover_list)
+        logging.info(cover_list)
+        if cover_list and all(cover_list):
+            self.book.cover.add(*cover_list)
         self.book.save()
 
 
@@ -249,9 +256,17 @@ class ChapterContentClient(BaseClient):
                                              self.headers)
             # 如果能获取到所有img对象则保存
             if len(img_objs) and None not in img_objs:
-                chapter.save_content(img_objs)
-        elif chapter.book_type == BOOK_TYPE_DESC.Novel:
+                # chapter.save_content(img_objs)
+                content = img_objs
+        # elif chapter.book_type == BOOK_TYPE_DESC.Novel:
+        try:
             chapter.save_content(content)
+        except OSError:
+            logging.info('处理<<{}>>单章节正文信息: {}, 失败'.format(
+                chapter.book, chapter))
+            chapter.active = False
+            chapter.save()
+            pass
 
     async def handler_single(self):
         res = self.do_request(self.chapter.origin_addr)
@@ -282,6 +297,13 @@ class ChapterContentClient(BaseClient):
 
     async def handler(self):
         if self.book:
+            if not self.book.desc:
+                # 更新书本介绍信息
+                bic = BookInfoClient(self.book.origin_addr,
+                                     self.book.book_type, self.book.on_shelf,
+                                     self.book)
+                await bic.handler()
+            # 更新章节
             await self.handler_all()
         else:
             await self.handler_single()

@@ -50,12 +50,14 @@ def subscribe_books_mark():
     start = time.time()
     total = 0
     subs = SubscribeBook.normal.filter(ready=False)
-    if subs.chapter != subs.book.latest_chapter():
-        count = Chapter.normal.filter(book=subs.book, book_type=subs.book.book_type, number__gte=subs.chapter.number).count()
-        if count >= subs.chapter_num:
-            total+=1
-            subs.ready = True
-            subs.save()
+    for sub in subs:
+        if sub.chapter != sub.book.latest_chapter():
+            number = sub.chapter.number if sub.chapter else 0
+            count = Chapter.normal.filter(book=sub.book, book_type=sub.book.book_type, number__gte=number).count()
+            if count >= sub.chapter_num:
+                total+=1
+                sub.ready = True
+                sub.save()
 
     stop =  time.time()
     logging.info('检查订阅书本是否可推送任务结束，共标记{}本, 共耗时{}秒'.format(total, stop-start))
@@ -69,24 +71,36 @@ def send_book_to_kindle():
     fail = 0
     look = 0
     book_ids = SubscribeBook.normal.filter(ready=True).values('book_id').distinct()
-    for book_id in book_ids:
+    for book_dict in book_ids:
+        book_id = book_dict['book_id']
         subs = SubscribeBook.normal.filter(ready=True, book_id=book_id)
+
+        start_chapter, end_chapter = subs[0].chapter, subs[0].book.latest_chapter()
+        # 判断需要推送的章节是否都已可用
+        send_chapters = Chapter.normal.filter(book_id=book_id, number__in=[x for x in range(start_chapter.number if start_chapter else 0, end_chapter.number+1)]).values('active')
+        if not all([x['active'] for x in send_chapters]):
+            fail+=1
+            look+=1
+            logging.info("{}部分章节不可用，不予推送至kindle".format(subs[0].book.title))
+            continue
+
         to_email = [sub.user.email for sub in subs]
-        try:
+        # try:
+        if True:
             # 开启事务
             with transaction.atomic():
-                MakeMyWord(book_id, subs[0].chapter_id, subs[0].book.latest_chapter().id)
+                MakeMyWord(book_id, start_chapter.id if start_chapter else 0, end_chapter.id).run()
                 SendKindleEmail(book_id, list(set(to_email))).run()
                 for sub in subs:
                     sub.chapter_id = subs[0].book.latest_chapter().id
                     sub.ready = False
                     sub.count = sub.count+1
                     sub.save()
-        except Exception as e:
-            fail += 1
-            look += len(to_email)
-            logging.info('推送订阅书本至kindle任务book_id：{}失败'.format(book_id))
-            continue
+        # except Exception as e:
+        #     fail += 1
+        #     look += len(to_email)
+        #     logging.info('推送订阅书本至kindle任务book_id：{}, 失败。原因：{}'.format(book_id, e))
+        #     continue
 
             
     stop =  time.time()
@@ -96,16 +110,15 @@ def send_book_to_kindle():
 
 @shared_task
 def auto_update_books():
-    logging.info('自动更新所有书本开始')
+    logging.info('自动更新订阅书本开始')
     start = time.time()
-    book_ids = SubscribeBook.normal.filter(active=True, ready=False).values('book_id')
+    book_ids = SubscribeBook.normal.filter(active=True).values('book_id')
     id_list = list(set([i['book_id'] for i in book_ids]))
-    for book in id_list:
-        book_id = book[0]
+    for book_id in id_list:
         s = BookUpdateClient(book_id=book_id, insert_type='with_content')
         s.run()
     stop =  time.time()
-    logging.info('自动更新书本任务结束， 共耗时{}秒'.format(stop-start))
+    logging.info('自动更新书本任务结束，更新{}本， 共耗时{}秒'.format(len(id_list), stop-start))
 
 
 

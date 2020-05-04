@@ -21,7 +21,7 @@ class BiqugexParser(BaseParser):
         'Pragma':
         'no-cache',
         'Upgrade-Insecure-Requests':
-        1,
+        "1",
         'referer':
         'www.biquge.tv',
         'user-agent':

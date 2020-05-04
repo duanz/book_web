@@ -31,7 +31,7 @@ class SendKindleEmail:
         logging.info("邮件发送完成")
 
     def getAttachFile(self):
-        content_obj = Book.normal.get(id=book_id)
+        content_obj = Book.normal.get(id=self.book_id)
         if content_obj.book_type == BOOK_TYPE_DESC.Comic:
             filename = []
             part = 1
