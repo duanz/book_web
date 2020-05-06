@@ -4,3 +4,4 @@
 *.log
 celerybeat*
 book_web/settings_local.py
+/conf

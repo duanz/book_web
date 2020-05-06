@@ -39,6 +39,9 @@ def auto_insert_books():
     logging.info('自动新增书本开始')
     start = time.time()
     BookAutoInsertClient('http://www.biquge.tv/xiaoshuodaquan/').run()
+    for i in range(1, 531):
+        url = "https://www.qb5.tw/quanben/{}".format(str(i))
+        BookAutoInsertClient(url).run()
     stop =  time.time()
     logging.info('自动新增书本任务结束， 共耗时{}秒'.format(stop-start))
 
