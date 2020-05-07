@@ -38,10 +38,7 @@ def handle_worker_tasks(self):
 def auto_insert_books():
     logging.info('自动新增书本开始')
     start = time.time()
-    BookAutoInsertClient('http://www.biquge.tv/xiaoshuodaquan/').run()
-    for i in range(1, 531):
-        url = "https://www.qb5.tw/quanben/{}".format(str(i))
-        BookAutoInsertClient(url).run()
+    BookAutoInsertClient().run()
     stop =  time.time()
     logging.info('自动新增书本任务结束， 共耗时{}秒'.format(stop-start))
 
@@ -107,7 +104,7 @@ def send_book_to_kindle():
 
             
     stop =  time.time()
-    logging.info('推送订阅书本至kindle任务结束，共推送{}本, 失败{}本， 受影响用户{}位， 共耗时{}秒'.format(total-fail, fail, look, stop-start))
+    logging.info('推送订阅书本至kindle任务结束，共推送{}本, 失败{}本， 受影响用户{}位， 共耗时{}秒'.format(total-fail if total>fail else 0, fail, look, stop-start))
 
 
 

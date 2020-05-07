@@ -11,7 +11,8 @@ novel_regular = {
     "biqudao.com": "BiqudaoParser",
     "biqugex.com": "BiqugexParser",
     "biquge.tv": "BiqugexParser",
-    "qb5.tw": "TwQb5Parser"
+    "qb5.tw": "TwQb5Parser",
+    "quanben.net": "NetQuanbenParser",
 }
 
 regular.update(comic_regular)

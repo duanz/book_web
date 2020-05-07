@@ -45,18 +45,18 @@ app.conf.update(
         },
         'schedule-auto-insert-books': {
             'task': 'task.tasks.auto_insert_books',  # 插入书籍信息
-            'schedule': timedelta(seconds=40)
-            # 'schedule': crontab('0', '1,3,5,7,9,11,13,15,17,19,21,23')
+            # 'schedule': timedelta(seconds=40)
+            'schedule': crontab('0', '1,3,5,7,9,11,13,15,17,19,21,23')
         },
         'schedule-mark-subscribe-book': {
             'task': 'task.tasks.subscribe_books_mark',  # 标记用户订阅是否符合推送条件
-            'schedule': timedelta(seconds=180)
-            # 'schedule': crontab('30', '1,3,5,7,9,11,13,15,17,19,21,23')
+            # 'schedule': timedelta(seconds=180)
+            'schedule': crontab('30', '1,3,5,7,9,11,13,15,17,19,21,23')
         },
         'schedule-send-to-kindle': {
             'task': 'task.tasks.send_book_to_kindle',  # 推送书籍至用户kindle
-            'schedule': timedelta(seconds=600)
-            # 'schedule': crontab('0', '2,4,6,8,10,12,14,16,18,20,22,0')
+            # 'schedule': timedelta(seconds=600)
+            'schedule': crontab('0', '2,4,6,8,10,12,14,16,18,20,22,0')
         },
     })
 

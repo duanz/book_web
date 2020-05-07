@@ -6,6 +6,8 @@ class BiqugexParser(BaseParser):
     encoding = 'gbk'
     image_base_url = 'http://www.biquge.tv'
     page_base_url = 'http://www.biquge.tv'
+    all_book_url = 'http://www.biquge.tv/xiaoshuodaquan/'
+    total_page = 1
     filename_extension = 'jpg'
     request_header = {
         'Accept':
@@ -57,7 +59,7 @@ class BiqugexParser(BaseParser):
 
     def parse_chapter(self, data):
         if data and hasattr(data, "content"):
-            data = data.content.decode("gbk")
+            data = data.content.decode(self.encoding)
 
         doc = pq(data)
         dl_dd = doc('#list dl').children()[1:]
@@ -93,7 +95,7 @@ class BiqugexParser(BaseParser):
 
     def parse_all_book(self, data):
         if data and hasattr(data, "content"):
-            data = data.content.decode("gbk")
+            data = data.content.decode(self.encoding)
         doc = pq(data)
         novel_list = []
         novels = doc('.novellist')

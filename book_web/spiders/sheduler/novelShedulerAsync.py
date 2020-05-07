@@ -256,17 +256,16 @@ class ChapterContentClient(BaseClient):
                                              self.headers)
             # 如果能获取到所有img对象则保存
             if len(img_objs) and None not in img_objs:
-                # chapter.save_content(img_objs)
                 content = img_objs
-        # elif chapter.book_type == BOOK_TYPE_DESC.Novel:
-        try:
-            chapter.save_content(content)
-        except OSError:
-            logging.info('处理<<{}>>单章节正文信息: {}, 失败'.format(
-                chapter.book, chapter))
-            chapter.active = False
-            chapter.save()
-            pass
+
+        # try:
+        chapter.save_content(content)
+        # except OSError:
+        #     logging.error('处理<<{}>>单章节正文信息: {}, 失败'.format(
+        #         chapter.book, chapter))
+        #     chapter.active = False
+        #     chapter.save()
+        #     pass
 
     async def handler_single(self):
         res = self.do_request(self.chapter.origin_addr)
@@ -339,7 +338,7 @@ class BookInsertClient(BaseClient):
             await ccc.handler()
 
 
-class BookAutoInsertClient(BaseClient):
+class OldBookAutoInsertClient(BaseClient):
     """自动插入书本信息，不包含章节内容"""
     def __init__(self, url):
         self.url = url
@@ -379,6 +378,65 @@ class BookAutoInsertClient(BaseClient):
         Book.normal.bulk_create(books)
 
 
+class BookAutoInsertClient(BaseClient):
+    """自动插入书本信息，不包含章节内容"""
+    def handler_all_book(self, book_info_list):
+        logging.info("自动插入书本信息,即将处理{}条数据".format(len(book_info_list)))
+        count = 0
+        author, _ = Author.normal.get_or_create(name='未知')
+        exist = Book.normal.filter(
+            origin_addr__in=[info['url']
+                             for info in book_info_list]).values('origin_addr')
+        exist_url = [i['origin_addr'] for i in exist]
+        need_url = [i for i in book_info_list if i['url'] not in exist_url]
+        books = []
+        for idx, info in enumerate(need_url, 1):
+            logging.info('新自动插入书{}/{}条： {}  {}'.format(idx, len(need_url),
+                                                       info['title'],
+                                                       info['url']))
+            if info.get('author', None):
+                author, _ = Author.normal.get_or_create(name=info['author'])
+            book = Book(on_shelf=False,
+                        author=author,
+                        book_type=BOOK_TYPE_DESC.Novel,
+                        title=info['title'][:60],
+                        markup=info['label'][:100],
+                        origin_addr=info['url'][:200])
+            books.append(book)
+
+            if len(books) >= 500:
+                Book.normal.bulk_create(books)
+                books = []
+        Book.normal.bulk_create(books)
+
+    async def handler(self):
+        logging.info("自动新增书籍开始执行！")
+        for site in parser_selector.regular.keys():
+            if not hasattr(parser_selector.get_parser(site), 'parse_all_book'):
+                continue
+
+            logging.info("自动新增书籍开始执行，{}".format(site))
+            parser_cls = parser_selector.get_parser(site)
+
+            tasks = []
+            for i in range(1, parser_cls.total_page + 1):
+                url = parser_cls.all_book_url.format(i)
+                logging.info("自动新增书籍开始执行，url:{}".format(url))
+
+                task = self.async_do_request(url,
+                                             'text',
+                                             parser_cls.request_header,
+                                             encoding=parser_cls.encoding)
+
+                tasks.append(task)
+            res_list = await asyncio.gather(*tasks)
+            for res in res_list:
+                if not res:
+                    continue
+                book_info_list = parser_cls.parse_all_book(res)
+                self.handler_all_book(book_info_list)
+
+
 class BookUpdateClient(BaseClient):
     def __init__(self,
                  book_id=None,
@@ -403,47 +461,3 @@ class BookUpdateClient(BaseClient):
             chapter = Chapter.normal.get(id=self.chapter_id)
             ccc = ChapterContentClient(chapter=chapter)
             await ccc.handler()
-
-
-# import asyncio, logging, aiohttp
-
-# class A:
-#     async def async_do_request(self, url, content_type='text', **kwargs):
-#         '''处理请求, url:请求地址'''
-#         logging.info('current asyncio requests is: {}'.format(url))
-#         retry = 5
-#         while retry >= 0:
-#             async with aiohttp.ClientSession() as session:
-#                 try:
-#                     async with session.get(url, timeout=20) as res:
-#                         logging.info('请求返回状态码 :{}'.format(res.status))
-
-#                         if content_type == 'text':
-#                             return await res.text(**kwargs)
-#                         if content_type == 'read':
-#                             return await res.read(**kwargs)
-#                 except:
-#                     retry -= 1
-
-#     async def handler(self):
-#         tasks = []
-#         for i in range(10):
-#             url = 'https://www.so.com/s?ie=utf-8&fr=none&src=360sou_newhome&nlpv=3.7.3st&q={}'.format(
-#                 i)
-#             task = asyncio.ensure_future(self.async_do_request(url))
-
-#             tasks.append(task)
-#         res_list = await asyncio.gather(*tasks)
-#         for idx, res in enumerate(res_list):
-#             with open('{}.html'.format(idx), 'w', encoding='utf-8') as f:
-#                 f.write(res)
-
-#     def run(self):
-#         # loop = asyncio.new_event_loop()
-#         loop = asyncio.get_event_loop()
-#         loop.run_until_complete(self.handler())
-#         # loop.close()
-
-# if __name__ == "__main__":
-#     a = A()
-#     a.run()
