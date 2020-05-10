@@ -2,13 +2,16 @@
 from book_web import celery_app as app
 from celery import shared_task
 from book_web.spiders.sheduler.novelSheduler import NovelSheduler, NovelChapterSheduler
-from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient
+from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
+from book_web.spiders.sheduler.bookSheduler import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
+
 
 from book_web.utils import spider_utils as parser_utils
 from book_web.utils.validator import check_url
 from book_web.makeBook.makeWord import MakeMyWord
 from book_web.sendEmail.sendKindle import SendKindleEmail
 from task.models import Task, TASK_STATUS_DESC, TASK_TYPE_DESC
+
 from book.models import Book, SubscribeBook, Chapter
 
 import re
@@ -18,6 +21,7 @@ from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db import transaction
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 
 from book_web.utils.base_logger import logger as logging
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -28,7 +32,6 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 @app.task(bind=True)
 def handle_worker_tasks(self):
     start = time.time()
-    # task()
     asyncio_task()
     stop =  time.time()
     logging.info('任务结束， 共耗时{}秒'.format(stop-start))
@@ -41,6 +44,24 @@ def auto_insert_books():
     BookAutoInsertClient().run()
     stop =  time.time()
     logging.info('自动新增书本任务结束， 共耗时{}秒'.format(stop-start))
+
+@shared_task
+def slow_auto_insert_books():
+    logging.info('自动缓慢新增书本开始')
+    start = time.time()
+    # FastAutoInsertBookClient().run()
+    SlowAutoInsertBookClient().run()
+    stop =  time.time()
+    logging.info('自动缓慢新增书本任务结束， 共耗时{}秒'.format(stop-start))
+
+@shared_task
+def once_auto_insert_books():
+    logging.info('自动缓慢新增书本开始')
+    start = time.time()
+    # SlowAutoInsertBookClient().run()
+    FastAutoInsertBookClient().run()
+    stop =  time.time()
+    logging.info('自动缓慢新增书本任务结束， 共耗时{}秒'.format(stop-start))
 
 
 

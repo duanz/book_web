@@ -1,5 +1,6 @@
 from book_web.spiders.comic_parser.BaseParser import BaseParser
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 from book_web.utils import spider_utils as utils
 import json
 import re
@@ -7,6 +8,7 @@ import urllib
 
 
 class DmzjParser(BaseParser):
+    book_type = BOOK_TYPE_DESC.Comic
     image_base_url = 'https://images.dmzj.com'
     page_base_url = 'https://manhua.dmzj.com'
     filename_extension = 'jpg'

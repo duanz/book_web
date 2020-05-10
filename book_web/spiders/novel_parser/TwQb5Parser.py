@@ -1,8 +1,11 @@
 from book_web.spiders.novel_parser.BaseParser import BaseParser
+from book_web.utils.spider_utils import validateFilename
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 
 
 class TwQb5Parser(BaseParser):
+    book_type = BOOK_TYPE_DESC.Novel
     encoding = 'utf-8'
     image_base_url = 'https://www.qb5.tw'
     page_base_url = 'https://www.qb5.tw'
@@ -20,13 +23,13 @@ class TwQb5Parser(BaseParser):
         'Connection':
         'keep-alive',
         'Host':
-        'www.biquge.tv',
+        'https://www.qb5.tw',
         'Pragma':
         'no-cache',
         'Upgrade-Insecure-Requests':
         "1",
         'referer':
-        'www.biquge.tv',
+        'https://www.qb5.tw',
         'user-agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36'
     }
@@ -47,8 +50,8 @@ class TwQb5Parser(BaseParser):
             cover = [cover]
 
         info = {
-            'name': book_name,
-            'latest_chapter': latest_chapter_str,
+            'name': validateFilename(book_name),
+            'latest_chapter': validateFilename(latest_chapter_str),
             'desc': book_desc,
             'author_name': author_name,
             'markeup': markeup,
@@ -69,8 +72,10 @@ class TwQb5Parser(BaseParser):
             flag = dd.tag == 'dd'
             if flag:
                 link = pq(pq(dd)('a')).attr('href')
-                chapter_list.append(
-                    {dd.text_content(): self.page_base_url + link})
+                chapter_list.append({
+                    validateFilename(dd.text_content()):
+                    self.page_base_url + link
+                })
 
         return chapter_list
 
@@ -80,7 +85,7 @@ class TwQb5Parser(BaseParser):
         doc = pq(data)
         title = doc("#main > h1").text()
         content = doc("#content").text()
-        return title, content
+        return validateFilename(title), content
 
     def parse_chapter_content(self, data):
         _, content = self.get_content_info(data)
@@ -100,7 +105,12 @@ class TwQb5Parser(BaseParser):
             title = pq(pq(info)('.zp>a')).text()
             author = pq(pq(info)('.author')).text()
             url = pq(pq(info)('.zp>a')).attr('href')
-            t = {'title': title, 'url': url, 'label': "", "author": author}
+            t = {
+                'title': validateFilename(title),
+                'url': url,
+                'label': "",
+                "author": author
+            }
             if not url:
                 continue
             novel_list.append(t)

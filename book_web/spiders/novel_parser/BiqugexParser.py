@@ -1,8 +1,11 @@
 from book_web.spiders.novel_parser.BaseParser import BaseParser
+from book_web.utils.spider_utils import validateFilename
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 
 
 class BiqugexParser(BaseParser):
+    book_type = BOOK_TYPE_DESC.Novel
     encoding = 'gbk'
     image_base_url = 'http://www.biquge.tv'
     page_base_url = 'http://www.biquge.tv'
@@ -48,8 +51,8 @@ class BiqugexParser(BaseParser):
             cover = [cover]
 
         info = {
-            'name': book_name,
-            'latest_chapter': latest_chapter_str,
+            'name': validateFilename(book_name),
+            'latest_chapter': validateFilename(latest_chapter_str),
             'desc': book_desc,
             'author_name': author_name,
             'markeup': markeup,
@@ -70,8 +73,10 @@ class BiqugexParser(BaseParser):
         for u in dl_dd:
             if flag:
                 link = u.find('a').get('href')
-                chapter_list.append(
-                    {u.text_content(): self.page_base_url + link})
+                chapter_list.append({
+                    validateFilename(u.text_content()):
+                    self.page_base_url + link
+                })
             else:
                 flag = u.tag == 'dt'
 
@@ -79,11 +84,11 @@ class BiqugexParser(BaseParser):
 
     def get_content_info(self, data):
         if data and hasattr(data, "content"):
-            data = data.content.decode("gbk")
+            data = data.content.decode(self.encoding)
         doc = pq(data)
         title = doc(".content h1").text()
         content = doc("#content").text()
-        return title, content
+        return validateFilename(title), content
 
     def parse_chapter_content(self, data):
         _, content = self.get_content_info(data)
@@ -106,7 +111,11 @@ class BiqugexParser(BaseParser):
             for info in book_list:
                 title = pq(info).text()
                 url = pq(pq(info)('a')).attr('href')
-                t = {'title': title, 'url': url, 'label': label}
+                t = {
+                    'title': validateFilename(title),
+                    'url': url,
+                    'label': label
+                }
                 if not url:
                     continue
                 novel_list.append(t)

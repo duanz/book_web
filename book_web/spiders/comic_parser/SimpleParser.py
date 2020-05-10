@@ -1,5 +1,6 @@
 from book_web.spiders.comic_parser.BaseParser import BaseParser
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 
 
 class SimpleParser(BaseParser):

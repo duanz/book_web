@@ -2,7 +2,8 @@ import os
 import shutil
 from book_web.utils.base_logger import logger as logging
 
-from book.models import Book, Chapter, ChapterImage, Image, BOOK_TYPE_DESC
+from book.models import Book, Chapter, ChapterImage, Image
+from book_web.utils.common_data import BOOK_TYPE_DESC
 from book.serializers import ImageSerializer
 from django.conf import settings
 from docx import Document

@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from book_web.utils.permission import IsAuthorization, BaseApiView, BaseGenericAPIView
 from task.models import Task
 from task.serializers import TaskSerializer
+from task.tasks import once_auto_insert_books
 
 
 class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin,
@@ -60,3 +61,14 @@ class TaskDetailApiView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
             return [permission() for permission in self.permission_classes]
         else:
             return [IsAuthorization()]
+
+
+class TaskRunOnceApiView(BaseGenericAPIView):
+    """
+    get: 执行只运行一次的任务
+    """
+    permission_classes = (IsAuthorization, )
+
+    def get(self, request, *args, **kwargs):
+        once_auto_insert_books.delay()
+        return Response(data="下发成功", status=HTTP_200_OK)

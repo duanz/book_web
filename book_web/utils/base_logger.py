@@ -1,4 +1,6 @@
 import logging
+import os
+from django.conf import settings
 
 
 class MyLogger(object):
@@ -8,7 +10,8 @@ class MyLogger(object):
         self.logger.setLevel(logging.DEBUG)
 
         # 创建handler,写入日志
-        fh = logging.FileHandler(name + '.log', encoding='UTF-8')
+        filename = os.path.join(settings.UPLOAD_SAVE_PATH, name + '.log')
+        fh = logging.FileHandler(filename, encoding='UTF-8')
         fh.setLevel(logging.DEBUG)
 
         # 创建handler，输出日志到控制台

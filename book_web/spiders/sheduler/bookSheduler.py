@@ -1,9 +1,7 @@
-import asyncio
 import random
 import time
 from abc import ABCMeta, abstractmethod
 import requests
-import aiohttp
 import threading
 from queue import Queue
 from aiohttp import TCPConnector
@@ -51,62 +49,13 @@ class BaseClient(metaclass=ABCMeta):
                         res.status_code, len(proxies), url))
                 return res
             except Exception as e:
-                logging.error(
-                    'current normal requests error:<<<{}>>>: {}'.format(
-                        e, url))
+                if retry == 0:
+                    logging.error(
+                        'current normal requests error:<<<{}>>>: {}'.format(
+                            e, url))
                 proxies = get_proxy()
                 retry -= 1
         return None
-
-    async def async_do_request(self,
-                               url,
-                               content_type='text',
-                               headers=None,
-                               **kwargs):
-        '''处理请求, url:请求地址'''
-
-        retry = 5
-        o_headers = {
-            'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
-        }
-        headers = headers or o_headers
-        conn = TCPConnector(limit=50)
-        async with aiohttp.ClientSession(connector=conn) as session:
-            while retry >= 0:
-                try:
-                    # if True:
-                    proxies = get_proxy()
-                    async with session.get(url,
-                                           proxy=random.choice(proxies),
-                                           verify_ssl=False,
-                                           headers=headers,
-                                           timeout=5) as res:
-
-                        logging.info(
-                            'current asyncio requests is {}:proxy:{}<<<{}>>> {}'
-                            .format(str(retry), len(proxies), str(res.status),
-                                    url))
-
-                        if res.status > 400:
-                            if res.status == 403:
-                                raise aiohttp.ClientHttpProxyError
-                            return None
-
-                        if content_type == 'text':
-                            return await res.text(**kwargs)
-                        if content_type == 'read':
-                            return await res.read(**kwargs)
-                except (aiohttp.ClientHttpProxyError,
-                        asyncio.exceptions.TimeoutError,
-                        aiohttp.client_exceptions.ClientConnectorError):
-                    proxies = get_proxy()
-                    retry -= 1
-                except Exception as e:
-                    logging.error('异步请求异常：{}, 当前url: {}'.format(e, url))
-                    return None
-
-            return None
 
     def check_image(self, urls: list):
         exist_imgs = Image.normal.filter(origin_addr__in=urls).exclude(
@@ -119,10 +68,10 @@ class BaseClient(metaclass=ABCMeta):
 
         return need
 
-    async def save_image(self,
-                         images: list,
-                         image_type=IMAGE_TYPE_DESC.COVER,
-                         headers=None) -> list:
+    def save_image(self,
+                   images: list,
+                   image_type=IMAGE_TYPE_DESC.COVER,
+                   headers=None) -> list:
         """
         images：需要保存的图片连接列表；
         检查images中新image，即未保存过的图片连接；
@@ -132,14 +81,9 @@ class BaseClient(metaclass=ABCMeta):
         img_list = self.check_image(images)
         logging.info('需要保存的 {} 图片共有 {} 条'.format(image_type, len(img_list)))
         imgs = []
-        tasks = []
-        for img_url in img_list:
-            task = asyncio.ensure_future(
-                self.async_do_request(img_url, 'read', headers=headers))
-            tasks.append(task)
-        res_list = await asyncio.gather(*tasks)
+        for idx, img_url in enumerate(img_list, 0):
+            res = self.do_request(img_url, headers=headers).content
 
-        for idx, res in enumerate(res_list):
             if not res:
                 imgs.append(None)
                 continue
@@ -161,26 +105,18 @@ class BaseClient(metaclass=ABCMeta):
                 img.key = key
                 img.name = name
                 lock.acquire()
-
-            lock.acquire()
-            try:
                 img.save()
-            finally:
-                lock.release()
 
             imgs.append(img)
 
         return imgs
 
     @abstractmethod
-    async def handler(self):
+    def handler(self):
         pass
 
     def run(self):
-        loop = asyncio.new_event_loop()
-        loop.run_until_complete(self.handler())
-        loop.run_until_complete(asyncio.sleep(0.1))
-        # loop.close()
+        return self.handler()
 
 
 class BookInfoClient(BaseClient):
@@ -243,7 +179,7 @@ class BookInfoClient(BaseClient):
         self.book = book
         return book
 
-    async def handler(self):
+    def handler(self):
         """处理书本信息"""
 
         res = self.do_request(self.url, self.headers)
@@ -251,8 +187,8 @@ class BookInfoClient(BaseClient):
             return None, None
         self.book_info = self.parser(res)
         self.save_book_info_to_db(self.book_info)
-        cover_list = await self.save_image(self.book_info['cover'],
-                                           headers=self.headers)
+        cover_list = self.save_image(self.book_info['cover'],
+                                     headers=self.headers)
         logging.info(cover_list)
         if cover_list and all(cover_list):
             self.book.cover.add(*cover_list)
@@ -335,9 +271,11 @@ class ChapterListClient(BaseClient):
 
 
 class ChapterContentClient(BaseClient):
-    def __init__(self, chapter: Chapter = None, book: Book = None):
+    def __init__(self, chapter: Chapter = None, book: Book = None, fast=False):
         self.chapter = chapter
         self.book = book
+        self.fast = fast
+        self.wait_done = 0
         origin_addr = book.origin_addr if book else chapter.origin_addr
         parser = parser_selector.get_parser(origin_addr)
         self.parser = parser.parse_chapter_content
@@ -347,7 +285,7 @@ class ChapterContentClient(BaseClient):
                                                    'encoding') else 'utf-8'
 
     @transaction.atomic
-    async def handler_content(self, res, chapter: Chapter):
+    def handler_content(self, res, chapter: Chapter):
         content = self.parser(res)
         logging.info('处理<<{}>>{},正文信息:{}...'.format(chapter.book, chapter,
                                                     content[:15]))
@@ -356,9 +294,8 @@ class ChapterContentClient(BaseClient):
             imgs = []
             for key in content.keys():
                 imgs.insert(int(key), content[key])
-            img_objs = await self.save_image(imgs,
-                                             IMAGE_TYPE_DESC.CHAPER_CONTENT,
-                                             self.headers)
+            img_objs = self.save_image(imgs, IMAGE_TYPE_DESC.CHAPER_CONTENT,
+                                       self.headers)
             # 如果能获取到所有img对象则保存
             if len(img_objs) and None not in img_objs:
                 content = img_objs
@@ -374,58 +311,81 @@ class ChapterContentClient(BaseClient):
             chapter.save()
             pass
 
-    async def handler_single(self):
-        res = self.do_request(self.chapter.origin_addr, self.headers)
+    def handler_single(self, chapter=None):
+        self.wait_done += 1
+        res = self.do_request(chapter.origin_addr or self.chapter.origin_addr,
+                              self.headers)
         if res:
             content = self.parser(res)
-            await self.handler_content(content, self.chapter)
+            self.handler_content(content, chapter or self.chapter)
+        self.wait_done -= 1
 
-    async def handler_all(self):
-        all_chapter = Chapter.normal.filter(
-            book_id=self.book.id, active=False,
-            book_type=self.book.book_type).values('id', 'origin_addr')
+    def thread_handler_all(self):
+        all_chapter = Chapter.normal.filter(book_id=self.book.id,
+                                            active=False,
+                                            book_type=self.book.book_type)
+        chapter_list = list(all_chapter)
+        logging.info('<<{}>>: 需要更新章节正文 : 共{}条'.format(self.book,
+                                                      len(all_chapter)))
+        q = Queue(maxsize=100)
+        st = time.time()
+        all_len = len(chapter_list) or 1
+        while chapter_list:
+            chapter = chapter_list.pop()
+
+            t = threading.Thread(target=self.handler_single, args=(chapter, ))
+            q.put(t)
+            if (q.full() == True) or (len(chapter_list)) == 0:
+                thread_list = []
+                while q.empty() == False:
+                    t = q.get()
+                    t.setDaemon(True)
+                    thread_list.append(t)
+                    t.start()
+                for t in thread_list:
+                    t.join(5)
+        logging.info('当前还有处理 {} 的线程 共 {} 条等待执行结束'.format(
+            self.book, self.wait_done))
+
+    def handler_all(self):
+        all_chapter = Chapter.normal.filter(book_id=self.book.id,
+                                            active=False,
+                                            book_type=self.book.book_type)
         logging.info('<<{}>>: 所有章节正文 : 共{}条'.format(self.book,
                                                     len(all_chapter)))
         tasks = []
         for chapter in all_chapter:
-            task = self.async_do_request(chapter['origin_addr'],
-                                         'text',
-                                         self.headers,
-                                         encoding=self.encoding)
+            res = self.do_request(chapter.origin_addr, self.headers)
 
-            tasks.append(task)
-            if len(tasks) >= 30:
-                res_list = await asyncio.gather(*tasks)
-                await self.call_handler_content(all_chapter, res_list)
-                tasks = []
+            if res:
+                content = self.parser(res)
+                self.handler_content(content, chapter)
 
-        res_list = await asyncio.gather(*tasks)
-        await self.call_handler_content(all_chapter, res_list)
-
-    async def call_handler_content(self, all_chapter, res_list):
-        for idx, res in enumerate(res_list):
-            if not res:
-                continue
-            chapter = Chapter.normal.get(id=list(all_chapter)[idx]['id'])
-            await self.handler_content(res, chapter)
-        pass
-
-    async def handler(self):
+    def handler(self):
         if self.book:
             if not self.book.desc:
                 # 更新书本介绍信息
                 bic = BookInfoClient(self.book.origin_addr,
                                      self.book.book_type, self.book.on_shelf,
                                      self.book)
-                await bic.handler()
+                bic.run()
             # 更新章节
-            await self.handler_all()
+            if self.fast:
+                # 使用多线程
+                self.thread_handler_all()
+            else:
+                self.handler_all()
         else:
-            await self.handler_single()
+            self.handler_single()
 
 
 class BookInsertClient(BaseClient):
-    def __init__(self, url, book_type, insert_type='only_book', on_shelf=True):
+    def __init__(self,
+                 url,
+                 book_type,
+                 insert_type='only_book',
+                 on_shelf=True,
+                 fast=False):
         """
         insert_type:
             only_book: 只添加书本信息
@@ -436,10 +396,11 @@ class BookInsertClient(BaseClient):
         self.book_type = book_type
         self.type = insert_type
         self.on_shelf = on_shelf
+        self.fast = fast
 
-    async def handler(self):
+    def handler(self):
         bic = BookInfoClient(self.url, self.book_type, self.on_shelf)
-        book, res = await bic.handler()
+        book, res = bic.handler()
         if not book:
             return
         if self.type in ['with_chapter', 'with_content']:
@@ -448,8 +409,8 @@ class BookInsertClient(BaseClient):
                 chapter_list = clc.parser(res)
                 clc.save_chapter_list_to_db(chapter_list)
         if self.type == 'with_content':
-            ccc = ChapterContentClient(book=book)
-            await ccc.handler()
+            ccc = ChapterContentClient(book=book, fast=self.fast)
+            ccc.handler()
 
 
 class OldBookAutoInsertClient(BaseClient):
@@ -463,7 +424,7 @@ class OldBookAutoInsertClient(BaseClient):
         self.encoding = parser.encoding if hasattr(parser,
                                                    'encoding') else 'utf-8'
 
-    async def handler(self):
+    def handler(self):
         res = self.do_request(self.url, self.headers)
         book_info_list = self.parser(res)
         count = 0
@@ -493,7 +454,7 @@ class OldBookAutoInsertClient(BaseClient):
 
 
 class SlowAutoInsertBookClient(BaseClient):
-    async def handler(self):
+    def handler(self):
         logging.info("自动缓慢新增书籍开始执行！")
         for site in parser_selector.regular.keys():
             if not hasattr(parser_selector.get_parser(site),
@@ -502,12 +463,12 @@ class SlowAutoInsertBookClient(BaseClient):
 
             parser_cls = parser_selector.get_parser(site)
 
-            # for i in range(9, parser_cls.total_all_book):
-            for i in range(284999, 285000):
+            for i in range(9, parser_cls.total_all_book):
+                # for i in range(284999, 285000):
                 url = parser_cls.all_book_url_one_by_one.format(i)
                 bic = BookInsertClient(url, parser_cls.book_type,
                                        'with_content')
-                await bic.handler()
+                bic.handler()
 
 
 class FastAutoInsertBookClient(BaseClient):
@@ -528,9 +489,9 @@ class FastAutoInsertBookClient(BaseClient):
         lock.release()
         parser_cls = parser_selector.get_parser(url)
         # bic = BookInsertClient(url, parser_cls.book_type, 'with_chapter')
-        bic = BookInsertClient(url, parser_cls.book_type, 'with_content')
+        bic = BookInsertClient(url, parser_cls.book_type, 'with_content', True,
+                               True)
         bic.run()
-        time.sleep(1)
         lock.acquire()
         self.current_run_threading.remove(url)
         logging.info('当前还有线程 共 {} 条等待执行结束'.format(
@@ -544,9 +505,6 @@ class FastAutoInsertBookClient(BaseClient):
         all_len = len(urls) or 1
         while urls:
             url = urls.pop()
-            print('\rurl 处理中 {} %'.format(
-                str(100 * len(self.url_done) / all_len)),
-                  end="")
 
             t = threading.Thread(target=self.book_insert, args=(url, ))
             q.put(t)
@@ -562,7 +520,7 @@ class FastAutoInsertBookClient(BaseClient):
         logging.info('当前还有处理 {} 的线程 共 {} 条等待执行结束'.format(
             self.current_run_threading, len(self.current_run_threading)))
 
-    async def handler(self):
+    def handler(self):
         logging.info("自动快速新增书籍开始执行！")
 
         for site in parser_selector.regular.keys():
@@ -577,8 +535,8 @@ class FastAutoInsertBookClient(BaseClient):
             exist = Book.normal.all().values_list('origin_addr')
             exist_urls = [i[0] for i in exist]
 
-            for i in range(211, parser_cls.total_all_book):
-                # for i in range(208, 210):
+            for i in range(1, parser_cls.total_all_book):
+                # for i in range(214, 250):
                 url = parser_cls.all_book_url_one_by_one.format(i)
                 if i in exist_urls:
                     continue
@@ -590,22 +548,6 @@ class FastAutoInsertBookClient(BaseClient):
 
             self.handler_threading(urls)
         logging.info("自动快速新增书籍执行结束！共添加{}条数据".format(self.total_done))
-
-    # async def handler(self):
-    #     logging.info("自动新增书籍开始执行！")
-    #     for site in parser_selector.regular.keys():
-    #         if not hasattr(parser_selector.get_parser(site),
-    #                        'all_book_url_one_by_one'):
-    #             continue
-
-    #         logging.info("自动新增书籍开始执行，{}".format(site))
-    #         parser_cls = parser_selector.get_parser(site)
-
-    #         for i in range(9, parser_cls.total_all_book):
-    #             url = parser_cls.all_book_url_one_by_one.format(i)
-    #             bic = BookInsertClient(url, parser_cls.book_type,
-    #                                    'with_chapter')
-    #             await bic.handler()
 
 
 class BookAutoInsertClient(BaseClient):
@@ -645,27 +587,17 @@ class BookAutoInsertClient(BaseClient):
                 books = []
         Book.normal.bulk_create(books)
 
-    async def do_all_book(self, parser_cls, start, end):
-        tasks = []
+    def do_all_book(self, parser_cls, start, end):
         for i in range(start, end):
             url = parser_cls.all_book_url.format(i)
 
-            task = self.async_do_request(url,
-                                         'text',
-                                         parser_cls.request_header,
-                                         encoding=parser_cls.encoding)
-
-            tasks.append(task)
-        res_list = await asyncio.gather(*tasks)
-        for res in res_list:
+            res = self.do_request(url, parser_cls.request_header)
             if not res:
                 continue
             book_info_list = parser_cls.parse_all_book(res)
             self.handler_all_book(book_info_list)
 
-    async def handler(self):
-        pass
-
+    def handler(self):
         logging.info("自动新增书籍开始执行！")
         for site in parser_selector.regular.keys():
             if not hasattr(parser_selector.get_parser(site), 'parse_all_book'):
@@ -686,11 +618,10 @@ class BookAutoInsertClient(BaseClient):
                         parser_cls.total_page - times * together_num
                     ) < together_num else (times + 1) * together_num
 
-                    await self.do_all_book(parser_cls, times * together_num,
-                                           end_num)
+                    self.do_all_book(parser_cls, times * together_num, end_num)
                     times += 1
             else:
-                await self.do_all_book(parser_cls, 1, parser_cls.total_page)
+                self.do_all_book(parser_cls, 1, parser_cls.total_page)
 
 
 class BookUpdateClient(BaseClient):
@@ -702,18 +633,18 @@ class BookUpdateClient(BaseClient):
         self.chapter_id = chapter_id
         self.type = insert_type
 
-    async def handler(self):
+    def handler(self):
         if self.book_id:
             # 全书更新
             book = Book.normal.get(id=self.book_id)
             clc = ChapterListClient(book)
-            await clc.handler()
+            clc.handler()
             # 更新章节信息，不更新章节内容
             if self.type != 'only_chapters':
                 ccc = ChapterContentClient(book=book)
-                await ccc.handler()
+                ccc.handler()
         elif self.chapter_id:
             # 更新单章
             chapter = Chapter.normal.get(id=self.chapter_id)
             ccc = ChapterContentClient(chapter=chapter)
-            await ccc.handler()
+            ccc.handler()

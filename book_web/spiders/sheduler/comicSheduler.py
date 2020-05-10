@@ -1,10 +1,11 @@
 import requests
 from requests.utils import cookiejar_from_dict
 from django.core.cache import cache
-from book.models import Book, Author, Chapter, Image, IMAGE_TYPE_DESC, ChapterImage, BOOK_TYPE_DESC
+from book.models import Book, Author, Chapter, Image, ChapterImage
 from book_web.utils import photo as photo_lib
 from book_web.utils.base_logger import logger
 from book_web.spiders.comic_parser.SimpleParser import SimpleParser
+from book_web.utils.common_data import IMAGE_TYPE_DESC, BOOK_TYPE_DESC
 
 
 class ComicSheduler(object):

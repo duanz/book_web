@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 import json
 import re
 import urllib
@@ -8,6 +9,7 @@ from book_web.spiders.comic_parser.BaseParser import BaseParser
 
 
 class ComDmzjParser(BaseParser):
+    book_type = BOOK_TYPE_DESC.Comic
     encoding = 'UTF-8'
 
     image_base_url = 'https://images.dmzj.com'

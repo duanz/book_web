@@ -3,7 +3,8 @@ from django.core.mail.backends.smtp import EmailBackend
 from django.conf import settings
 from book_web.utils.base_logger import logger as logging
 import os
-from book.models import Book, BOOK_TYPE_DESC
+from book.models import Book
+from book_web.utils.common_data import BOOK_TYPE_DESC
 
 
 class SendKindleEmail:

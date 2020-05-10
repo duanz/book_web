@@ -1,26 +1,7 @@
 from book_web.utils.base_model import BaseModel
 from django.db import models
 from django.contrib.auth.models import User
-
-
-class TASK_TYPE_DESC:
-    NOVEL_INSERT = "NOVEL_INSERT"
-    NOVEL_UPDATE = "NOVEL_UPDATE"
-    NOVEL_CHAPTER_UPDATE = "NOVEL_CHAPTER_UPDATE"
-    COMIC_INSERT = "COMIC_INSERT"
-    COMIC_UPDATE = "COMIC_UPDATE"
-    COMIC_CHAPTER_UPDATE = "COMIC_CHAPTER_UPDATE"
-    NOVEL_MAKE_BOOK = "NOVEL_MAKE_BOOK"
-    COMIC_MAKE_BOOK = "COMIC_MAKE_BOOK"
-    SEND_TO_KINDLE = "SEND_TO_KINDLE"
-
-
-class TASK_STATUS_DESC:
-    WAIT = "WAIT"
-    RUNNING = "RUNNING"
-    FINISH = "FINISH"
-    FAILD = "FAILD"
-
+from book_web.utils.common_data import TASK_TYPE_DESC, TASK_STATUS_DESC
 
 TASK_TYPE = ((TASK_TYPE_DESC.NOVEL_INSERT,
               "新增小说"), (TASK_TYPE_DESC.NOVEL_UPDATE, "更新小说"),

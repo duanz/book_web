@@ -4,33 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from book_web.utils.base_model import BaseModel
 from book_web.utils import photo as photo_lib
-
-
-# 性别种类
-class GENDER_TYPE_DESC:
-    Male = "M"
-    Female = "F"
-    Anonymous = "A"
-
-
-# 图片种类
-class IMAGE_TYPE_DESC:
-    COVER = 'COVER'
-    CHAPER_CONTENT = 'CONTENT'
-
-
-# 首页描述
-class INDEX_BLOCK_DESC:
-    Carousel = "CA"
-    Photo_Left = "PL"
-    Photo_Top = "PT"
-
-
-# 书本种类描述
-class BOOK_TYPE_DESC:
-    Comic = "COMIC"
-    Novel = "NOVEL"
-
+from book_web.utils.common_data import GENDER_TYPE_DESC, IMAGE_TYPE_DESC, INDEX_BLOCK_DESC, BOOK_TYPE_DESC
 
 # 性别选项
 GENDER_CHOICES = ((GENDER_TYPE_DESC.Male, '男'), (GENDER_TYPE_DESC.Female, '女'),
@@ -187,10 +161,11 @@ class Chapter(BaseModel):
 
     def save_content(self, content):
         """保存当前对象章节内容"""
+        save_path = self.save_path()
         if self.book_type == BOOK_TYPE_DESC.Novel:
-            with open(self.save_path(), 'w', encoding='UTF-8') as f:
+            with open(save_path, 'w', encoding='UTF-8') as f:
                 f.write(content)
-                f.flush()
+                # f.flush()
         elif self.book_type == BOOK_TYPE_DESC.Comic:
             cis = [
                 ChapterImage(book=self.book,

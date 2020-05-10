@@ -5,7 +5,8 @@ from django.conf import settings
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
-from book.models import Author, Book, BOOK_TYPE_DESC, Chapter, ChapterImage, Image, IMAGE_TYPE_DESC, SubscribeBook
+from book.models import Author, Book, Chapter, ChapterImage, Image, SubscribeBook
+from book_web.utils.common_data import GENDER_TYPE_DESC, IMAGE_TYPE_DESC, INDEX_BLOCK_DESC, BOOK_TYPE_DESC
 from book_web.utils import photo as photo_lib
 
 

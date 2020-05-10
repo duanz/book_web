@@ -39,6 +39,12 @@ def decode_packed_codes(code):
                   obfucasted_code)
 
 
+def validateFilename(title):
+    rstr = r"[\/\\\:\*\?\"\<\>\|]"  # '/ \ : * ? " < > |'
+    new_title = re.sub(rstr, "", title)  # 去掉非法字符
+    return new_title
+
+
 def mkdir(path):
     path_ = path.split('/')
 
@@ -54,7 +60,7 @@ def get_proxy_ip():
     url = "http://127.0.0.1:5010/get"
     res = []
     try:
-        for i in range(10):
+        for i in range(50):
             res.append(requests.get(url, timeout=3).json())
     except:
         return []
@@ -65,8 +71,8 @@ def get_proxy_ip():
     for info in res:
         ips.append('http://{}'.format(info['proxy']))
 
-    ok_ips = available_ip(set(ips))
-    ok_ips = set((ips))
+    # ok_ips = available_ip(set(ips))
+    ok_ips = set(ips)
     return list(ok_ips)
 
 

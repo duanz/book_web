@@ -1,14 +1,21 @@
 from book_web.spiders.novel_parser.BaseParser import BaseParser
+from book_web.utils.spider_utils import validateFilename
 from pyquery import PyQuery as pq
+from book_web.utils.common_data import BOOK_TYPE_DESC
 
 
 class NetQuanbenParser(BaseParser):
-
+    book_type = BOOK_TYPE_DESC.Novel
     encoding = 'utf-8'
     image_base_url = 'https://www.quanben.net'
     page_base_url = 'https://www.quanben.net'
+    # 网站提供的全部小说列表
     all_book_url = 'https://www.quanben.net/quanben/{}.html'
     total_page = 300
+    # 网站实际全站小说
+    all_book_url_one_by_one = 'https://www.quanben.net/111/{}/'
+    total_all_book = 293640
+
     filename_extension = 'jpg'
     request_header = {
         'Accept':
@@ -49,8 +56,8 @@ class NetQuanbenParser(BaseParser):
             cover = [cover]
 
         info = {
-            'name': book_name,
-            'latest_chapter': latest_chapter_str,
+            'name': validateFilename(book_name),
+            'latest_chapter': validateFilename(latest_chapter_str),
             'desc': book_desc,
             'author_name': author_name,
             'markeup': markeup,
@@ -70,8 +77,10 @@ class NetQuanbenParser(BaseParser):
             flag = dd.tag == 'dd'
             if flag:
                 link = pq(pq(dd)('a')).attr('href')
-                chapter_list.append(
-                    {dd.text_content(): self.page_base_url + link})
+                chapter_list.append({
+                    validateFilename(dd.text_content()):
+                    self.page_base_url + link
+                })
 
         return chapter_list
 
@@ -81,7 +90,7 @@ class NetQuanbenParser(BaseParser):
         doc = pq(data)
         title = doc("#BookCon > h1").text()
         content = doc("#BookText").text()
-        return title, content
+        return validateFilename(title), content
 
     def parse_chapter_content(self, data):
         _, content = self.get_content_info(data)
@@ -106,7 +115,7 @@ class NetQuanbenParser(BaseParser):
             if not url:
                 continue
             t = {
-                'title': title,
+                'title': validateFilename(title),
                 'author': author,
                 'url': self.page_base_url + url,
                 'label': label
