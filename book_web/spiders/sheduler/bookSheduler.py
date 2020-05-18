@@ -261,7 +261,7 @@ class ChapterListClient(BaseClient):
 
         self.bulk_create_chapter(need_create)
 
-    async def handler(self):
+    def handler(self):
         """处理章节信息"""
 
         res = self.do_request(self.book.origin_addr, self.headers)
@@ -285,11 +285,9 @@ class ChapterContentClient(BaseClient):
                                                    'encoding') else 'utf-8'
 
     @transaction.atomic
-    def handler_content(self, res, chapter: Chapter):
-        content = self.parser(res)
-        logging.info('处理<<{}>>{},正文信息:{}...'.format(chapter.book, chapter,
-                                                    content[:15]))
-
+    def handler_content(self, content, chapter: Chapter):
+        logging.info('处理--{}--<<{}>>{},正文信息:{}...'.format(
+            self.wait_done, chapter.book, chapter, content[:10]))
         if chapter.book_type == BOOK_TYPE_DESC.Comic:
             imgs = []
             for key in content.keys():
@@ -301,6 +299,8 @@ class ChapterContentClient(BaseClient):
                 content = img_objs
 
         try:
+            if not content:
+                raise OSError
             chapter.save_content(content)
             chapter.active = True
             chapter.save()
@@ -312,13 +312,17 @@ class ChapterContentClient(BaseClient):
             pass
 
     def handler_single(self, chapter=None):
+        lock.acquire()
         self.wait_done += 1
+        lock.release()
         res = self.do_request(chapter.origin_addr or self.chapter.origin_addr,
                               self.headers)
         if res:
             content = self.parser(res)
             self.handler_content(content, chapter or self.chapter)
+        lock.acquire()
         self.wait_done -= 1
+        lock.release()
 
     def thread_handler_all(self):
         all_chapter = Chapter.normal.filter(book_id=self.book.id,
@@ -327,9 +331,9 @@ class ChapterContentClient(BaseClient):
         chapter_list = list(all_chapter)
         logging.info('<<{}>>: 需要更新章节正文 : 共{}条'.format(self.book,
                                                       len(all_chapter)))
-        q = Queue(maxsize=100)
+        q = Queue(maxsize=20)
         st = time.time()
-        all_len = len(chapter_list) or 1
+        self.wait_done = len(chapter_list) or 0
         while chapter_list:
             chapter = chapter_list.pop()
 
@@ -453,27 +457,14 @@ class OldBookAutoInsertClient(BaseClient):
         Book.normal.bulk_create(books)
 
 
-class SlowAutoInsertBookClient(BaseClient):
-    def handler(self):
-        logging.info("自动缓慢新增书籍开始执行！")
-        for site in parser_selector.regular.keys():
-            if not hasattr(parser_selector.get_parser(site),
-                           'all_book_url_one_by_one'):
-                continue
-
-            parser_cls = parser_selector.get_parser(site)
-
-            for i in range(9, parser_cls.total_all_book):
-                # for i in range(284999, 285000):
-                url = parser_cls.all_book_url_one_by_one.format(i)
-                bic = BookInsertClient(url, parser_cls.book_type,
-                                       'with_content')
-                bic.handler()
-
-
-class FastAutoInsertBookClient(BaseClient):
+class AutoInsertBookClient(BaseClient):
     """多线程自动插入书本"""
-    def __init__(self):
+    def __init__(self, insert_type='with_chapter'):
+        """
+        insert_type
+            with_chapter: 只保存书本及其章节信息
+            with_content: 保存书本，章节和正文信息
+        """
         self.url_done = []
         self.total_done = 0
         self.current_run_threading = []
@@ -500,7 +491,7 @@ class FastAutoInsertBookClient(BaseClient):
 
     def handler_threading(self, urls):
         logging.info("自动新增书籍开始执行，共有{}条".format(len(urls)))
-        q = Queue(maxsize=100)
+        q = Queue(maxsize=20)
         st = time.time()
         all_len = len(urls) or 1
         while urls:
@@ -628,10 +619,12 @@ class BookUpdateClient(BaseClient):
     def __init__(self,
                  book_id=None,
                  chapter_id=None,
-                 insert_type='only_chapters'):
+                 insert_type='only_chapters',
+                 fast=False):
         self.book_id = book_id
         self.chapter_id = chapter_id
         self.type = insert_type
+        self.fast = fast
 
     def handler(self):
         if self.book_id:
@@ -641,7 +634,7 @@ class BookUpdateClient(BaseClient):
             clc.handler()
             # 更新章节信息，不更新章节内容
             if self.type != 'only_chapters':
-                ccc = ChapterContentClient(book=book)
+                ccc = ChapterContentClient(book=book, fast=self.fast)
                 ccc.handler()
         elif self.chapter_id:
             # 更新单章

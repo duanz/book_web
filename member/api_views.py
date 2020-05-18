@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 from book_web.utils.permission import IsAuthorization, BaseApiView, BaseGenericAPIView
 from django.contrib.auth.models import User
-from member.serializers import UserSerializer, UserLoginSerializer
+from member.serializers import UserSerializer, UserLoginSerializer, ActiveCodeSerializer
+from member.models import ActiveCode
 
 
 class UserCreate(mixins.CreateModelMixin, BaseGenericAPIView):
@@ -21,6 +22,19 @@ class UserCreate(mixins.CreateModelMixin, BaseGenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+class ActiveCode(mixins.UpdateModelMixin, BaseGenericAPIView):
+    '''
+    post: 绑定激活码.
+    '''
+
+    queryset = ActiveCode.objects.all()
+    serializer_class = ActiveCodeSerializer
+    permission_classes = (IsAuthorization, )
+
+    def post(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
 
 class UserDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
@@ -59,11 +73,7 @@ class UserLoginApiView(BaseApiView):
 
     def post(self, request, format=None):
         data = request.data
-        username = data.get('username')
-        password = data.get('password')
-        print(username, password)
         user = authenticate(username=username, password=password)
-        print(user)
         if user is not None and user.is_active:
             user.ip_address = request.META.get('REMOTE_ADDR')
             user.save()

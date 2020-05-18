@@ -70,7 +70,7 @@ class NetQuanbenParser(BaseParser):
             data = data.content.decode(self.encoding)
 
         doc = pq(data)
-        dl_dd = doc('.chapterlist>dd')[10:]
+        dl_dd = doc('.chapterlist>dd')[9:]
         chapter_list = []
         flag = False
         for dd in dl_dd:

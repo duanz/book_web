@@ -8,4 +8,5 @@ urlpatterns = [
     path(r'member/login/', api_views.UserLoginApiView.as_view()),
     path(r'member/logout/', api_views.UserLogoutApiView.as_view()),
     path(r'member/register/', api_views.UserCreate.as_view()),
+    path(r'member/activecode/', api_views.ActiveCode.as_view()),
 ]

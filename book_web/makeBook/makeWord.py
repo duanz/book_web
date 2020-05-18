@@ -135,7 +135,7 @@ class MakeMyWord:
             os.remove(filename)
         self.filename = filename
 
-        with open(filename, 'w+') as book_handler:
+        with open(filename, 'w+', encoding="utf-8") as book_handler:
             # 设置章节
             start = Chapter.normal.get(
                 id=self.start_chapter_id) if self.start_chapter_id else None

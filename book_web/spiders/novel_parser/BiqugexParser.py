@@ -11,6 +11,9 @@ class BiqugexParser(BaseParser):
     page_base_url = 'http://www.biquge.tv'
     all_book_url = 'http://www.biquge.tv/xiaoshuodaquan/'
     total_page = 1
+    # 网站实际全站小说
+    all_book_url_one_by_one = 'http://www.biquge.tv/26_{}/'
+    total_all_book = 41933
     filename_extension = 'jpg'
     request_header = {
         'Accept':

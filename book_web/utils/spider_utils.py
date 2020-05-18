@@ -1,6 +1,20 @@
 import re
 import os
 import requests
+import string
+import random
+
+
+def get_key(key="", n=12):
+    # 随机码最少4位
+    if n < 4:
+        raise AttributeError
+    word = string.digits + string.ascii_letters
+    for i in range(1, n + 1):
+        key += random.choice(word)  #获取随机字符或数字
+        if i % 4 == 0 and i != n:  #每隔4个字符增加'-'
+            key += '-'
+    return key
 
 
 def decode_packed_codes(code):

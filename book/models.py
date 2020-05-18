@@ -89,7 +89,7 @@ class Book(BaseModel):
                                  default='',
                                  choices=BOOK_TYPE_CHOICES)
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
-    cover = models.ManyToManyField(Image, null=True)
+    cover = models.ManyToManyField(Image)
     collection_num = models.IntegerField('收藏数量', null=True, default=0)
     click_num = models.IntegerField('点击数量', null=True, default=0)
     desc = models.CharField('描述', max_length=500, default="")

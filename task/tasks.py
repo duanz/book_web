@@ -2,8 +2,8 @@
 from book_web import celery_app as app
 from celery import shared_task
 from book_web.spiders.sheduler.novelSheduler import NovelSheduler, NovelChapterSheduler
-from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
-from book_web.spiders.sheduler.bookSheduler import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
+# from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
+from book_web.spiders.sheduler.bookSheduler import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, AutoInsertBookClient
 
 
 from book_web.utils import spider_utils as parser_utils
@@ -47,21 +47,19 @@ def auto_insert_books():
 
 @shared_task
 def slow_auto_insert_books():
-    logging.info('自动缓慢新增书本开始')
+    logging.info('全站新增书本及其内容任务开始')
     start = time.time()
-    # FastAutoInsertBookClient().run()
-    SlowAutoInsertBookClient().run()
+    AutoInsertBookClient("with_content").run()
     stop =  time.time()
-    logging.info('自动缓慢新增书本任务结束， 共耗时{}秒'.format(stop-start))
+    logging.info('全站新增书本及其内容任务结束， 共耗时{}秒'.format(stop-start))
 
 @shared_task
 def once_auto_insert_books():
-    logging.info('自动缓慢新增书本开始')
+    logging.info('全站新增书本任务开始')
     start = time.time()
-    # SlowAutoInsertBookClient().run()
-    FastAutoInsertBookClient().run()
+    AutoInsertBookClient().run()
     stop =  time.time()
-    logging.info('自动缓慢新增书本任务结束， 共耗时{}秒'.format(stop-start))
+    logging.info('全站新增书本任务结束， 共耗时{}秒'.format(stop-start))
 
 
 
@@ -106,8 +104,8 @@ def send_book_to_kindle():
             continue
 
         to_email = [sub.user.email for sub in subs]
-        # try:
-        if True:
+        try:
+        # if True:
             # 开启事务
             with transaction.atomic():
                 MakeMyWord(book_id, start_chapter.id if start_chapter else 0, end_chapter.id).run()
@@ -117,13 +115,12 @@ def send_book_to_kindle():
                     sub.ready = False
                     sub.count = sub.count+1
                     sub.save()
-        # except Exception as e:
-        #     fail += 1
-        #     look += len(to_email)
-        #     logging.info('推送订阅书本至kindle任务book_id：{}, 失败。原因：{}'.format(book_id, e))
-        #     continue
-
-            
+        except Exception as e:
+            fail += 1
+            look += len(to_email)
+            logging.info('推送订阅书本至kindle任务book_id：{}, 失败。原因：{}'.format(book_id, e))
+            continue
+      
     stop =  time.time()
     logging.info('推送订阅书本至kindle任务结束，共推送{}本, 失败{}本， 受影响用户{}位， 共耗时{}秒'.format(total-fail if total>fail else 0, fail, look, stop-start))
 
@@ -136,7 +133,7 @@ def auto_update_books():
     book_ids = SubscribeBook.normal.filter(active=True).values('book_id')
     id_list = list(set([i['book_id'] for i in book_ids]))
     for book_id in id_list:
-        s = BookUpdateClient(book_id=book_id, insert_type='with_content')
+        s = BookUpdateClient(book_id=book_id, insert_type='with_content', fast=True)
         s.run()
     stop =  time.time()
     logging.info('自动更新书本任务结束，更新{}本， 共耗时{}秒'.format(len(id_list), stop-start))

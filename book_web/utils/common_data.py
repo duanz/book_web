@@ -5,6 +5,12 @@ class GENDER_TYPE_DESC:
     Anonymous = "A"
 
 
+# 激活种类
+class ACTIVECODE_TYPE_DESC:
+    Time = "T"
+    Count = "C"
+
+
 # 图片种类
 class IMAGE_TYPE_DESC:
     COVER = 'COVER'

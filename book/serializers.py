@@ -68,11 +68,18 @@ class SubscribeBookSerializer(serializers.ModelSerializer):
                 user_id=self.context['request'].user.id).exists():
             raise serializers.ValidationError('订阅资源已经订阅')
 
+    def validate(self, attrs):
+        return super().validate(attrs)
+
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         validated_data["chapter"] = Chapter.normal.filter(
-            book_id=validated_data['book_id']).first()
+            book_id=validated_data['book_id']).order_by('order').first()
         validated_data["book"] = Book.normal.get(id=validated_data['book_id'])
+        validated_data['active'] = True
+        # 首次创建即可推送
+        if validated_data['chapter']:
+            validated_data['ready'] = True
 
         instance = super().create(validated_data)
         return instance

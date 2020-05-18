@@ -6,6 +6,8 @@ from rest_framework.permissions import AllowAny, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework import mixins
 from django_filters import rest_framework
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 
 class BookListApiView(mixins.ListModelMixin, BaseGenericAPIView):
@@ -43,6 +45,7 @@ class BookListStateApiView(mixins.ListModelMixin, BaseGenericAPIView):
 
     permission_classes = (AllowAny, )
 
+    @method_decorator(cache_page(60 * 30))
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
