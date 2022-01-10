@@ -57,7 +57,7 @@
 #             epub.add_page(chapter.title, html)
 
 #         logging.info("epub 完成")
-#         filename = os.path.join(settings.UPLOAD_SAVE_PATH, comic_obj.title + '.epub')
+#         filename = os.path.join(settings.MEDIA_ROOT, comic_obj.title + '.epub')
 #         if os.path.exists(filename):
 #             os.remove(filename)
 #         self.filename = filename
@@ -85,7 +85,7 @@
 #             epub.add_page(chapter.title, chapter.content)
 
 
-#         filename = os.path.join(settings.UPLOAD_SAVE_PATH, book_obj.title + '.epub')
+#         filename = os.path.join(settings.MEDIA_ROOT, book_obj.title + '.epub')
 #         self.filename = filename
 #         epub.save(filename)
 #         book_obj.is_download = True

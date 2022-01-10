@@ -37,14 +37,13 @@ class SendKindleEmail:
             filename = []
             part = 1
             file_part = lambda part: os.path.join(
-                settings.UPLOAD_SAVE_PATH, '{}__{}.docx'.format(
-                    content_obj.title, part))
+                settings.MEDIA_ROOT, "{}__{}.docx".format(content_obj.title, part)
+            )
             while os.path.exists(file_part(part)):
                 filename.append(file_part(part))
                 part += 1
         elif content_obj.book_type == BOOK_TYPE_DESC.Novel:
-            filename = os.path.join(settings.UPLOAD_SAVE_PATH,
-                                    content_obj.title + '.txt')
+            filename = os.path.join(settings.MEDIA_ROOT, content_obj.title + ".txt")
 
         self.attach_file = filename
 
@@ -55,14 +54,15 @@ class SendKindleEmail:
         password = os.getenv("EMAIL_HOST_PASSWORD", "")
         from_email = os.getenv("EMAIL_FROM_EMAIL", "")
         to_email = self.to_email
-        backend = EmailBackend(host=host,
-                               port=port,
-                               username=username,
-                               password=password)
+        backend = EmailBackend(
+            host=host, port=port, username=username, password=password
+        )
         subject = "新书推送"
-        email = EmailMultiAlternatives(subject=subject,
-                                       body="",
-                                       from_email=from_email,
-                                       to=to_email,
-                                       connection=backend)
+        email = EmailMultiAlternatives(
+            subject=subject,
+            body="",
+            from_email=from_email,
+            to=to_email,
+            connection=backend,
+        )
         self.email = email

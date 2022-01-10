@@ -8,21 +8,22 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from book_web.utils.permission import IsAuthorization, BaseApiView, BaseGenericAPIView
 from task.models import Task
 from task.serializers import TaskSerializer
-from task.tasks import once_auto_insert_books
+from task.tasks import cache_proxy_ip, once_auto_insert_books, auto_insert_books
 
 
-class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin,
-                  BaseGenericAPIView):
+class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin, BaseGenericAPIView):
     """
     get: 获取任务列表
     post: 添加任务
     """
+
     queryset = Task.normal.filter()
     serializer_class = TaskSerializer
-    permission_classes = (IsAuthorization, )
+    permission_classes = (IsAuthorization,)
 
     def get(self, request, *args, **kwargs):
         from task.tasks import auto_update_books
+
         auto_update_books.delay()
         return self.list(request, *args, **kwargs)
 
@@ -36,16 +37,21 @@ class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin,
             return [IsAuthorization()]
 
 
-class TaskDetailApiView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin, BaseGenericAPIView):
+class TaskDetailApiView(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    BaseGenericAPIView,
+):
     """
     get: 获取任务详情
     post: 修改任务
     delete: 删除任务
     """
+
     queryset = Task.normal.filter()
     serializer_class = TaskSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -63,12 +69,15 @@ class TaskDetailApiView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
             return [IsAuthorization()]
 
 
-class TaskRunOnceApiView(BaseGenericAPIView):
+class TaskRunOnceApiView(BaseApiView):
     """
     get: 执行只运行一次的任务
     """
-    permission_classes = (IsAuthorization, )
+
+    permission_classes = (IsAuthorization,)
 
     def get(self, request, *args, **kwargs):
-        once_auto_insert_books.delay()
+        cache_proxy_ip.delay()
+        # once_auto_insert_books.delay()
+        auto_insert_books.delay()
         return Response(data="下发成功", status=HTTP_200_OK)

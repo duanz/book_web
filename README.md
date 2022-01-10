@@ -41,7 +41,7 @@
     # 系统相关配置
     os.environ['APP_HOST'] = "localhost"    # 项目地址
     os.environ['PRODUCTION_MODE'] = ""    # 该配置项表示以debug模式运行
-    os.environ['UPLOAD_SAVE_PATH'] = ""    # 上传文件保存目录
+    os.environ['MEDIA_ROOT'] = ""    # 上传文件保存目录
     os.environ['UPLOAD_STATIC_URL'] = ""    # 上传文件访问目录
 
     # 邮箱配置 网易163邮箱为例

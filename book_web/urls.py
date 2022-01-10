@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin, auth
 from django.urls import path
-from django.conf.urls import include, url
+from django.conf.urls import include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import routers
 from book import api_views, api_urls
+
 # router = routers.SimpleRouter()
 # router.register(r'^book/chapter/(?P<pk>(\d+))/$',
 #                 api_views.BookChapterDetailApiView.as_view., 'chapter-detail')
@@ -28,7 +29,7 @@ from book import api_views, api_urls
 schema_view = get_schema_view(
     openapi.Info(
         title="测试工程API",
-        default_version='v1.0',
+        default_version="v1.0",
         description="测试工程接口文档",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
@@ -39,17 +40,16 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin', admin.site.urls),
-    path(r'api/v1/', include('book.api_urls', namespace='book_api')),
-    path(r'api/v1/', include('task.api_urls')),
-    path(r'api/v1/', include('member.api_urls')),
-    path(r'api/v1/docs/',
-         schema_view.with_ui('swagger', cache_timeout=0),
-         name='api-docs'),
-    url(r'^api/auth/',
-        include('rest_framework.urls', namespace='rest_framework')),
-    path('redoc/',
-         schema_view.with_ui('redoc', cache_timeout=0),
-         name='schema-redoc'),
+    path("admin", admin.site.urls),
+    path(r"api/v1/", include("book.api_urls", namespace="book_api")),
+    path(r"api/v1/", include("task.api_urls")),
+    path(r"api/v1/", include("member.api_urls")),
+    path(
+        r"api/v1/docs/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="api-docs",
+    ),
+    path(r"api/auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     # 配置drf-yasg路由
 ]

@@ -8,6 +8,7 @@ from book.serializers import ImageSerializer
 from django.conf import settings
 from docx import Document
 from book_web.utils.photo import split_photo_fit_kindle
+
 # class MakeMyWord:
 #     def __init__(self, content_id, content_type):
 #         self.content_id = content_id
@@ -28,10 +29,10 @@ from book_web.utils.photo import split_photo_fit_kindle
 #         self.title = book_obj.title
 
 #         # 初始化txt
-#         if not os.path.exists(settings.UPLOAD_SAVE_PATH):
-#             os.makedirs(settings.UPLOAD_SAVE_PATH, 0o775)
+#         if not os.path.exists(settings.MEDIA_ROOT):
+#             os.makedirs(settings.MEDIA_ROOT, 0o775)
 
-#         filename = os.path.join(settings.UPLOAD_SAVE_PATH,
+#         filename = os.path.join(settings.MEDIA_ROOT,
 #                                 book_obj.title + '.txt')
 #         if os.path.exists(filename):
 #             os.remove(filename)
@@ -56,7 +57,7 @@ from book_web.utils.photo import split_photo_fit_kindle
 #         self.title = comic_obj.title
 
 #         # 临时文件夹
-#         comic_temp_path = os.path.join(settings.UPLOAD_SAVE_PATH, self.title)
+#         comic_temp_path = os.path.join(settings.MEDIA_ROOT, self.title)
 
 #         part = 0
 #         part_size = 1024 * 1024 * 20
@@ -93,7 +94,7 @@ from book_web.utils.photo import split_photo_fit_kindle
 #             if pre_size(current_size) >= part_size:
 #                 # 保存word
 #                 filename = os.path.join(
-#                     settings.UPLOAD_SAVE_PATH,
+#                     settings.MEDIA_ROOT,
 #                     '{}__{}.docx'.format(comic_obj.title, part))
 #                 if os.path.exists(filename):
 #                     os.remove(filename)
@@ -127,20 +128,26 @@ class MakeMyWord:
 
     def makeBookTxt(self):
         # 初始化txt
-        if not os.path.exists(settings.UPLOAD_SAVE_PATH):
-            os.makedirs(settings.UPLOAD_SAVE_PATH, 0o775)
+        if not os.path.exists(settings.MEDIA_ROOT):
+            os.makedirs(settings.MEDIA_ROOT, 0o775)
 
-        filename = os.path.join(settings.UPLOAD_SAVE_PATH, self.title + '.txt')
+        filename = os.path.join(settings.MEDIA_ROOT, self.title + ".txt")
         if os.path.exists(filename):
             os.remove(filename)
         self.filename = filename
 
-        with open(filename, 'w+', encoding="utf-8") as book_handler:
+        with open(filename, "w+", encoding="utf-8") as book_handler:
             # 设置章节
-            start = Chapter.normal.get(
-                id=self.start_chapter_id) if self.start_chapter_id else None
-            end = Chapter.normal.get(
-                id=self.end_chapter_id) if self.end_chapter_id else None
+            start = (
+                Chapter.normal.get(id=self.start_chapter_id)
+                if self.start_chapter_id
+                else None
+            )
+            end = (
+                Chapter.normal.get(id=self.end_chapter_id)
+                if self.end_chapter_id
+                else None
+            )
 
             chapters = Chapter.normal.filter(book=self.book)
             if start:
@@ -149,15 +156,15 @@ class MakeMyWord:
                 chapters = chapters.filter(number__lte=end.number)
 
             for chapter in chapters:
-                book_handler.writelines(chapter.title + '\n')
-                book_handler.writelines(chapter.content + '\n')
+                book_handler.writelines(chapter.title + "\n")
+                book_handler.writelines(chapter.content + "\n")
 
         self.book.is_download = True
         self.book.save()
 
     def makeComicWord(self):
         # 临时文件夹
-        comic_temp_path = os.path.join(settings.UPLOAD_SAVE_PATH, self.title)
+        comic_temp_path = os.path.join(settings.MEDIA_ROOT, self.title)
 
         part = 0
         part_size = 1024 * 1024 * 20
@@ -173,18 +180,17 @@ class MakeMyWord:
                 doc.add_heading(chapter.title, level=1)
                 logging.info("WORD part-{} 已经初始化".format(part))
 
-            chapter_imgs = ChapterImage.normal.filter(chapter=chapter,
-                                                      book=self.book)
+            chapter_imgs = ChapterImage.normal.filter(chapter=chapter, book=self.book)
             if chapter_imgs:
                 for img_idx, img in enumerate(chapter_imgs):
-                    img_path = img.image.get_path('title')
+                    img_path = img.image.get_path("title")
                     img_size = os.path.getsize(img_path)
                     current_size += img_size
 
                     # 切割大图片临时文件夹
                     temp_path = os.path.join(
-                        comic_temp_path,
-                        os.path.split(img_path)[-1].split('.')[0])
+                        comic_temp_path, os.path.split(img_path)[-1].split(".")[0]
+                    )
 
                     # 如果是大文件就分隔
                     after_split = split_photo_fit_kindle(img_path, temp_path)
@@ -194,8 +200,8 @@ class MakeMyWord:
             if pre_size(current_size) >= part_size:
                 # 保存word
                 filename = os.path.join(
-                    settings.UPLOAD_SAVE_PATH,
-                    '{}__{}.docx'.format(self.book.title, part))
+                    settings.MEDIA_ROOT, "{}__{}.docx".format(self.book.title, part)
+                )
                 if os.path.exists(filename):
                     os.remove(filename)
                 doc.save(filename)
