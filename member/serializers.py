@@ -11,75 +11,68 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('token', "password", "username", "first_name", "last_name",
-                  "email")
+        fields = ("token", "password", "username", "first_name", "last_name", "email")
 
         extra_kwargs = {
-            'password': {
-                'write_only': True
-            },
-            'token': {
-                'read_only': True
-            },
+            "password": {"write_only": True},
+            "token": {"read_only": True},
         }
 
     def get_token(self, obj):
         try:
-            if self.context.get('request').user.id != obj.id:
-                logging.info(
-                    'get token illegal, data not belong to current user')
-                return ''
+            if self.context.get("request").user.id != obj.id:
+                logging.info("get token illegal, data not belong to current user")
+                return ""
             token = Token.objects.get_or_create(user=obj)[0].key
             return token
         except Exception as e:
-            logging.error('get token error: {}'.format(e))
-            return ''
+            logging.error("get token error: {}".format(e))
+            return ""
 
     def validate_username(self, value):
-        method = self.context.get('request').method
+        method = self.context.get("request").method
         try:
             member = User.objects.get(username__exact=value)
         except User.DoesNotExist:
             member = False
 
-        if member and method in ['POST', 'PUT']:
-            raise serializers.ValidationError('该名称已存在.')
+        if member and method in ["POST", "PUT"]:
+            raise serializers.ValidationError("该名称已存在.")
         return value
 
     def validate_email(self, value):
-        if value and '@kindle' not in value:
-            raise serializers.ValidationError('该邮箱不是kindle设备.')
-        method = self.context.get('request').method
+        if value and "@kindle" not in value:
+            raise serializers.ValidationError("该邮箱不是kindle设备.")
+        method = self.context.get("request").method
         try:
             member = User.objects.get(email__exact=value)
         except User.DoesNotExist:
             member = False
 
-        if member and method in ['POST', 'PUT']:
-            raise serializers.ValidationError('该邮箱已存在.')
+        if member and method in ["POST", "PUT"]:
+            raise serializers.ValidationError("该邮箱已存在.")
         return value
 
     def validate_password(self, val):
         if len(val) < 6:
-            raise serializers.ValidationError('密码至少6个字符')
+            raise serializers.ValidationError("密码至少6个字符")
         return val
 
     def create(self, validated_data):
-        print(validated_data)
         instance = User.objects.create_user(**validated_data)
         return instance
 
     def update(self, instance, validated_data):
-        if 'password' in validated_data:
-            instance.set_password(validated_data.get('password'))
-            validated_data.pop('password')
+        if "password" in validated_data:
+            instance.set_password(validated_data.get("password"))
+            validated_data.pop("password")
         return super().update(instance, validated_data)
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'password')
+        fields = ("username", "password")
 
 
 # user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -93,42 +86,31 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 
 class ActiveCodeSerializer(serializers.ModelSerializer):
-    create_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S",
-                                          required=False)
-    update_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S",
-                                          required=False)
-    active_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S",
-                                          required=False)
+    create_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
+    update_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
+    active_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
 
     class Meta:
         model = ActiveCode
         fields = "__all__"
 
         extra_kwargs = {
-            'user': {
-                'read_only': True
-            },
-            'create_at': {
-                'read_only': True
-            },
-            'update_at': {
-                'read_only': True
-            },
-            'active_at': {
-                'read_only': True
-            }
+            "user": {"read_only": True},
+            "create_at": {"read_only": True},
+            "update_at": {"read_only": True},
+            "active_at": {"read_only": True},
         }
 
     def validate_user(self, val):
-        user = self.context['request'].user
+        user = self.context["request"].user
         if not user:
-            raise serializers.ValidationError('请先登录，再进行激活！')
+            raise serializers.ValidationError("请先登录，再进行激活！")
         return user
 
     def validate_create_user(self, val):
-        create_user = self.context['request'].user
+        create_user = self.context["request"].user
         if not create_user.is_staff:
-            raise serializers.ValidationError('该激活码创建不合法，不要做无谓的尝试了：）')
+            raise serializers.ValidationError("该激活码创建不合法，不要做无谓的尝试了：）")
         return create_user
 
     def validate_code(self, val):
@@ -142,7 +124,7 @@ class ActiveCodeSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        if 'code' in validated_data:
-            validated_data.pop('code')
+        if "code" in validated_data:
+            validated_data.pop("code")
         instance = super().update(instance, validated_data)
         return instance

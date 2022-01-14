@@ -100,7 +100,7 @@ class Book(BaseModel):
     origin_addr = models.TextField("原始地址", unique=True, default="")
 
     def __str__(self):
-        return self.title
+        return f"{self.title}_{str(self.id)}"
 
     class Meta:
         verbose_name_plural = "书本"

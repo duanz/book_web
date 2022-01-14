@@ -3,6 +3,7 @@ import os
 import requests
 import string
 import random
+from tqdm import tqdm
 
 
 def get_key(key="", n=12):
@@ -70,7 +71,6 @@ def mkdir(path):
 
 def get_proxy_ip(count=100):
     """获取代理ip"""
-    return []
 
     # url = "http://127.0.0.1:5010/get"
     url = f"http://ip.memories1999.com/api.php?dh=1265918268935079196&sl={count}"
@@ -90,52 +90,30 @@ def get_proxy_ip(count=100):
     for info in res:
         ips.append("http://{}".format(info))
 
-    # ok_ips = available_ip(set(ips))
-    ok_ips = set(ips)
-    return list(ok_ips)
+    ips = available_ip(set(ips))
+    print(f"可用proxy ip有{len(ips)}")
+    return ips
 
 
 def available_ip(ip_list):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36",
-    }
-
-    hhh = {
-        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "accept-encoding": "gzip, deflate, br",
-        "accept-language": "zh-CN,zh;q=0.9,fr-FR;q=0.8,fr;q=0.7,en;q=0.6,en-GB;q=0.5,en-US;q=0.4",
-        "cache-control": "max-age=0",
-        "sec-ch-ua": '" Not;A Brand";v="99", "Microsoft Edge";v="97", "Chromium";v="97"',
-        "sec-ch-ua-arch": '"x86"',
-        "sec-ch-ua-bitness": '"64"',
-        "sec-ch-ua-full-version": '"97.0.1072.55"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-model": '""',
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-ch-ua-platform-version": '"14.0.0"',
-        "sec-fetch-dest": "document",
-        "sec-fetch-mode": "navigate",
-        "sec-fetch-site": "none",
-        "sec-fetch-user": "?1",
-        "upgrade-insecure-requests": "1",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.55",
+        "Connection": "close",
     }
 
     # sesseion = requests.session()
     ips = []
-    for ip in ip_list:
+    for ip in tqdm(ip_list, desc="验证IP"):
         try:
             response = requests.get(
                 "http://cn.bing.com/",
-                headers=hhh,
                 proxies={"http": ip},
                 verify=False,
                 timeout=3,
             )
             if response.status_code == 200:
-                print(ip)
                 ips.append(ip)
         except Exception as e:
-            print(f"handle proxy ip cerify: {e}")
+            # print(f"handle proxy ip cerify: {e}")
             continue
     return ips

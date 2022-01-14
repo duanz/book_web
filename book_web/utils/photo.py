@@ -331,7 +331,6 @@ def build_photo_url(photo_name, pic_type="photo", ext="jpg"):
 
 
 def build_photo_path(photo_name, pic_type="photo", ext="jpg"):
-    print(photo_name)
     _img_exts = (".jpg", ".png", ".gif")
     if photo_name:
         _base_path = os.path.join("media", "photos", pic_type, photo_name[:2])

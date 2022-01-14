@@ -110,5 +110,4 @@ class BiqugexParser(BaseParser):
                 if not url:
                     continue
                 novel_list.append(t)
-        print(novel_list, "<<<<<<<<<<<<<<<<<<")
         return novel_list

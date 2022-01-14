@@ -57,7 +57,7 @@ def insert_all_books_chapters_content():
 def insert_all_books_chapters_without_content():
     logging.info("全站新增书本及章节任务开始")
     start = time.time()
-    books = Book.objects.filter(is_finished=False).values_list("id", flat=True)
+    books = Book.objects.filter(is_finished=False).values_list("id", flat=True)[10:12]
     for book in books:
         BookUpdateClient(book_id=book).run()
     stop = time.time()
@@ -155,20 +155,21 @@ def send_book_to_kindle():
 def auto_update_books():
     logging.info("自动更新订阅书本开始")
     start = time.time()
-    book_ids = SubscribeBook.normal.filter(active=True).values("book_id")
-    id_list = list(set([i["book_id"] for i in book_ids]))
-    for book_id in id_list:
+    book_ids = SubscribeBook.normal.filter(active=True).values_list(
+        "book_id", flat=True
+    )
+    for book_id in book_ids:
         s = BookUpdateClient(book_id=book_id, insert_type="with_content", fast=True)
         s.run()
     stop = time.time()
-    logging.info("自动更新书本任务结束，更新{}本， 共耗时{}秒".format(len(id_list), stop - start))
+    logging.info("自动更新书本任务结束，更新{}本， 共耗时{}秒".format(len(book_ids), stop - start))
 
 
 @shared_task
 def cache_proxy_ip():
     logging.info("获取代理ip任务开始")
-    ips = parser_utils.get_proxy_ip()
-    cache.set("proxy_ips", ips)
+    ips = parser_utils.get_proxy_ip(50)
+    cache.set("proxy_ips", ips, 60 * 3)
     logging.info("获取代理ip任务结束，共找到{}条可用数据".format(len(ips)))
 
 

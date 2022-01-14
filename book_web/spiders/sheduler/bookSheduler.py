@@ -23,14 +23,10 @@ lock = threading.RLock()
 def get_proxy():
     ips = cache.get("proxy_ips")
     if ips is None:
-        ips = get_proxy_ip(20)
-        cache.set("proxy_ips", ips, 60 * 5)
+        return None
 
-    # ips.append("")
-    # ips = ips.split("\n")
-    # ip = random.choice(ips)
-    # return ip
-    return ips
+    ip = random.choice(ips)
+    return ip
 
 
 class BaseClient(metaclass=ABCMeta):
@@ -40,14 +36,16 @@ class BaseClient(metaclass=ABCMeta):
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
         }
         headers = headers or o_headers
-        while retry >= 0:
+        headers["Connection"] = "close"
+        while retry > 0:
             try:
                 time.sleep(random.random() * 10)
                 res = requests.get(
                     url,
                     headers=headers,
+                    proxies=get_proxy(),
                     verify=False,
-                    timeout=5,
+                    timeout=3,
                 )
                 logging.info(
                     "normal requests:<<<{}>>> PROXY:{}, URL {}".format(
@@ -262,9 +260,7 @@ class ChapterListClient(BaseClient):
         new_urls = self.check_chapters(chapter_dick_list)
         logging.info("即将保存《{}》的{}条新章节到数据库".format(self.book, len(new_urls)))
         need_create = []
-        for index, chapter_dict in enumerate(
-            tqdm(chapter_dick_list, desc=f"保存《{self.book}》的新章节"), 0
-        ):
+        for index, chapter_dict in enumerate(chapter_dick_list, 0):
             chapter_title = list(chapter_dict.keys())[0]
             chapter_link = list(chapter_dict.values())[0]
 

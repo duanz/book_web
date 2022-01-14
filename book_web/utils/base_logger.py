@@ -41,7 +41,7 @@ class MyLogger(object):
         self.logger.debug(msg)
 
     def error(self, msg):
-        self.logger.error(msg)
+        # self.logger.error(msg)
         self.logger.error(print_exc())
 
 

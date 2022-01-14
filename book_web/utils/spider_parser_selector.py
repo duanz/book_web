@@ -24,7 +24,6 @@ regular.update(novel_regular)
 def get_parser(url):
     for (k, v) in regular.items():
         if re.search(k, url):
-            print(v)
             if k in comic_regular:
                 module = __import__("book_web.spiders.comic_parser." + v, fromlist=[v])
             elif k in novel_regular:
