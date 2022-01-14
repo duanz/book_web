@@ -1,35 +1,33 @@
+import re
+import time
+
+import requests
+from book.models import Book, Chapter, SubscribeBook
 from book_web import celery_app as app
-from celery import shared_task
-from book_web.spiders.sheduler.novelSheduler import NovelSheduler, NovelChapterSheduler
+from book_web.makeBook.makeWord import MakeMyWord
+from book_web.sendEmail.sendKindle import SendKindleEmail
 
 # from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
 from book_web.spiders.sheduler.bookSheduler import (
-    BookInsertByUrlClient,
     BOOK_TYPE_DESC,
-    BookUpdateClient,
     BookInsertAllSiteClient,
+    BookInsertByUrlClient,
+    BookUpdateClient,
 )
-
-
+from book_web.spiders.sheduler.novelSheduler import NovelChapterSheduler, NovelSheduler
 from book_web.utils import spider_utils as parser_utils
+from book_web.utils.base_logger import logger as logging
+from book_web.utils.common_data import BOOK_TYPE_DESC
 from book_web.utils.validator import check_url
-from book_web.makeBook.makeWord import MakeMyWord
-from book_web.sendEmail.sendKindle import SendKindleEmail
-from task.models import Task, TASK_STATUS_DESC, TASK_TYPE_DESC
-
-from book.models import Book, SubscribeBook, Chapter
-
-import re
-import time
-import requests
-from django.core.cache import cache
+from celery import shared_task
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import transaction
 from pyquery import PyQuery as pq
-from book_web.utils.common_data import BOOK_TYPE_DESC
-
-from book_web.utils.base_logger import logger as logging
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from tqdm import tqdm
+
+from task.models import TASK_STATUS_DESC, TASK_TYPE_DESC, Task
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -57,8 +55,12 @@ def insert_all_books_chapters_content():
 def insert_all_books_chapters_without_content():
     logging.info("全站新增书本及章节任务开始")
     start = time.time()
-    books = Book.objects.filter(is_finished=False).values_list("id", flat=True)[10:12]
-    for book in books:
+    books = (
+        Book.objects.filter(is_finished=False)
+        .order_by("update_at")
+        .values_list("id", flat=True)[:2]
+    )
+    for book in tqdm(books, desc="更新书籍章节"):
         BookUpdateClient(book_id=book).run()
     stop = time.time()
     logging.info("全站新增书本及章节任务结束， 共耗时{}秒".format(stop - start))
@@ -169,7 +171,7 @@ def auto_update_books():
 def cache_proxy_ip():
     logging.info("获取代理ip任务开始")
     ips = parser_utils.get_proxy_ip(50)
-    cache.set("proxy_ips", ips, 60 * 3)
+    cache.set("proxy_ips", ips, 60 * 5)
     logging.info("获取代理ip任务结束，共找到{}条可用数据".format(len(ips)))
 
 

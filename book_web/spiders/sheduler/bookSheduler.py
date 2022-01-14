@@ -37,7 +37,7 @@ class BaseClient(metaclass=ABCMeta):
         }
         headers = headers or o_headers
         headers["Connection"] = "close"
-        while retry > 0:
+        while retry >= 0:
             try:
                 time.sleep(random.random() * 10)
                 res = requests.get(
