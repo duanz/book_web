@@ -5,13 +5,22 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import SAFE_METHODS, AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
-from book_web.utils.permission import IsAuthorization, BaseApiView, BaseGenericAPIView
+from book_web.utils.permission import (
+    IsAuthorization,
+    GenericModelViewSet,
+    GenericAPIView,
+)
 from task.models import Task
 from task.serializers import TaskSerializer
-from task.tasks import cache_proxy_ip, once_auto_insert_books, auto_insert_books
+from task.tasks import (
+    cache_proxy_ip,
+    insert_books_all_site_without_chapters,
+    insert_all_books_chapters_without_content,
+    insert_all_books_chapters_content,
+)
 
 
-class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin, BaseGenericAPIView):
+class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericModelViewSet):
     """
     get: 获取任务列表
     post: 添加任务
@@ -41,7 +50,7 @@ class TaskDetailApiView(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
-    BaseGenericAPIView,
+    GenericModelViewSet,
 ):
     """
     get: 获取任务详情
@@ -69,7 +78,7 @@ class TaskDetailApiView(
             return [IsAuthorization()]
 
 
-class TaskRunOnceApiView(BaseApiView):
+class TaskRunOnceApiView(GenericAPIView):
     """
     get: 执行只运行一次的任务
     """
@@ -78,6 +87,5 @@ class TaskRunOnceApiView(BaseApiView):
 
     def get(self, request, *args, **kwargs):
         cache_proxy_ip.delay()
-        # once_auto_insert_books.delay()
-        auto_insert_books.delay()
+        insert_all_books_chapters_without_content.delay()
         return Response(data="下发成功", status=HTTP_200_OK)

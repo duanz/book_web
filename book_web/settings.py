@@ -30,7 +30,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
-APP_HOST = os.getenv("APP_HOST", "localhost")
+APP_HOST = os.getenv("APP_HOST", "localhost:8000")
 
 # Application definition
 

@@ -317,31 +317,30 @@ def build_photo_url(photo_name, pic_type="photo", ext="jpg"):
     _img_exts = (".jpg", ".png", ".gif")
     url = ""
     if photo_name:
-        _base_path = os.path.join(
-            settings.UPLOAD_STATIC_URL, "photos", pic_type, photo_name[:2]
-        )
+        _base_path = os.path.join("media", "photos", pic_type, photo_name[:2])
         if photo_name.endswith(_img_exts):
-            return settings.APP_HOST + os.path.join(_base_path, photo_name)
+            return settings.APP_HOST + "/" + os.path.join(_base_path, photo_name)
         if "." in ext:
             ext = ext.rsplit(".", 1)[-1]
-        return settings.APP_HOST + os.path.join(
-            _base_path, "{}.{}".format(photo_name, ext)
+        return (
+            settings.APP_HOST
+            + "/"
+            + os.path.join(_base_path, "{}.{}".format(photo_name, ext))
         )
     return os.path.join(settings.APP_HOST, "images", "no_img.png")
 
 
 def build_photo_path(photo_name, pic_type="photo", ext="jpg"):
+    print(photo_name)
     _img_exts = (".jpg", ".png", ".gif")
     if photo_name:
-        _base_path = os.path.join(
-            settings.MEDIA_ROOT, "photos", pic_type, photo_name[:2]
-        )
+        _base_path = os.path.join("media", "photos", pic_type, photo_name[:2])
         if photo_name.endswith(_img_exts):
             return os.path.join(_base_path, photo_name)
         if "." in ext:
             ext = ext.rsplit(".", 1)[-1]
         return os.path.join(_base_path, "{}.{}".format(photo_name, ext))
-    return os.path.join(settings.MEDIA_ROOT, "images", "no_img.png")
+    return os.path.join("media", "images", "no_img.png")
 
 
 def get_img_url_by_obj(img_obj, pic_type="photo", ext="jpg"):

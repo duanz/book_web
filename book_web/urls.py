@@ -13,13 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin, auth
-from django.urls import path
+import imp
+from book import api_urls, api_views
+from django.conf import settings
 from django.conf.urls import include
-from drf_yasg.views import get_schema_view
+from django.conf.urls.static import static
+from django.contrib import admin, auth
+from django.urls import path, re_path
+from django.views.static import serve
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 from rest_framework import routers
-from book import api_views, api_urls
 
 # router = routers.SimpleRouter()
 # router.register(r'^book/chapter/(?P<pk>(\d+))/$',
@@ -51,5 +55,15 @@ urlpatterns = [
     ),
     path(r"api/auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    re_path(
+        r"^media/(?P<path>.*)$",
+        serve,
+        {
+            "document_root": settings.MEDIA_ROOT,
+        },
+    ),
     # 配置drf-yasg路由
 ]
+
+
+# urlpatterns += static(settings.MEDIA_ROOT, document_root=settings.MEDIA_ROOT)

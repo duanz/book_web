@@ -7,16 +7,26 @@ from book.serializers import (
     SubscribeBookSerializer,
 )
 from book.api_filters import ChapterListFilter, BookListFilter
-from book_web.utils.permission import IsAuthorization, BaseGenericAPIView, BaseApiView
+from book_web.utils.permission import (
+    IsAuthorization,
+    GenericAPIView,
+    GenericModelViewSet,
+)
 from rest_framework.permissions import AllowAny, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework import mixins
+from rest_framework.views import APIView
 from django_filters import rest_framework
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
 
-class BookListApiView(mixins.ListModelMixin, BaseGenericAPIView):
+class BookModelAPIView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    GenericModelViewSet,
+):
     """获取小说列表"""
 
     queryset = Book.normal.filter()
@@ -32,11 +42,19 @@ class BookListApiView(mixins.ListModelMixin, BaseGenericAPIView):
 
     permission_classes = (AllowAny,)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            self.queryset = self.queryset.filter(on_shelf=True)
+        return self.queryset
+
+    def get_permissions(self):
+        if self.request.method in SAFE_METHODS:
+            return [permission() for permission in self.permission_classes]
+        else:
+            return [IsAuthorization()]
 
 
-class BookListStateApiView(mixins.ListModelMixin, BaseGenericAPIView):
+class BookListStateApiView(mixins.ListModelMixin, GenericAPIView):
     """获取小说统计列表
     state_type:
         new:    最近新增的30本
@@ -55,50 +73,21 @@ class BookListStateApiView(mixins.ListModelMixin, BaseGenericAPIView):
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            self.queryset = self.queryset.filter(on_shelf=True)
+        return self.queryset
 
-class BookDetailApiView(
-    mixins.RetrieveModelMixin, mixins.DestroyModelMixin, BaseGenericAPIView
+
+class BookChapterModelApiView(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericModelViewSet
 ):
     """
-    get: 获取小说详情；
-    """
-
-    queryset = Book.normal.filter(on_shelf=True)
-    serializer_class = BookDetailSerializer
-    permission_classes = (AllowAny,)
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
-
-    def get_permissions(self):
-        if self.request.method in SAFE_METHODS:
-            return [permission() for permission in self.permission_classes]
-        else:
-            return [IsAuthorization()]
-
-
-class BookChapterDetailApiView(mixins.RetrieveModelMixin, BaseGenericAPIView):
-    """
     get: 获取小说章节详情
-    """
-
-    queryset = Chapter.normal.filter(active=True)
-    serializer_class = ChapterDetailSerializer
-    permission_classes = (AllowAny,)
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-
-class BookChapterListApiView(mixins.ListModelMixin, BaseGenericAPIView):
-    """
     get: 获取小说章节列表；
     """
 
-    queryset = Chapter.normal.filter(active=True)
+    queryset = Chapter.normal.filter()
     serializer_class = ChapterSerializer
 
     filter_backends = (rest_framework.DjangoFilterBackend,)
@@ -106,10 +95,9 @@ class BookChapterListApiView(mixins.ListModelMixin, BaseGenericAPIView):
 
     permission_classes = (AllowAny,)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
     def get_queryset(self):
+        if not self.request.user.is_staff:
+            self.queryset = self.queryset.filter(active=True)
 
         return (
             self.queryset.filter(book__id=self.kwargs["pk"])
@@ -118,10 +106,18 @@ class BookChapterListApiView(mixins.ListModelMixin, BaseGenericAPIView):
         )
 
 
-class SubscribeBookApiView(
-    mixins.CreateModelMixin, mixins.ListModelMixin, BaseGenericAPIView
+class SubscribeBookModelApiView(
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    GenericModelViewSet,
 ):
     """
+    get: 获取订阅详情；
+    put: 修改订阅；
+    delete: 删除订阅；
     get: 获取订阅；
     post: 添加订阅；
     """
@@ -129,42 +125,6 @@ class SubscribeBookApiView(
     queryset = SubscribeBook.normal.filter()
     serializer_class = SubscribeBookSerializer
     permission_classes = (IsAuthorization,)
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-    def get_queryset(self):
-        print(self.request.user)
-        return self.queryset.filter(user__id=self.request.user.id)
-
-
-class SubscribeBookDetailApiView(
-    mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.RetrieveModelMixin,
-    BaseGenericAPIView,
-):
-    """
-    get: 获取订阅详情；
-    put: 修改订阅；
-    delete: 删除订阅；
-    """
-
-    queryset = SubscribeBook.normal.filter()
-    serializer_class = SubscribeBookSerializer
-    permission_classes = (IsAuthorization,)
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
 
     def get_queryset(self):
         print(self.request.user)

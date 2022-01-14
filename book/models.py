@@ -147,7 +147,9 @@ class Chapter(BaseModel):
         )
 
     def save_path(self):
-        book_path = os.path.join(settings.media, self.book_type, self.book.title)
+        book_path = os.path.join(
+            settings.MEDIA_ROOT, self.book.book_type, self.book.title
+        )
         chapter_name = "{}_{}.txt".format(self.order, self.title)
         if not os.path.exists(book_path):
             os.makedirs(book_path, 0o775)
@@ -156,6 +158,7 @@ class Chapter(BaseModel):
 
     def save_content(self, content):
         """保存当前对象章节内容"""
+        print(content[:10], "<<<<<")
         save_path = self.save_path()
         if self.book_type == BOOK_TYPE_DESC.Novel:
             with open(save_path, "w", encoding="UTF-8") as f:

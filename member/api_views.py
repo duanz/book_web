@@ -5,88 +5,80 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import SAFE_METHODS, AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
-from book_web.utils.permission import IsAuthorization, BaseApiView, BaseGenericAPIView
+from book_web.utils.permission import (
+    IsAuthorization,
+    GenericModelViewSet,
+    GenericAPIView,
+)
 from django.contrib.auth.models import User
 from member.serializers import UserSerializer, UserLoginSerializer, ActiveCodeSerializer
 from member.models import ActiveCode
 
 
-class UserCreate(mixins.CreateModelMixin, BaseGenericAPIView):
-    '''
-    post: 添加用户.
-    '''
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (AllowAny, )
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-class ActiveCode(mixins.UpdateModelMixin, BaseGenericAPIView):
-    '''
+class ActiveCodeModelApiView(mixins.UpdateModelMixin, GenericModelViewSet):
+    """
     post: 绑定激活码.
-    '''
+    """
 
     queryset = ActiveCode.objects.all()
     serializer_class = ActiveCodeSerializer
-    permission_classes = (IsAuthorization, )
+    permission_classes = (IsAuthorization,)
 
     def post(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
 
-class UserDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                 mixins.DestroyModelMixin, BaseGenericAPIView):
-    '''
+class UserModelApiView(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.CreateModelMixin,
+    GenericModelViewSet,
+):
+    """
     get: 获取用户信息；
     put: 更新用户；
+    post: 添加用户;
     delete: 删除用户。
-    '''
+    """
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthorization, )
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+    permission_classes = (IsAuthorization,)
 
     def put(self, request, *args, **kwargs):
-        kwargs.update({'partial': True})
+        kwargs.update({"partial": True})
         return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
 
     def get_object(self):
         return User.objects.filter(pk=self.request.user.id).first()
 
 
-class UserLoginApiView(BaseApiView):
-    '''post: 使用用户名密码登录'''
+class UserLoginApiView(GenericAPIView):
+    """post: 使用用户名密码登录"""
 
     queryset = User.objects.all()
     serializer_class = UserLoginSerializer
-    permission_classes = (AllowAny, )
-    authentication_classes = (TokenAuthentication, )
+    permission_classes = (AllowAny,)
+    authentication_classes = (TokenAuthentication,)
 
     def post(self, request, format=None):
         data = request.data
+        if not (
+            (username := data.get("username")) and (password := data.get("password"))
+        ):
+            return Response("dgluuibl")
         user = authenticate(username=username, password=password)
         if user is not None and user.is_active:
-            user.ip_address = request.META.get('REMOTE_ADDR')
+            user.ip_address = request.META.get("REMOTE_ADDR")
             user.save()
             login(request, user)
-            serializer = UserSerializer(user, context={'request': request})
+            serializer = UserSerializer(user, context={"request": request})
             return Response(serializer.data, status=HTTP_200_OK)
         return Response(
-            {
-                'msg': '用户名或密码错误',
-                'code': HTTP_400_BAD_REQUEST,
-                'result': 'FAIL'
-            },
-            status=HTTP_200_OK)
+            {"msg": "用户名或密码错误", "code": HTTP_400_BAD_REQUEST, "result": "FAIL"},
+            status=HTTP_200_OK,
+        )
 
     def perform_authentication(self, request):
         """
@@ -95,19 +87,16 @@ class UserLoginApiView(BaseApiView):
         pass
 
 
-class UserLogoutApiView(BaseApiView):
-    '''post: 注销登录'''
+class UserLogoutApiView(GenericAPIView):
+    """post: 注销登录"""
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthorization, )
+    permission_classes = (IsAuthorization,)
 
     def post(self, request, format=None):
         logout(request)
         return Response(
-            {
-                'msg': '退出成功',
-                'code': HTTP_200_OK,
-                'result': 'SUCCESS'
-            },
-            status=HTTP_200_OK)
+            {"msg": "退出成功", "code": HTTP_200_OK, "result": "SUCCESS"},
+            status=HTTP_200_OK,
+        )
