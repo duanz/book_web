@@ -58,7 +58,7 @@ def insert_all_books_chapters_without_content():
     books = (
         Book.objects.filter(is_finished=False)
         .order_by("update_at")
-        .values_list("id", flat=True)[:2]
+        .values_list("id", flat=True)
     )
     for book in tqdm(books, desc="更新书籍章节"):
         BookUpdateClient(book_id=book).run()
