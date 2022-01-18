@@ -146,8 +146,8 @@ CELERY_ENABLE_UTC = True
 BROKER_URL = os.getenv(
     "REDIS", "redis://127.0.0.1:6379/11"
 )  # 任何可用的redis都可以，不一定要在django server运行的主机上
-
 # CELERY_RESULT_BACKEND = os.getenv("REDIS", 'redis://127.0.0.1:6379/0')
+CELERY_RESULT_BACKEND = "django-db"
 TASK_SERIALIZER = "pickle"
 RESULT_SERIALIZER = "pickle"
 ACCEPT_CONTENT = ["pickle", "json"]

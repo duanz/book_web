@@ -14,6 +14,10 @@ urlpatterns = [
     re_path(
         r"book/state/$", api_views.BookListStateApiView.as_view(), name="book-state"
     ),
+    path(
+        "book/<int:book_id>/chapters/",
+        api_views.BookChapterModelApiView.as_view({"get": "chapter_list"}),
+    ),
 ]
 
 urlpatterns += router.urls

@@ -26,7 +26,7 @@ app.conf.update(
         "schedule-cache-proxy-ip": {
             "task": "task.tasks.cache_proxy_ip",  # 获取代理ip
             # 'schedule': timedelta(hours=2)  #定时执行的间隔时间
-            "schedule": timedelta(seconds=60 * 3),  # 定时执行的间隔时间
+            "schedule": timedelta(seconds=60 * 30),  # 定时执行的间隔时间
         },
         # "schedule-auto-update-books": {
         #     "task": "task.tasks.auto_update_books",  # 更新被订阅的书籍

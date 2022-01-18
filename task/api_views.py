@@ -31,9 +31,9 @@ class TaskApiView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericModelVi
     permission_classes = (IsAuthorization,)
 
     def get(self, request, *args, **kwargs):
-        from task.tasks import auto_update_books
+        from task.tasks import auto_update_subscribed_books
 
-        auto_update_books.delay()
+        auto_update_subscribed_books.delay()
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -86,6 +86,6 @@ class TaskRunOnceApiView(GenericAPIView):
     permission_classes = (IsAuthorization,)
 
     def get(self, request, *args, **kwargs):
-        # cache_proxy_ip.delay()
-        insert_all_books_chapters_without_content.delay()
+        cache_proxy_ip.delay()
+        # insert_all_books_chapters_without_content.delay()
         return Response(data="下发成功", status=HTTP_200_OK)

@@ -21,12 +21,16 @@ lock = threading.RLock()
 
 
 def get_proxy():
-    ips = cache.get("proxy_ips")
-    if ips is None:
+    ips = cache.get("proxy_ips", [])
+    if not len(ips):
         return None
 
     ip = random.choice(ips)
-    return ip
+    proxies = {
+        "http": f"http://{ip}/",
+        "https": f"https://{ip}/",
+    }
+    return proxies
 
 
 class BaseClient(metaclass=ABCMeta):
@@ -39,7 +43,7 @@ class BaseClient(metaclass=ABCMeta):
         headers["Connection"] = "close"
         while retry >= 0:
             try:
-                time.sleep(random.random() * 10)
+                time.sleep(int(random.random() * 15))
                 res = requests.get(
                     url,
                     headers=headers,
@@ -345,15 +349,14 @@ class ChapterContentClient(BaseClient):
             pass
 
     def handler_single(self, chapter=None):
+        chapter = chapter or self.chapter
         lock.acquire()
         self.wait_done += 1
         lock.release()
-        res = self.do_request(
-            chapter.origin_addr or self.chapter.origin_addr, self.headers
-        )
+        res = self.do_request(chapter.origin_addr, self.headers)
         if res:
             content = self.parser(res)
-            self.handler_content(content, chapter or self.chapter)
+            self.handler_content(content, chapter)
         lock.acquire()
         self.wait_done -= 1
         lock.release()
@@ -515,7 +518,7 @@ class BookInsertAllSiteClient(BaseClient):
 
 class BookUpdateClient(BaseClient):
     def __init__(
-        self, book_id=None, chapter_id=None, insert_type="only_chapters", fast=False
+        self, book_id=None, chapter_id=None, update_type="without_content", fast=False
     ):
         """更新书籍内容
 
@@ -528,7 +531,7 @@ class BookUpdateClient(BaseClient):
         """
         self.book_id = book_id
         self.chapter_id = chapter_id
-        self.type = insert_type
+        self.type = update_type
         self.fast = fast
 
     def handler(self):
@@ -538,7 +541,7 @@ class BookUpdateClient(BaseClient):
             clc = ChapterListClient(book)
             clc.handler()
             # 更新章节信息，不更新章节内容
-            if self.type != "only_chapters":
+            if self.type != "without_content":
                 ccc = ChapterContentClient(book=book, fast=self.fast)
                 ccc.handler()
         elif self.chapter_id:

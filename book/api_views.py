@@ -95,15 +95,16 @@ class BookChapterModelApiView(
 
     permission_classes = (AllowAny,)
 
+    def chapter_list(self, *args, **kwargs):
+        return self.list(*args, **kwargs)
+
     def get_queryset(self):
         if not self.request.user.is_staff:
             self.queryset = self.queryset.filter(active=True)
 
-        return (
-            self.queryset.filter(book__id=self.kwargs["pk"])
-            if "pk" in self.kwargs
-            else self.queryset
-        )
+        if self.action == "chapter_list":
+            self.queryset = self.queryset.filter(book__id=self.kwargs["book_id"])
+        return self.queryset
 
 
 class SubscribeBookModelApiView(

@@ -75,20 +75,7 @@ def get_proxy_ip(count=100):
     # url = "http://127.0.0.1:5010/get"
     url = f"http://ip.memories1999.com/api.php?dh=1265918268935079196&sl={count}"
     res = requests.get(url, timeout=3).text
-    res = res.splitlines()
-    # print(res)
-    # res = []
-    # try:
-    #     for i in range(50):
-    #         res.append(requests.get(url, timeout=3).json())
-    # except:
-    #     return []
-    # if not res:
-    #     return
-
-    ips = []
-    for info in res:
-        ips.append("http://{}".format(info))
+    ips = res.splitlines()
 
     ips = available_ip(set(ips))
     print(f"可用proxy ip有{len(ips)}")
@@ -104,10 +91,14 @@ def available_ip(ip_list):
     # sesseion = requests.session()
     ips = []
     for ip in tqdm(ip_list, desc="验证IP"):
+        proxies = {
+            "http": f"http://{ip}/",
+            "https": f"https://{ip}/",
+        }
         try:
             response = requests.get(
                 "http://cn.bing.com/",
-                proxies={"http": ip},
+                proxies=proxies,
                 verify=False,
                 timeout=3,
             )
