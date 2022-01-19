@@ -52,11 +52,6 @@ app.conf.update(
 )
 
 
-@app.task(bind=True)
-def debug_task(self):
-    print("Request: {0!r}".format(self.request))
-
-
 # app.conf.update(
 #     CELERYBEAT_SCHEDULE = {
 #         'handle_proxy_ips_task': {

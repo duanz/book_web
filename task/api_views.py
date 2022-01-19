@@ -86,6 +86,6 @@ class TaskRunOnceApiView(GenericAPIView):
     permission_classes = (IsAuthorization,)
 
     def get(self, request, *args, **kwargs):
-        cache_proxy_ip.delay()
+        # cache_proxy_ip.delay()
         # insert_all_books_chapters_without_content.delay()
         return Response(data="下发成功", status=HTTP_200_OK)
