@@ -1,0 +1,193 @@
+.banner-container {
+    height: 45rem;
+    padding: 0;
+}
+
+#accordion>.item {
+    border-bottom: 1px dashed #a0a0a0;
+}
+
+#accordion>.item:last-of-type {
+    border-bottom: none;
+
+}
+
+#accordion>.item .btn {
+    padding: 0.7rem 0;
+    font-family: "微软雅黑 Light";
+    font-size: 1.1rem;
+    color: #f4f4f4;
+    text-decoration: none;
+}
+
+#accordion>.item .btn:hover {
+    text-decoration: none;
+    color: #ffd300;
+}
+
+.submenu,
+.item2 {
+    padding-left: 20px;
+}
+
+.submenu li {
+    list-style-type: none;
+    margin-bottom: 0.7rem;
+}
+
+.submenu li:last-of-type {
+    margin-bottom: 0;
+}
+
+.submenu li a {
+    font-family: "微软雅黑 Light";
+    font-size: 1.1rem;
+    color: #f4f4f4;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    text-decoration: none;
+    color: #ffd300;
+}
+
+#accordion>.item.active .btn {
+    color: #ffd300;
+}
+
+
+
+/*#pills-tab .nav-link.active {*/
+/*font-family: "微软雅黑 Light";*/
+/*color: #ffd300;*/
+/*background: transparent;*/
+/*}*/
+
+/*#pills-tab .nav-link {*/
+/*font-family: "微软雅黑 Light";*/
+/*font-size: 1.1rem;*/
+/*color: #f4f4f4;*/
+/*padding: 0.7rem 0;*/
+/*}*/
+.fa.fa-angle-right {
+    line-height: 1.5;
+}
+
+/*@media screen and (max-width: 576px) {*/
+/*.help_doc .nav-item a:after {*/
+/*content:normal;*/
+/*}*/
+/*}*/
+#pills-apiOpen h6 {
+    font-family: "微软雅黑 Light";
+    color: rgb(255, 211, 0);
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    /*{#font-weight: bold;#}*/
+}
+
+#pills-apiOpen h6.active {
+    font-size: 28px;
+    margin-bottom: 35px;
+}
+
+#pills-apiOpen p {
+    font-family: "微软雅黑 Light";
+    font-size: 1.125rem;
+    color: rgb(211, 211, 211);
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.icon-rotate {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.icon-rotate1 {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+pre {
+    color: rgb(211, 211, 211);
+    margin-bottom: 0;
+}
+
+pre .nv {
+    color: #3e61a2;
+}
+
+pre .o {
+    color: inherit;
+}
+
+pre .s1,
+pre .s2 {
+    color: #0d904f;
+}
+
+pre .c1,
+pre .ch,
+pre .sd {
+    color: #999;
+}
+
+pre .nb {
+    color: #c2185b;
+}
+
+pre .nt,
+pre .kn,
+pre .k {
+    color: #3b78e7;
+}
+
+pre .mi {
+    color: #e74c3c;
+}
+
+pre .nn {
+    color: #ec407a;
+}
+
+.breadcrumb>li+li:before {
+    color: #CCCCCC;
+    content: "/ ";
+    padding: 0 5px;
+}
+
+.breadcrumb>li {
+    font-size: 20px;
+    color: #fff;
+}
+
+.breadcrumb>li.active {
+    color: #ffd300;
+}
+
+.breadcrumb {
+    background-color: transparent;
+}
+
+/* .breadcrumb h6.active{
+    font-size: 28px;
+    margin-bottom: 35px;
+} */
+.help_img {
+    width: 42.18rem;
+}
+
+.help_img_small {
+    width: 23.18rem;
+}

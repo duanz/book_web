@@ -1,0 +1,549 @@
+.yimi_banner > div:first-of-type p:nth-child(1) {
+    color: #ffffff;
+    font-family: '微软雅黑 Light';
+    font-size: 2rem;
+}
+
+.yimi_banner > div:first-of-type p:nth-child(2) {
+    margin: 1.8rem auto;
+    color: #ffffff;
+    font-size: 3rem;
+    font-family: '微软雅黑';
+}
+
+.yimi_banner > div:first-of-type p:nth-child(3) {
+    color: #ffffff;
+    font-family: '微软雅黑 Light';
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.yimi_banner .col-12 > a {
+    border-radius: 2.1rem;
+    border: 0.1rem solid #ffffff;
+    font-family: "微软雅黑 Light";
+    font-size: 1.4rem;
+    color: #ffffff;
+    padding: 0.8rem 2rem;
+    background: rgba(70, 113, 213, 0.13);
+}
+
+.yimi_banner .col-12 > a:hover {
+    background: rgba(70, 113, 213, 0.13) url(/static/img/open/open_button_banner.png) no-repeat center;
+    animation: spread 0.5s ease;
+    background-size: 100% 100%;
+}
+
+@-webkit-keyframes spread {
+    0% {
+        background-size: 0px 100%;
+    }
+    100% {
+        background-size: 100% 100%;
+    }
+
+}
+
+@-webkit-keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8, 0.8);
+    }
+    25% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.9, 0.9);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1, 1);
+
+    }
+    75% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.9, 0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8, 0.8);
+
+    }
+}
+
+.bg_black {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height:53.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    z-index:0;
+
+}
+
+
+#fadin {
+
+    top: 32%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+     width: 43rem;
+    -webkit-animation-name: fadeInOut;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 6s;
+    -webkit-animation-direction: alternate;
+}
+
+.yimi_model {
+    background-image: linear-gradient(0deg, #1c1c1c 0%, rgb(44, 45, 45) 100%), linear-gradient(#6c6c6c, #6c6c6c);
+    background-blend-mode: normal, normal;
+}
+
+.gradient_black_bootom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(0deg, rgba(44, 45, 45, 1) 0%, rgba(45, 45, 46, 0.1) 100%);
+    height: 130px;
+}
+
+/*自主研发*/
+.yimi_myself .col-12 {
+    padding-bottom: 4.88rem;
+}
+
+.card2 {
+
+    border-radius: 0.38rem;
+    height: 31rem;
+    color: #fff;
+    font-family: '微软雅黑 Light';
+    font-size: 1.5rem;
+    letter-spacing: 0.08rem;
+    background-image: linear-gradient(-40deg, rgba(52, 52, 149, 0.34) 0%, rgba(107, 75, 166, 0.34) 100%);
+}
+
+.card2 > img {
+    width: 100%;
+}
+
+.card2 .text_miaoshu {
+    padding: 1.56rem;
+}
+
+.card2-1 {
+    width: 13.5rem;
+    height: 13.31rem;
+    position: absolute;
+    top: 0.9rem;
+    left: 19rem;
+}
+
+/*优势*/
+.compare {
+    margin: 4.63rem 0 6.94rem;
+    padding: 1.5rem 0;
+    opacity: 0.6;
+    font-size: 1.13rem;
+    letter-spacing: 0.06rem;
+    color: #ffd300;
+    /*border: 1px solid #fff;*/
+    background: rgba(255, 255, 255, 0.83);
+    overflow: hidden;
+}
+
+.compare table {
+    width: 100%;
+}
+
+.compare thead tr {
+    background-image: linear-gradient(-90deg, rgba(52, 52, 149, 0.2) 0%, rgba(80, 64, 158, 0.2) 26%, rgba(107, 75, 166, 0.2) 52%, rgba(52, 52, 149, 0.2) 100%);
+    border-bottom: 1px solid #fff;
+    text-align: center;
+}
+
+.compare thead tr th {
+    padding: 1.56rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.08rem;
+}
+
+.compare tbody {
+    background-image: linear-gradient(-90deg, rgba(52, 52, 149, 0.1) 0%, rgba(80, 64, 158, 0.1) 26%, rgba(107, 75, 166, 0.1) 52%, rgba(52, 52, 149, 0.1) 100%);
+}
+
+.compare tbody tr td {
+    padding: 0.595rem 0;
+}
+
+.compare tbody tr:first-of-type td {
+    padding-top: 3.94rem;
+}
+
+.compare tbody tr:last-of-type td {
+    padding-bottom: 3.94rem;
+}
+
+.compare tbody tr td {
+    text-align: center;
+}
+
+.compare tbody tr td span {
+    display: inline-block;
+    width: 25.31rem;
+    height: 4.38rem;
+    padding: 0.63rem 2.56rem;
+    border-radius: 2.19rem;
+    border: solid 1px #ffffff;
+    text-align: left;
+    background-image: linear-gradient(-40deg, rgba(52, 52, 149, 0.5) 0%, rgba(107, 75, 166, 0.5) 100%);
+}
+
+/*理由*/
+.yimi_area {
+    margin: 4.94rem auto 9.31rem;
+    background-image: linear-gradient(0deg, rgba(52, 52, 149, 0.15) 0%, rgba(107, 75, 166, 0.15) 50%, rgba(52, 52, 149, 0.15) 100%);
+}
+
+.yimi_area > div {
+    padding: 0.28rem 0;
+}
+
+.card1 {
+    width: 16.8rem;
+    height: 16.18rem;
+    padding: 2.25rem 2.31rem 1.25rem;
+    font-size: 1.12rem;
+    letter-spacing: 0.06rem;
+    color: #ffd300;
+    font-family: 'MicrosoftYaHei';
+    margin: auto;
+    text-align: center;
+}
+
+.card1 p {
+    margin-top: 1.5rem;
+}
+
+.yimi_area > div:nth-of-type(2) .card1, .yimi_area > div:nth-of-type(4) .card1, .yimi_area > div:nth-of-type(6) .card1 {
+    background-image: linear-gradient(0deg, rgba(107, 75, 166, 0.16) 0%, rgba(78, 63, 157, 0.16) 50%, rgba(52, 52, 149, 0.16) 100%);
+    background-blend-mode: normal, normal;
+}
+
+.yimi_area > div:nth-of-type(3) .card1, .yimi_area > div:nth-of-type(5) .card1, .yimi_area > div:nth-of-type(7) .card1 {
+    background-image: linear-gradient(0deg, rgba(66, 66, 66, 0.46) 0%, rgba(37, 37, 39, 0.46) 100%);
+    background-blend-mode: normal, normal;
+}
+
+.yimi_area > div:first-of-type .card1 p:first-of-type {
+    border-bottom: 1px solid #ffd300;
+    padding: 0 1.31rem 0.81rem;
+}
+
+.yimi_area > div:first-of-type .card1 p:last-of-type {
+    margin-top: 0.81rem;
+}
+
+.yimi_area > div:last-of-type .card1 {
+    background-color: #2d2c34;
+}
+
+.yimi_area > div:last-of-type .card1 span {
+    display: inline-block;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    margin-top: 4.5rem;
+}
+
+/*原理介绍*/
+.theory ul li {
+    border: 1px solid #b2b2b2;
+    margin-bottom: 0.63rem;
+    font-size: 1.13rem;
+    letter-spacing: 0.06rem;
+    color: #fff;
+    padding: 2.53rem 1.5rem 3.88rem 1rem;
+}
+
+.theory ul li p:first-of-type {
+    color: #ffd300;
+    margin-bottom: 0;
+}
+
+.theory ul li > div:first-of-type {
+    text-align: center;
+}
+
+.theory ul li:first-of-type img {
+    width: 11rem;
+}
+
+.theory ul li:nth-of-type(2) img {
+    width: 11.91rem;
+    margin-top: 2rem;
+}
+
+.theory ul li:last-of-type img {
+    width: 11.91rem;
+    margin-top: 3rem;
+}
+
+.theory .click {
+    text-align: center;
+}
+
+.theory a {
+    display: inline-block;
+    width: 15.31rem;
+    height: 4.38rem;
+    text-align: center;
+    line-height: 4.38rem;
+    border-radius: 2.19rem;
+    border: solid 1px #ffffff;
+    font-size: 1.13rem;
+    letter-spacing: 0.06rem;
+    color: #ffffff;
+    background-image: linear-gradient(-40deg, rgba(52, 52, 149, 0.2) 0%, rgba(107, 75, 166, 0.2) 100%);
+}
+
+.theory a:hover {
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .card1 {
+        width: 14rem;
+        height: 13.38rem;
+        padding: 1.25rem 1.31rem 0.25rem;
+    }
+
+    /*.card2 {*/
+    /*padding: 2.56rem 3.69rem 1.81rem 2.25rem;*/
+    /*width: 18.56rem;*/
+    /*height: 17rem;*/
+    /*}*/
+    .card2-1 {
+        width: 11.5rem;
+        height: 11.31rem;
+        position: absolute;
+        top: 3rem;
+        left: 16rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .compare tbody tr td span {
+        width: 20rem;
+        height: 6rem;
+    }
+
+    .card1 {
+        width: 15.5rem;
+        height: 14.88rem;
+    }
+
+    .card2 {
+        width: 100%;
+        height: auto;
+    }
+
+    .card2-1 {
+        display: none;
+    }
+
+    #fadin {
+        top: 34%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .compare {
+        font-size: 0.7rem;
+    }
+
+    .compare tbody tr td span {
+        height: 5.3rem;
+    }
+
+    .theory a {
+        width: 25rem;
+    }
+
+    .theory ul {
+        padding-left: 0;
+    }
+
+    .card1 {
+        width: 19rem;
+        height: 18.38rem;
+        padding: 2.25rem 2.31rem 1.25rem;
+    }
+
+    .card2 {
+
+        width: 100%;
+        height: auto;
+    }
+
+    .card2-1 {
+        display: inline-block;
+        width: 10.5rem;
+        height: 10.31rem;
+        position: absolute;
+        top: 2rem;
+        left: 70%;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .card1 {
+        width: 20rem;
+        height: 19.38rem;
+        padding: 2.25rem 2.31rem 1.25rem;
+    }
+
+    #fadin {
+        width: 30rem;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .compare tbody tr td span {
+        width: 18rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .compare tbody tr td span {
+        width: 15rem;
+        height: 7rem;
+    }
+
+    .card2 {
+        margin: 0 auto;
+        width: 65%;
+        height: auto;
+    }
+
+    .card2-1 {
+        display: inline-block;
+        width: 10.5rem;
+        height: 10.31rem;
+        position: absolute;
+        top: 3.5rem;
+        left: 60%;
+    }
+}
+
+@media screen and (max-width: 456px) {
+    .compare tbody tr td span {
+        height: 7.5rem;
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .compare tbody tr td span {
+        width: 12rem;
+        height: 10rem;
+    }
+}
+
+@media screen and (max-width: 368px) {
+    #fadin {
+        top: 32%;
+        width: 27rem;
+    }
+}
+
+.mymodal-content {
+    background: #000000 linear-gradient(0deg, rgba(72, 3, 111, 0.6) 0%, rgba(6, 38, 111, 0.61) 100%);
+    border-radius: 5px;
+}
+
+.myModal-header {
+    border-bottom: 0;
+}
+
+.modal-header {
+    padding: 2rem 1rem 0rem;
+}
+
+.modal-header .close {
+    padding: 1rem;
+    margin: -1rem 0 -1rem auto;
+}
+
+.btn {
+    background: transparent;
+}
+
+.btn-group .btn:focus {
+
+}
+
+.good_pay button:nth-child(3):hover {
+    box-shadow: 0 0 20px #00a0e9;
+}
+
+.good_pay button:nth-child(4):hover {
+    box-shadow: 0 0 20px #09ba07;
+}
+
+#total:before {
+    content: '￥';
+    color: #f4f4f4;
+
+}
+
+#total:after {
+    content: ' 元';
+    color: #f4f4f4;
+    font-size: 1.1rem;
+    font-family: '微软雅黑 Light';
+
+}
+
+.mini_video {
+    width: 100%;
+    object-fit: fill; /*cover video background */
+    z-index: 0;
+}
+
+
+.yimi_buy a {
+    border-radius: 2.1rem;
+    border: 0.1rem solid #ffffff;
+    width: 12rem;
+    font-family: "微软雅黑 Light";
+    font-size: 1.4rem;
+    color: #ffffff;
+    padding:0.8rem 2rem;
+    background: rgba(70, 113, 213, 0.13);
+}
+
+.yimi_buy a:hover {
+
+    background: rgba(70, 113, 213, 0.13) url(/static/img/open/open_button_banner.png) no-repeat center;
+    text-decoration: none;
+    animation: spread 0.5s ease;
+    background-size: 100% 100%;
+}
+
+.soft_detail {
+    display: inline-block;
+    margin-top: 35px;
+    padding:4px 15px;
+    font-family: "微软雅黑 Light";
+    color: rgba(230, 230, 230, 0.86);
+    font-size: 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.31);
+    border-radius: 2rem;
+}
+
+.download_a {
+    color:#fff;
+}
+.download_a:hover {
+    color:#ffd300;
+}

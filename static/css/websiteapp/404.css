@@ -1,0 +1,32 @@
+ .bg_404 {
+        height: 100vh;
+        background:#000000 linear-gradient(-88deg, rgba(113, 9, 170, 0.42) 0%, rgba(18, 64, 171, 0.41) 50%, rgba(113, 9, 170, 0.41) 100%);
+    }
+
+    .bg_404 .col p:nth-child(3) {
+        font-family: Arial;
+        font-size: 4.3rem;
+        margin:1.5rem 0;
+        line-height:3.1rem;
+        color: #f4f4f4;
+    }
+
+    .bg_404 .col p:nth-child(4) {
+        font-family: "微软雅黑 Light";
+        font-size: 1.3rem;
+        line-height: 2rem;
+        color: #f4f4f4;
+    }
+
+    .bg_404 .col img:nth-child(1) {
+        left:calc( 50% + 7rem );
+        max-width:14.8rem;
+    }
+
+    @media screen and (max-width:516px) {
+        .bg_404 .col img:nth-child(1) {
+        top:-6rem;
+        left:50%;
+        max-width:14.8rem;
+    }
+    }

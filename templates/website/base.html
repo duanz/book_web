@@ -1,0 +1,26 @@
+{% extends 'website/bootstrap.html' %}
+
+{% load bootstrap4 %}
+
+{% block bootstrap4_content %}
+    <div class="container">
+        <h1>{% block title %}(no title){% endblock %}</h1>
+
+        <p>
+            <a href="{% url 'website:home' %}">home</a>
+            <a href="{% url 'website:formset_default' %}">formset</a>
+            <a href="{% url 'website:form_default' %}">form</a>
+            <a href="{% url 'website:form_by_field' %}">form_by_field</a>
+            <a href="{% url 'website:form_horizontal' %}">form_horizontal</a>
+            <a href="{% url 'website:form_inline' %}">form_inline</a>
+            <a href="{% url 'website:form_with_files' %}">form_with_files</a>
+            <a href="{% url 'website:pagination' %}">pagination</a>
+            <a href="{% url 'website:misc' %}">miscellaneous</a>
+        </p>
+
+        {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+
+        {% block content %}(no content){% endblock %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'website/base/base.html' %} {% load static %} {% block title %} {% load static %}
+<title>书市</title>
+{% endblock %}
+<!-- 导航菜单-->
+{% block nav_menu %} {% include "website/base/nav_menu.html" %} {% endblock %}
+
+<!-- 刊头-->
+
+{% block masthead %}
+{% include "website/base/masthead.html" %}
+{% endblock %}
+
+<!-- About-->
+{%block content %}{% include "website/components/search_book.html" %}{% endblock %}
+<!-- Footer-->
+{% block footer %}{% include "website/base/footer.html" %}{% endblock %}

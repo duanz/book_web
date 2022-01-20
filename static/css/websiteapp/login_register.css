@@ -1,0 +1,40 @@
+.password_one {
+  position: absolute;
+  right: 0.85rem;
+  font-size: 0.85rem;
+  color: #df272f;
+  height: 3.1rem;
+  line-height: 3.1rem;
+}
+.password_two {
+  position: absolute;
+  right: 0.85rem;
+  font-size: 0.85rem;
+  color: #df272f;
+  height: 3.1rem;
+  line-height: 3.1rem;
+}
+.password_three {
+  color: #df272f;
+  font-size: 0.85rem;
+}
+.login_true_username {
+  height: 3.1rem;
+  line-height: 3.1rem;
+  margin-right: 5px;
+}
+.login_true_pwd {
+  height: 3.1rem;
+  line-height: 3.1rem;
+  margin-right: 5px;
+}
+.forget_true_phone {
+  height: 3.1rem;
+  line-height: 3.1rem;
+  margin-right: 5px;
+}
+.forget_true_pwd {
+  height: 3.1rem;
+  line-height: 3.1rem;
+  margin-right: 5px;
+}

@@ -1,0 +1,442 @@
+.yatu_banner p:nth-child(1) {
+    color: #ffffff;
+    font-family: '微软雅黑 Light';
+    font-size: 2rem;
+}
+
+.yatu_banner p:nth-child(2) {
+    margin: 1.8rem auto;
+    color: #ffffff;
+    font-size: 3rem;
+    font-family: '微软雅黑';
+}
+
+.yatu_banner .col-12 > a {
+    border-radius: 2.1rem;
+    border: 0.1rem solid #ffffff;
+    width: 11rem;
+    font-family: "微软雅黑 Light";
+    font-size: 1.4rem;
+    color: #ffffff;
+    padding: 0.8rem;
+    background: rgba(70, 113, 213, 0.13);
+    margin: 0.5rem 1rem;
+}
+
+.yatu_banner a img {
+    height: 1.38rem;
+    margin-top: -0.2rem;
+}
+
+.yatu_banner .col-12 >  a:hover {
+    background: rgba(70, 113, 213, 0.13) url(/static/img/open/open_button_banner.png) no-repeat center;
+    animation: spread 0.5s ease;
+    background-size: 100% 100%;
+}
+
+@-webkit-keyframes spread {
+    0% {
+        background-size: 0px 100%;
+    }
+    100% {
+        background-size: 100% 100%;
+    }
+
+}
+
+@-webkit-keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8, 0.8);
+    }
+    25% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.9, 0.9);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1, 1);
+
+    }
+    75% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.9, 0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8, 0.8);
+
+    }
+}
+
+#fadin {
+    width: 43rem;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-animation-name: fadeInOut;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 6s;
+    -webkit-animation-direction: alternate;
+}
+
+.yatu_model {
+    background-image: linear-gradient(0deg, #1c1c1c 0%, rgb(44, 45, 45) 100%), linear-gradient(#6c6c6c, #6c6c6c);
+    background-blend-mode: normal, normal;
+    padding-top: 5rem;
+    padding-bottom: 8.94rem;
+}
+
+.gradient_black_bootom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(0deg, rgba(44, 45, 45, 1) 0%, rgba(27, 32, 40, 0.1) 100%);
+    height: 15rem;
+}
+
+/*购买*/
+.buy_card {
+    padding-bottom: 10rem;
+}
+
+.buy_card .col-md-auto {
+    margin: 2rem;
+    width: 18rem;
+    border-radius: 0.63rem;
+}
+
+.one_buy {
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(rgba(113, 9, 170, 0.21) 0%,
+    rgba(18, 64, 171, 0.21) 100%);
+}
+
+.one_buy h4 {
+    margin-bottom: 1rem;
+    font-family: 微软雅黑;
+    font-weight: bold;
+    color: white;
+}
+
+.one_buy p img {
+    margin-right: 1rem;
+
+}
+
+.one_buy p {
+    display: inline-block;
+    width: 11rem;
+    font-family: "微软雅黑 Light";
+    text-align: left;
+    font-size: 15px;
+    color: white;
+}
+
+@media screen and (max-width: 768px) {
+    .one_buy p {
+        display: block;
+        width: 100%;
+        text-align: center;
+
+    }
+}
+
+div.discount_price {
+    text-align: center;
+    font-weight: bold;
+    color: #cdab08;
+}
+
+.soft_buy {
+    margin-top: 1rem;
+    color: white;
+    border-radius: 1rem;
+    border: solid 1px #ffffff;
+    padding: 0.25rem 0.56rem;
+    font-size: 0.75rem;
+}
+
+.soft_buy img {
+    margin-top: -0.1rem;
+}
+
+/*理由*/
+.yatu_safe {
+    margin-bottom: 12.75rem;
+}
+
+.card1:nth-of-type(odd) {
+    background-image: linear-gradient(0deg, #1c1c1c 0%, #4c4c4c 100%), linear-gradient(#ffbb00, #ffbb00);
+    padding: 4.75rem 0.75rem 3.56rem 3.06rem;
+    color: #fff;
+    font-family: 'MicrosoftYaHei-Bold';
+}
+
+.card1:nth-of-type(even) {
+    background-image: linear-gradient(0deg, #424242 0%, #252527 100%), linear-gradient(#ffbb00, #ffbb00);
+    text-align: center;
+    padding: 4.3rem;
+}
+
+.card1:nth-of-type(odd) p:first-of-type {
+    font-size: 1.5rem;
+}
+
+.card1:nth-of-type(odd) p:nth-of-type(2) {
+    font-size: 1rem;
+}
+
+.card1:nth-of-type(odd) a {
+    font-size: 1.13rem;
+    color: #ffd300;
+}
+
+.card1:nth-of-type(even) img {
+    width: 6.63rem;
+}
+
+.card2 {
+    padding: 2.56rem 1.5rem 3.44rem;
+    border-radius: 0.38rem;
+    margin: -25px 2rem 0;
+    height: 15rem;
+    color: #fff;
+    background-image: linear-gradient(-40deg, #343495 0%, #6b4ba6 100%), linear-gradient(#ffffff, #ffffff);
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 1200px) {
+    .card2 {
+        margin: -25px 1rem 0;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .card2 {
+        margin: -25px 0 0;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .card2 {
+        margin: -25px 3rem 0;
+    }
+}
+
+.card2 p:nth-child(1) {
+    font-family: 'MicrosoftYaHei-Bold';
+    font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.card2 p:nth-child(2) {
+    font-family: "MicrosoftYaHei";
+    font-size: 1rem;
+    letter-spacing: 0.06rem;
+}
+
+.yatu_help {
+    margin: 3.5rem auto 0rem;
+    background-image: linear-gradient(45deg, #283148 4%, #241131 100%), linear-gradient(#e2dece, #e2dece);
+    padding: 1.38rem 4rem;
+    opacity: 0.8;
+    color: #fff;
+    font-size: 1rem;
+    font-family: '微软雅黑 Light';
+    letter-spacing: 0.05rem;
+}
+
+.yatu_help .help_list {
+    margin-bottom: 2rem;
+}
+
+.yatu_help .help_list:last-of-type {
+    margin-bottom: 1rem;
+}
+
+.yatu_help .help_list p:first-of-type {
+    color: #ffd300;
+    font-size: 1.13rem;
+    letter-spacing: 0.06rem;
+}
+
+/*.modal-body select {*/
+/*background:rgb(10,19,67);*/
+/*color: #f4f4f4;*/
+/*width:15.5rem;*/
+/*height: 2.5rem;*/
+/*border-radius: 0.3rem;*/
+/*border: solid 1px #ffffff;*/
+/*}*/
+.mymodal-content {
+    background: #000000 linear-gradient(0deg, rgba(72, 3, 111, 0.6) 0%, rgba(6, 38, 111, 0.61) 100%);
+    border-radius: 5px;
+}
+
+.myModal-header {
+    border-bottom: 0;
+}
+
+.modal-header {
+    padding: 2rem 1rem 0rem;
+}
+
+.modal-header .close {
+    padding: 1rem;
+    margin: -1rem 0 -1rem auto;
+}
+
+.btn {
+    background: transparent;
+}
+
+.btn-group .btn:focus {
+
+}
+
+.good_pay button:nth-child(3):hover {
+    box-shadow: 0 0 20px #00a0e9;
+}
+
+.good_pay button:nth-child(4):hover {
+    box-shadow: 0 0 20px #09ba07;
+}
+
+#total:before {
+    content: '￥';
+    color: #f4f4f4;
+
+}
+
+#total:after {
+    content: ' 元';
+    color: #f4f4f4;
+    font-size: 1.1rem;
+    font-family: '微软雅黑 Light';
+
+}
+
+#buy {
+    color: #ffd300;
+    text-decoration: none;
+}
+
+a.miaosu {
+    color: #fff;
+    text-decoration: none;
+}
+
+.banner_blue {
+    width: 43rem;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 576px) {
+    #fadin {
+        width: 30rem;
+    }
+
+    .banner_blue {
+        width: 27.5rem;
+        top: 35%;
+    }
+
+    .float-sm-left {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 363px) {
+    #fadin {
+        top: 39%;
+        width: 27rem;
+    }
+
+    .gradient_black_bootom {
+        height: 14rem;
+    }
+}
+
+
+.click {
+    margin: -3rem  0 7rem 0;
+}
+
+.click a {
+    display: inline-block;
+    width: 11.31rem;
+    height: 4.38rem;
+    text-align: center;
+    line-height: 4.38rem;
+    border-radius: 2.19rem;
+    border: solid 1px #ffffff;
+    font-size: 1.13rem;
+    letter-spacing: 0.06rem;
+    color: #ffffff;
+    background-image: linear-gradient(-40deg, rgba(52, 52, 149, 0.2) 0%, rgba(107, 75, 166, 0.2) 100%);
+}
+
+.yatu_banner a:nth-of-type(n+1) span:first-of-type {
+    color: #fff;
+    background: rgba(255, 211, 0, 0.7);
+    /*opacity: 0.7;*/
+    font-family: 'MicrosoftYaHeiLight';
+    font-size: 0.63rem;
+    letter-spacing: 0.03rem;
+    padding: 0.06rem 0.38rem;
+    border-radius: 0.5rem;
+    top: -2rem;
+    right: 1.5rem;
+}
+
+.yatu_banner a:nth-of-type(n+1) span.horn {
+    width: 0;
+    height: 0;
+    border: 0.5rem solid transparent;
+    border-top-color: #ffd300;
+    opacity: 0.7;
+    top: -0.75rem;
+    right: 3rem;
+}
+
+div.friends.col-md-auto {
+    /*width: 7.5rem;*/
+    height: 7.38rem;
+    margin: 1.5rem 1rem;
+}
+
+.yatu_show {
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:0;
+    width:100%;
+    height:53.5rem;
+    background-size: cover;
+
+}
+
+.soft_detail {
+    display: inline-block;
+    margin-top: 50px;
+    padding:4px 15px;
+    font-family: "微软雅黑 Light";
+    color: rgba(230, 230, 230, 0.86);
+    font-size: 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.31);
+    border-radius: 2rem;
+}
+
+.download_a {
+    color:#fff;
+}
+.download_a:hover {
+    color:#ffd300;
+}

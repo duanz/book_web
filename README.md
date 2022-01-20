@@ -53,9 +53,10 @@
   ```
 
 - 安装依赖：
-  
-  进入requirements.txt所在目录，执行 ```pip install -r requirements.txt```
-  
+
+  1. 进入requirements.txt所在目录，执行 ```pip install -r requirements.txt```
+  2. 制作PDF需要安装[wkhtmltopdf](https://wkhtmltopdf.org/downloads.html)库, 并添加到环境变量
+
 - 迁移数据:
     1. ```python manage.py makemigrations```
     2. ```python manage.py migrate```

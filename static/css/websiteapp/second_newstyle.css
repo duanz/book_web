@@ -1,0 +1,1042 @@
+.index6_pro {
+  color: #ffd300;
+  font-weight: 500;
+}
+.block_x {
+  width: 100%;
+  height: 80px;
+  background-color: #070707;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+  opacity: 0.9;
+}
+.x_nav_bar {
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  z-index: 500;
+  list-style: none;
+  color: #fff;
+  width: 93rem;
+  transform: translate(-50%);
+}
+.x_nav_bar > li {
+  float: left;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  padding: 0 40px;
+}
+.x_nav_bar > li:nth-of-type(1) img {
+  width: 118px;
+}
+.x_nav_bar > li .icon_username {
+  color: rgba(51, 51, 51, 0.8);
+  height: 6rem;
+  width: 6rem;
+  display: block;
+}
+.x_nav_bar > li:last-of-type {
+  position: relative;
+}
+@keyframes icon_one {
+  0% {
+    top: 0px;
+  }
+  50% {
+    top: 10px;
+  }
+  100% {
+    top: 0px;
+  }
+}
+.x_nav_bar > li:last-of-type > img,.imgAnimation {
+  position: absolute;
+  left: 14px;
+  top: 7px;
+  height: 24px;
+  animation: 1s infinite icon_one;
+}
+.x_nav_bar > li:last-of-type > a:nth-of-type(1) {
+  color: rgba(51, 51, 51, 0.8);
+}
+.x_nav_bar > li:last-of-type > a {
+  padding: 2px 17px;
+  font-size: 1rem;
+  background-color: #ffd300;
+  border-radius: 5px;
+  margin-right: 0.8rem;
+  opacity: 0.9;
+}
+.x_nav_bar > li:last-of-type > a:hover {
+  opacity: 1;
+}
+.x_nav_bar > li:last-of-type > a .re_username {
+  color: rgba(51, 51, 51, 0.8);
+}
+.x_nav_bar > li:last-of-type > a:nth-of-type(2) {
+  background-color: transparent;
+  border: 1px solid #fff;
+  padding: 1px 16px;
+}
+.x_nav_bar > li:last-of-type > a:nth-of-type(2):hover {
+  color: #fff;
+}
+.x_nav_bar > li > a {
+  font-size: 1.2rem;
+  color: #fff;
+  text-decoration: none;
+}
+.x_nav_bar > .product_center {
+  position: relative;
+}
+.x_nav_bar > .product_center > .product_xia {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  left: -4px;
+  top: 80px;
+  width: 170px;
+  height: 239px;
+  background-color: rgba(7, 7, 7, 0.8);
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+.x_nav_bar > .product_center > .product_xia > a {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
+  text-decoration: none;
+}
+.x_nav_bar > .product_center > .product_xia > a:hover {
+  background-color: rgba(7, 7, 7, 0.9);
+  color: #ffd300;
+}
+.x_nav_bar > .product_center:hover .product_xia {
+  animation: 0.5s product_xia ease-in-out forwards;
+}
+@keyframes product_xia {
+  0% {
+    opacity: 0;
+    transform: translateY(-4rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0rem);
+  }
+}
+.x_four {
+  position: relative;
+}
+.x_four > p:nth-of-type(1) {
+  font-size: 1.3rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+}
+.x_four > p:nth-of-type(2) {
+  margin-top: 25px;
+  color: #fff;
+  font-size: 1rem;
+}
+.map_swrap {
+  background-color: #2e2e2e;
+  height: 900px;
+  position: relative;
+}
+.map_swrap .x_map {
+  width: 735px;
+  height: 655px;
+  position: absolute;
+  background-repeat: no-repeat;
+  top: 50px;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  background-size: 700px;
+  margin-left: -206px;
+}
+.map_swrap .x_map > img {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.map_swrap .x_map > .infos {
+  color: #fff;
+  position: absolute;
+  left: -227px;
+  top: 159px;
+  font-size: 24px;
+}
+.map_swrap .x_map > .infos > .text span {
+  font-size: 2.5rem;
+  border-bottom: 1px solid #fff;
+}
+.map_swrap .x_map > .infos > .text p {
+  font-size: 1.2rem;
+  text-align: center;
+}
+.map_swrap .x_map > .infos > .text:nth-of-type(2) > span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+}
+.map_swrap .x_map > .tips {
+  width: 166px;
+  position: absolute;
+  right: 65px;
+  top: 103px;
+  font-size: 15px;
+  color: #666;
+}
+.map_swrap .x_map > .tips a {
+  font-size: 13px;
+  color: #888;
+}
+.map_swrap .x_map > .tips a > span {
+  color: #fff;
+  font-size: 10px;
+}
+.map_swrap .x_map > .yikaitong {
+  position: absolute;
+  left: 123px;
+  top: 474px;
+}
+.map_swrap .x_map > .yikaitong > img {
+  margin-top: -1px;
+}
+.map_swrap .x_map > .yikaitong > div {
+  display: inline-block;
+  margin-left: 7px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot {
+  /* 波纹效果 */
+  /* 波动效果 */
+}
+.map_swrap .x_map > .map_spot .hubei {
+  position: absolute;
+  left: 422px;
+  top: 358px;
+}
+.map_swrap .x_map > .map_spot .hubei .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .hubei .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .hubei .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .heilongjiang {
+  position: absolute;
+  left: 562px;
+  top: 172px;
+}
+.map_swrap .x_map > .map_spot .heilongjiang .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .heilongjiang .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .heilongjiang .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .liaoning {
+  position: absolute;
+  left: 526px;
+  top: 227px;
+}
+.map_swrap .x_map > .map_spot .liaoning .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .liaoning .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .liaoning .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .beijing {
+  position: absolute;
+  left: 455px;
+  top: 247px;
+}
+.map_swrap .x_map > .map_spot .beijing .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .beijing .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .beijing .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .neimenggu {
+  position: absolute;
+  left: 362px;
+  top: 242px;
+}
+.map_swrap .x_map > .map_spot .neimenggu .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .neimenggu .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .neimenggu .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .hebei {
+  position: absolute;
+  left: 442px;
+  top: 269px;
+}
+.map_swrap .x_map > .map_spot .hebei .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .hebei .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .hebei .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .shandong {
+  position: absolute;
+  left: 469px;
+  top: 288px;
+}
+.map_swrap .x_map > .map_spot .shandong .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .shandong .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .shandong .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .shanxi1 {
+  position: absolute;
+  left: 414px;
+  top: 283px;
+}
+.map_swrap .x_map > .map_spot .shanxi1 .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .shanxi1 .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .shanxi1 .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .gansu {
+  position: absolute;
+  left: 334px;
+  top: 306px;
+}
+.map_swrap .x_map > .map_spot .gansu .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .gansu .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .gansu .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .shanxi {
+  position: absolute;
+  left: 376px;
+  top: 322px;
+}
+.map_swrap .x_map > .map_spot .shanxi .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .shanxi .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .shanxi .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .henan {
+  position: absolute;
+  left: 421px;
+  top: 326px;
+}
+.map_swrap .x_map > .map_spot .henan .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .henan .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .henan .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .xuzhou {
+  position: absolute;
+  left: 463px;
+  top: 316px;
+}
+.map_swrap .x_map > .map_spot .xuzhou .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .xuzhou .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .xuzhou .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .jiangsu {
+  position: absolute;
+  left: 487px;
+  top: 331px;
+}
+.map_swrap .x_map > .map_spot .jiangsu .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .jiangsu .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .jiangsu .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .anhui {
+  position: absolute;
+  left: 463px;
+  top: 345px;
+}
+.map_swrap .x_map > .map_spot .anhui .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .anhui .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .anhui .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .shanghai {
+  position: absolute;
+  left: 506px;
+  top: 358px;
+}
+.map_swrap .x_map > .map_spot .shanghai .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .shanghai .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .shanghai .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .sichaun {
+  position: absolute;
+  left: 330px;
+  top: 361px;
+}
+.map_swrap .x_map > .map_spot .sichaun .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .sichaun .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .sichaun .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .chongqing {
+  position: absolute;
+  left: 366px;
+  top: 374px;
+}
+.map_swrap .x_map > .map_spot .chongqing .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .chongqing .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .chongqing .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .zjiang {
+  position: absolute;
+  left: 493px;
+  top: 378px;
+}
+.map_swrap .x_map > .map_spot .zjiang .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .zjiang .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .zjiang .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .jiangxi {
+  position: absolute;
+  left: 453px;
+  top: 393px;
+}
+.map_swrap .x_map > .map_spot .jiangxi .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .jiangxi .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .jiangxi .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .fujian {
+  position: absolute;
+  left: 472px;
+  top: 414px;
+}
+.map_swrap .x_map > .map_spot .fujian .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .fujian .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .fujian .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .hunan {
+  position: absolute;
+  left: 407px;
+  top: 393px;
+}
+.map_swrap .x_map > .map_spot .hunan .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .hunan .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .hunan .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .yunnan {
+  position: absolute;
+  left: 316px;
+  top: 431px;
+}
+.map_swrap .x_map > .map_spot .yunnan .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .yunnan .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .yunnan .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .gzhou {
+  position: absolute;
+  left: 426px;
+  top: 446px;
+}
+.map_swrap .x_map > .map_spot .gzhou .content {
+  position: relative;
+}
+.map_swrap .x_map > .map_spot .gzhou .content > img {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+.map_swrap .x_map > .map_spot .gzhou .content > span {
+  font-size: 11px;
+  position: absolute;
+  top: -21px;
+  left: 33px;
+  width: 45px;
+  height: 20px;
+  color: #fff;
+}
+.map_swrap .x_map > .map_spot .wave {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+  font-size: 28px;
+}
+.map_swrap .x_map > .map_spot .wave .circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+}
+.map_swrap .x_map > .map_spot .wave.ripple .circle {
+  width: calc(65% - 6px);
+  /* 减去边框的大小 */
+  height: calc(65% - 6px);
+  /* 减去边框的大小 */
+  border: 3px solid #fff;
+}
+.map_swrap .x_map > .map_spot .wave.ripple .circle:first-child {
+  animation: circle-opacity 2s infinite;
+}
+.map_swrap .x_map > .map_spot .wave.ripple .circle:nth-child(2) {
+  animation: circle-opacity 2s infinite;
+  animation-delay: 0.3s;
+}
+.map_swrap .x_map > .map_spot .wave.ripple .circle:nth-child(3) {
+  animation: circle-opacity 2s infinite;
+  animation-delay: 0.6s;
+}
+.map_swrap .x_map > .map_spot .wave.ripple.danger {
+  color: #ecc402;
+}
+.map_swrap .x_map > .map_spot .wave.ripple.danger .circle {
+  border-color: #ecc402;
+}
+.map_swrap .x_map > .map_spot .wave.solid .circle {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+.map_swrap .x_map > .map_spot .wave.solid .circle:first-child {
+  animation: circle-opacity 2s infinite;
+}
+.map_swrap .x_map > .map_spot .wave.solid.danger {
+  color: #ecc402;
+}
+.map_swrap .x_map > .map_spot .wave.solid.danger .circle {
+  background: #ecc402;
+}
+@keyframes circle-opacity {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+.input-group-prepend {
+  width: 44px;
+  height: 48px;
+  background-color: #c5c6ca;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+@keyframes aaa {
+  0% {
+    top: 25px;
+  }
+  50% {
+    top: 50px;
+  }
+  100% {
+    top: 25px;
+  }
+}
+.tab_dy_one {
+  display: none;
+}
+.navbar {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  background-color: #1f2131;
+}
+.navbar .navbar-header button {
+  position: absolute;
+  right: 2rem;
+  top: 20px;
+  /* transform: translateY(-50%); */
+  /* height: 20px; */
+  z-index: 100;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+.navbar .navbar-nav li {
+  height: 40px;
+  line-height: 40px;
+  text-indent: 7px;
+}
+.navbar .navbar-nav li > a {
+  color: #fff;
+  text-indent: 5px;
+  display: block;
+  text-align: left;
+}
+.navbar .navbar-nav li:hover {
+  background-color: #cccccc;
+  border-radius: 5px;
+}
+.navbar .navbar-nav li:hover > a {
+  color: #343434;
+  text-decoration: none;
+}
+.navbar .navbar-nav .dropdown-menu {
+  background-color: #040304;
+}
+.shengji {
+  animation: shengji 0.5s ease-in-out alternate infinite;
+}
+@keyframes shengji {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+@media (min-width: 1200px) {
+  .top_to_bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -76px;
+    width: 200px;
+    height: 200px;
+  }
+  .top_to_bottom img {
+    position: absolute;
+    left: 70px;
+    top: 90px;
+    animation: 1s aaa infinite;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .top_to_bottom1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -341px;
+    width: 200px;
+    height: 200px;
+  }
+  .top_to_bottom1 img {
+    position: absolute;
+    left: 70px;
+    top: 90px;
+    animation: 1s aaa infinite;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .top_to_bottom2 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -460px;
+    width: 200px;
+    height: 200px;
+  }
+  .top_to_bottom2 img {
+    position: absolute;
+    left: 70px;
+    top: 90px;
+    animation: 1s aaa infinite;
+    cursor: pointer;
+    z-index: 10;
+  }
+}
+@media (min-width: 576px) and (max-width: 1199px) {
+  .top_to_bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -76px;
+    width: 200px;
+    height: 200px;
+  }
+  .top_to_bottom img {
+    position: absolute;
+    left: 70px;
+    top: 90px;
+    animation: 1s aaa infinite;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .top_to_bottom1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -341px;
+    width: 200px;
+    height: 200px;
+  }
+  .top_to_bottom1 img {
+    position: absolute;
+    left: 70px;
+    top: 90px;
+    animation: 1s aaa infinite;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .top_to_bottom2 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -460px;
+    width: 200px;
+    height: 200px;
+  }
+  .top_to_bottom2 img {
+    position: absolute;
+    left: 70px;
+    top: 90px;
+    animation: 1s aaa infinite;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .input-group-prepend {
+    width: 2.75rem;
+    height: 3rem;
+    background-color: #c5c6ca;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+}
+@media (max-width: 575px) {
+  .top_to_bottom {
+    display: none;
+  }
+  .top_to_bottom1 {
+    display: none;
+  }
+  .top_to_bottom2 {
+    display: none;
+  }
+  .four_page {
+    display: none;
+  }
+  .map_swrap {
+    display: none;
+  }
+  .input-group-prepend {
+    width: 2.75rem;
+    height: 3rem;
+    background-color: #c5c6ca;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+}
+/* 按钮的动画效果 */
+.hvr_169border_round_corners:hover {
+  border-radius: 1em !important;
+}
+.hvr_169border_round_corners {
+  transition-duration: 0.3s !important;
+  transition-property: border-radius !important;
+}
+.free_btn {
+  width: 12rem;
+  height: 65px;
+  background-color: #a98c01;
+  border-radius: 0px;
+  text-align: center;
+  line-height: 65px;
+  padding: 0px;
+  color: #fff;
+  border: 0px;
+  font-size: 25px;
+}
+.product_btn {
+  color: #ffffff;
+  font: 2rem '微软雅黑', 'sans-serif';
+  width: 15rem;
+  background: #ffd300;
+  font-size: 1.5625rem !important;
+}
+a[class^="hvr_169"] {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 10px 20px;
+  margin: 0.4em;
+  cursor: pointer;
+  border-radius: 5px;
+  /* border: 1px solid #fff; */
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  backface-visibility: hidden;
+  /* background-color: #8b8994; */
+  background-color: rgba(169, 140, 1, 0.6) !important;
+  text-decoration: none;
+  color: rgba(255, 255, 255);
+  height: 65px;
+  line-height: 45px;
+}
+a[class^="hvr_169"]:hover {
+  background-color: rgba(169, 140, 1, 0.9) !important;
+  height: 65px;
+  line-height: 45px;
+}
+a:hover {
+  color: #fff;
+}

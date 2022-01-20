@@ -47,11 +47,13 @@ INSTALLED_APPS = [
     "drf_yasg",
     "django_celery_results",
     "django_celery_beat",
+    "bootstrap4",
     "book",
     "member",
     "task",
     "django_extensions",
     "corsheaders",
+    "website",
 ]
 
 MIDDLEWARE = [
@@ -95,6 +97,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "book_web.wsgi.application"
+
+# Settings for django-bootstrap4
+BOOTSTRAP4 = {
+    "error_css_class": "bootstrap4-error",
+    "required_css_class": "bootstrap4-required",
+    "javascript_in_head": True,
+    "include_jquery": True,
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -232,8 +242,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, "templates"),)
 

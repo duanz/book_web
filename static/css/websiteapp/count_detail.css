@@ -1,0 +1,55 @@
+.well {
+    padding: 15px;
+    margin-bottom: 19px;
+    background-color: #f5f5f5;
+    border: 1px solid #c5c9ca;
+    border-radius: 4px;
+}
+
+.inline {
+    display: inline;
+}
+
+.tishiyu {
+    color: #1996cb;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.biaoshi {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.b {
+    display: inline-block;
+    width: 120px;
+    line-height: 3;
+    vertical-align: center;
+    font-size: 14px;
+
+}
+
+.tag {
+    margin-left: 3px;
+    font-weight: normal;
+    font-size: 9px
+}
+
+.upper {
+    vertical-align: super;
+    color: red
+}
+
+.link {
+    color: #1996cb;
+}
+
+.container-border {
+    border: 1px solid #fff;
+    border-radius: 4px;
+    box-shadow:0 0 30px 0px rgba(133, 161, 196, 0.2);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+

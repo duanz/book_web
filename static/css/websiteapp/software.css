@@ -1,0 +1,388 @@
+.software_banner p:nth-child(1) {
+    color: #ffffff;
+    font-family: '微软雅黑 Light';
+    font-size: 3rem;
+}
+
+.software_banner p:nth-child(2) {
+    margin: 4.94rem auto 3.94rem;
+    color: #ffffff;
+    font-size: 2rem;
+    font-family: '微软雅黑';
+}
+
+.software_banner .col-12 > a {
+    border-radius: 2.1rem;
+    border: 0.1rem solid #ffffff;
+    width: 12rem;
+    font-family: "微软雅黑 Light";
+    font-size: 1.4rem;
+    color: #ffffff;
+    padding: 0.8rem;
+    background: rgba(70, 113, 213, 0.13);
+    margin: 1.5rem 3rem;
+}
+
+.software_banner .col-12 > a:hover {
+    background: rgba(70, 113, 213, 0.13) url(/static/img/open/open_button_banner.png) no-repeat center;
+    animation: spread 0.5s ease;
+    background-size: 100% 100%;
+}
+
+.software_banner a:last-of-type span:first-of-type {
+    color: #fff;
+    background: rgba(255, 211, 0, 0.7);
+    /*opacity: 0.7;*/
+    font-family: 'MicrosoftYaHeiLight';
+    font-size: 0.63rem;
+    letter-spacing: 0.03rem;
+    padding: 0.06rem 0.38rem;
+    border-radius: 0.5rem;
+    top: -2rem;
+    right: 1.5rem;
+}
+
+.software_banner a:last-of-type span.horn {
+    width: 0;
+    height: 0;
+    border: 0.5rem solid transparent;
+    border-top-color: #ffd300;
+    opacity: 0.7;
+    top: -0.75rem;
+    right: 3rem;
+}
+
+.download_a {
+    color: #fff;
+}
+.download_a:hover {
+    color:#ffd300;
+}
+
+@media screen and (max-width: 768px) {
+    .software_banner a:last-of-type span:first-of-type {
+        top: -2.25rem;
+    }
+}
+@media screen and (max-width: 576px) {
+    .software_banner a:last-of-type span:first-of-type {
+        top: -2.35rem;
+    }
+}
+
+@-webkit-keyframes spread {
+    0% {
+        background-size: 0px 100%;
+    }
+    100% {
+        background-size: 100% 100%;
+    }
+
+}
+
+.software_model {
+    background-image: linear-gradient(0deg, #1c1c1c 0%, rgb(44, 45, 45) 100%), linear-gradient(#6c6c6c, #6c6c6c);
+    background-blend-mode: normal, normal;
+}
+
+.gradient_black_bootom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(0deg, rgba(44, 45, 45, 1) 0%, rgba(27, 32, 40, 0.2) 100%);
+    height: 120px;
+}
+
+/*产品优势*/
+.product_advantage {
+    padding: 7.2rem 0 9.15rem;
+}
+
+.product_advantage .col-md-auto {
+    margin: 2rem;
+    width: 13rem;
+    border-radius: 0.25rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    background-image: linear-gradient(0deg, rgba(107, 75, 166, 0.16) 0%, rgba(78, 63, 157, 0.16) 50%, rgba(52, 52, 149, 0.16) 100%);
+}
+
+.product_advantage_list img {
+    height: 4rem;
+}
+
+.product_advantage_list > div > div {
+    font-family: "微软雅黑";
+    text-align: center;
+    font-size: 1.13rem;
+    color: white;
+    letter-spacing: 0.05rem;
+    margin: 2.13rem 0 2.5rem;
+}
+
+.product_advantage_list p {
+    font-family: "微软雅黑 Light";
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+    letter-spacing: 0.06rem;
+}
+
+/*产品功能*/
+.product_function {
+    width: 46.38rem;
+    height: 32rem;
+}
+
+.product_function > div {
+    position: absolute;
+    text-align: center;
+}
+
+.product_function > div:first-of-type {
+    top: 5.3rem;
+    left: -12rem;
+}
+
+.product_function > div:nth-of-type(2) {
+    top: 24.5rem;
+    left: -10rem;
+}
+
+.product_function > div:nth-of-type(3) {
+    top: 1.5rem;
+    right: -13.3rem;
+}
+
+.product_function > div:nth-of-type(4) {
+    top: 8.13rem;
+    right: -12rem;
+}
+
+.product_function > div:nth-of-type(5) {
+    top: 26.3rem;
+    right: -12rem;
+}
+
+.product_function > div > p:first-of-type {
+    /* font-family: '楷体'; */
+    font-size: 1.2rem;
+    /* letter-spacing: 0.11rem; */
+    color: #ffd300;
+    margin-bottom: 0.6rem;
+}
+
+.product_function > div > p:last-of-type {
+    font-family: 'MicrosoftYaHei';
+    font-size: 1rem;
+    letter-spacing: 0.07rem;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+.switch_p:hover >p:nth-of-type(1){
+    animation: switch_p 0.3s linear forwards;
+}
+@keyframes switch_p{
+    0%{
+        transform: scale(1) translateY(0px);
+    }
+    100%{
+        transform: scale(1.05) translateY(-5px);
+    }
+}
+@media screen and (max-width: 1185px) {
+    .product_function {
+        width: 30.38rem;
+        height: 25rem;
+    }
+
+    .product_function > div:first-of-type {
+        top: 4.5rem;
+        left: -13rem;
+    }
+
+    .product_function > div:nth-of-type(2) {
+        top: 18rem;
+        left: -10rem;
+    }
+
+    .product_function > div:nth-of-type(3) {
+        top: 1.5rem;
+        right: -16rem;
+    }
+
+    .product_function > div:nth-of-type(4) {
+        top: 6rem;
+        right: -16rem;
+    }
+
+    .product_function > div:nth-of-type(5) {
+        top: 19.5rem;
+        right: -12.5rem;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    .product_function {
+        width: 25.38rem;
+        height: 20rem;
+    }
+
+    .product_function > div:first-of-type {
+        top: 3.5rem;
+        left: -15rem;
+    }
+
+    .product_function > div:nth-of-type(2) {
+        top: 14.3rem;
+        left: -10rem;
+    }
+
+    .product_function > div:nth-of-type(3) {
+        top: 1rem;
+        right: -16rem;
+    }
+
+    .product_function > div:nth-of-type(4) {
+        top: 5rem;
+        right: -14.5rem;
+    }
+
+    .product_function > div:nth-of-type(5) {
+        top: 17rem;
+        right: -12.5rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .product_function {
+        width: 25.38rem;
+        height: 20rem;
+    }
+
+    .product_function > div:first-of-type {
+        top: 3rem;
+        left: -4rem;
+    }
+
+    .product_function > div:nth-of-type(2) {
+        top: 16rem;
+        left: -4.5rem;
+    }
+
+    .product_function > div:nth-of-type(3) {
+        top: 2rem;
+        right: -8rem;
+    }
+
+    .product_function > div:nth-of-type(4) {
+        top: 6rem;
+        right: -6rem;
+    }
+
+    .product_function > div:nth-of-type(5) {
+        top: 17.5rem;
+        right: -4.5rem;
+    }
+}
+
+/*行业头条*/
+div.industry_headlines.col-md-auto {
+    width: 31rem;
+    margin: 1rem 1.5rem;
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    background-image: linear-gradient(0deg, rgba(107, 75, 166, 0.16) 0%, rgba(78, 63, 157, 0.16) 50%, rgba(52, 52, 149, 0.16) 100%);
+    padding: 1.13rem 0.5rem 1.13rem;
+}
+
+.industry_headlines > div > div {
+    font-size: 1.13rem;
+    letter-spacing: 0.06rem;
+    padding: 0 1.31rem 1rem 0.56rem;
+    border-bottom: 1px solid #fff;
+}
+
+.industry_headlines > div > div a {
+    color: #fff;
+}
+
+.industry_headlines > div > div img {
+    margin-top: -0.2rem;
+    height: 1rem;
+}
+
+.industry_headlines:last-of-type > div > div {
+    text-align: right;
+}
+
+.industry_headlines ul, .industry_headlines ul li {
+    list-style-type: none;
+}
+
+.industry_headlines ul {
+    padding: 0 1.31rem 0 0.56rem;
+}
+
+.industry_headlines ul li {
+    padding: 0.75rem 0;
+}
+.industry_headlines ul li a{
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+}
+.industry_headlines ul li a > span:last-of-type {
+    float: right;
+}
+
+/*合作伙伴*/
+div.friends.col-md-auto {
+    width: 7.5rem;
+    height: 7.38rem;
+    margin: 1.5rem 1.5rem;
+}
+
+/*加入我们*/
+.join_us p {
+    color: #ffffff;
+    font-size: 2rem;
+    font-family: '微软雅黑';
+    margin-bottom: 5rem;
+}
+
+.join_us a {
+    border-radius: 2.1rem;
+    border: 0.1rem solid #ffffff;
+    width: 12rem;
+    font-family: "微软雅黑 Light";
+    font-size: 1.4rem;
+    color: #ffffff;
+    padding: 0.8rem;
+    background: rgba(70, 113, 213, 0.13);
+    margin: 0 3rem;
+}
+
+.join_us a:hover {
+    background: rgba(70, 113, 213, 0.13) url(/static/img/open/open_button_banner.png) no-repeat center;
+    animation: spread 0.5s ease;
+    background-size: 100% 100%;
+}
+
+.soft_detail {
+    display: inline-block;
+    margin-top: 35px;
+    padding:4px 15px;
+    font-family: "微软雅黑 Light";
+    color: rgba(230, 230, 230, 0.86);
+    font-size: 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 2rem;
+}
+@media (max-width:1200px){
+    .switch_five{
+        display: none;
+    }
+}

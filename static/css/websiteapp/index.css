@@ -1,0 +1,214 @@
+#fp-nav ul li a.active span,
+.fp-slidesNav ul li a.active span {
+    background: #ffd300;
+    /*这里设置的是活动导航的颜色*/
+}
+
+#fp-nav ul li a span,
+.fp-slidesNav ul li a span {
+    border: 1px solid #fff;
+    /*这里设置的是非活动导航的颜色*/
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+/* Style for our header texts
+        * --------------------------------------- */
+/*{#h1 {#}*/
+/*{#    font-size: 5em;#}*/
+/*{#    font-family: arial, helvetica;#}*/
+/*{#    color: #fff;#}*/
+/*{#    margin: 0;#}*/
+/*{#    padding: 0;#}*/
+
+/* Centered texts in each section
+        * --------------------------------------- */
+.section {
+    /*{#text-align: center;#} */
+    background-size: cover;
+    overflow: hidden;
+}
+
+.slide {
+    background-size: cover;
+}
+
+.bg-video {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    /*{#background-size: 100% 100%;#}*/
+    /*{#background-color: black; !* in case the video doesn't fit the whole page*!#}*/
+    /*{#background-image: !* our video *!;#}*/
+    /*{#background-position: center center;#}*/
+    /*{#background-size: contain;#} */
+    object-fit: cover;
+    /*cover video background */
+    z-index: 1;
+}
+
+/* Defining each sectino background and styles
+        * --------------------------------------- */
+#section1 {
+    background: url(/static/img/bg/background_1.png) no-repeat center center;
+    background-size: cover;
+}
+
+#section2 {
+    background: url(/static/img/bg/background_2.png) no-repeat center center;
+    background-size: cover;
+}
+
+/*{##section2 h1 {#}*/
+/*{#top: 50%;#}*/
+/*{#transform: translateY(-50%);#}*/
+/*{#position: relative;#}*/
+
+#section8 {
+    background: url(/static/img/bg/background_8.png) no-repeat center center;
+    background-size: cover;
+    /*{#padding: 6% 0 0 0;#}*/
+}
+
+#section9 {
+    background: url(/static/img/bg/background_6.png) no-repeat center center;
+    background-size: cover;
+    /*{#padding: 6% 0 0 0;#}*/
+}
+
+#section3 {
+    background: url(/static/img/bg/background_3.png) no-repeat center center;
+    background-size: cover;
+    /*{#padding: 6% 0 0 0;#}*/
+}
+
+#section6 {
+    background: url(/static/img/bg/background_7.png) no-repeat center center;
+    background-size: cover;
+    /*{#padding: 6% 0 0 0;#}*/
+}
+
+/*#section7 {*/
+/*background: url(/static/img/bg/background_7.png) no-repeat center center;*/
+/*background-size: cover;*/
+/*!*{#padding: 6% 0 0 0;#}*!*/
+/*}*/
+
+
+#section4 {
+    background: url(/static/img/bg/background_4.png) no-repeat center center;
+    background-size: cover;
+    /* {#padding: 6% 0 0 0;#}*/
+}
+
+
+#section5 {
+    background: url(/static/img/bg/background_5.png) no-repeat center center;
+    background-size: cover;
+}
+
+/*{##section5 h1 {#}*/
+/*{#    color: #000;#}*/
+
+/*Adding background for the slides
+       * --------------------------------------- */
+#slide1 {
+    background-image: url(https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/bg2.jpg);
+    padding: 6% 0 0 0;
+}
+
+#slide2 {
+    background-image: url(https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/bg5.jpg);
+    padding: 6% 0 0 0;
+}
+
+/* Bottom menu
+        * --------------------------------------- */
+/*{##infoMenu li a {#}*/
+/*{#    color: #fff;#}*/
+a:hover {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 768px) {
+    .dynamic-nav {
+        margin-top: 4.5rem;
+    }
+}
+
+@-webkit-keyframes move {
+    0% {
+        background-size: 0px 100%;
+    }
+
+    100% {
+        background-size: 100% 100%;
+    }
+
+}
+
+#index_btn {
+    background: url(/static/img/bg/bg-index_btn.png) no-repeat center;
+    background-size: 0px 100%;
+    padding: 0;
+
+}
+
+#index_btn:hover {
+    animation: move 0.3s linear 1;
+    background-size: 100% 100%;
+
+}
+
+.proxy_hover .img_rotate {
+    transition: all 0.6s ease-in-out;
+    -webkit-transition: all 0.6s ease-in-out;
+    -moz-transition: all 0.6s ease-in-out;
+    -o-transition: all 0.6s ease-in-out;
+}
+
+.proxy_hover:hover .img_rotate {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+}
+
+.img_right {
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0% {
+        margin-left: 1.5rem;
+    }
+
+    50% {
+        margin-left: 2rem;
+    }
+
+    100% {
+        margin-left: 1.5rem;
+    }
+}
+
+
+.many:hover {
+    display: inline-block;
+}
+
+#product_center .text:hover {
+    cursor: pointer;
+}
+
+/* @keyframes topToB {
+  
+} */

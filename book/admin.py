@@ -51,7 +51,7 @@ def update_chapter_with_content(modeladmin, request, queryset):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "id", "book_type", "origin_addr", "operator")
-    search_fields = ("title",)
+    search_fields = ("title", "id")
     list_filter = ("book_type", "update_at")
     date_hierarchy = "create_at"
 
@@ -71,7 +71,7 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ("title", "id", "book_type", "book_", "order", "origin_addr")
-    search_fields = ("title", "book__title")
+    search_fields = ("title", "book__title", "id")
     list_filter = ("active", "book_type", "update_at")
     actions = [update_chapter_with_content]
 

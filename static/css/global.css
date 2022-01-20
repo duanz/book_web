@@ -1,0 +1,54 @@
+@media (max-width: 575px) {
+    html {
+        font-size: 0.65rem;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    html {
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    html {
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+@media (min-width: 1200px) {}
+em{
+    font-style: normal;
+}
+
+.nc-container #nc_1_wrapper,
+.nc-container.tb-login #nc_1_wrapper {
+    width: auto !important;
+    height: 3.1rem;
+}
+.nc_scale {
+    background: rgba(0, 0, 0, 0.55) !important;
+    /* 背景色 */
+    height: 3.1rem !important;
+}
+
+.nc_scale .scale_text {
+    color: rgba(178, 178, 178, 0.55) !important;
+    /* 字体颜色 */
+}
+
+.nc_scale .scale_text2 {
+    color: #fff !important;
+    /* 滑过时的字体颜色 */
+}
+
+.nc-container .nc_scale span {
+    height: 3.1rem !important;
+    line-height: 3.1rem !important;
+}
+
+.nc-container .nc_scale .btn_ok {
+    line-height: 3.1rem !important;
+}

@@ -44,6 +44,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path(r"", include("website.urls", namespace="website")),
     path("admin", admin.site.urls),
     path(r"api/v1/", include("book.api_urls", namespace="book_api")),
     path(r"api/v1/", include("task.api_urls")),

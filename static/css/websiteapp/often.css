@@ -1,0 +1,360 @@
+.often_one {
+  width: 100%;
+  position: relative;
+}
+
+.often_one_left {
+  width: 41rem;
+  height: 30rem;
+  position: absolute;
+  left: 0px;
+  top: 1rem;
+  background-color: rgba(49, 49, 49, 0.6);
+}
+
+.often_one_left>.nav-tabs {
+  position: absolute;
+  width: 7.5rem;
+  height: 18rem;
+  /* border: 1px solid #ffff; */
+  font-size: 1rem;
+  border-bottom: none;
+}
+
+.often_one_left>.nav-tabs>li {
+  width: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  line-height: 3.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.often_one_left>.nav-tabs>li:hover {
+  background-color: rgba(255, 211, 0, 0.4);
+}
+
+.often_one_left>.nav-tabs>li>a {
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  color: #fff;
+}
+
+.often_one_left>.tab-content {
+  position: absolute;
+  left: 8.8rem;
+  width: 31rem;
+  height: 26rem;
+  top: 2rem;
+  color: #fff;
+}
+
+.often_one_left>.tab-content .static_big_box {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box {
+  border: 1px solid #fff;
+  width: 9rem;
+  height: 10rem;
+  border-radius: 0.4rem;
+  position: relative;
+  margin: 0.6rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box>span:nth-of-type(1) {
+  font-size: 1rem;
+  margin-top: 0.75rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box .buy_line {
+  display: block;
+  border: 0.5px solid #fff;
+  width: 7rem;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box>.most_dai .most_dai_one {
+  margin-top: 1.75rem;
+  font-size: 0.75rem;
+  width: 8.5rem;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box>.most_dai .most_dai_one>img {
+  width: 15px;
+  height: 12px;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box>.most_dai .most_dai_two {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box>.most_dai .most_dai_two>img {
+  width: 15px;
+  height: 12px;
+}
+
+.often_one_left>.tab-content .static_big_box .static_box>.most_dai .most_dai_three {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+}
+
+.often_one_right {
+  width: 25rem;
+  height: 30rem;
+  position: absolute;
+  /* border: 1px solid #fff; */
+  right: 1rem;
+  top: 1rem;
+  color: #fff;
+}
+
+.often_one_right>.one_right_title {
+  position: absolute;
+  left: 2rem;
+}
+
+.often_one_right>.one_right_title .img_one_1 {
+  margin-right: 0.5rem;
+  margin-bottom: 0.1rem;
+}
+
+.often_one_right .gun_list {
+  position: absolute;
+  left: 1rem;
+  top: 3rem;
+  width: 25rem;
+  height: 14rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 0.2rem;
+}
+
+.often_one_right .gun_list .static_add {
+  list-style: none;
+  font-size: 0.9rem;
+  padding-left: 0px;
+  height: 100%;
+}
+
+.often_one_right .gun_list .static_add .static_list {
+  margin-top: 1.5rem;
+  text-decoration: none;
+}
+
+.often_one_right .gun_list .static_add .static_list>span:nth-of-type(1) {
+  margin-right: 0.1rem;
+  width: 5rem;
+  display: inline-block;
+}
+
+.often_one_right .gun_list .static_add .static_list>.current_buy {
+  margin-left: 0.1rem;
+  margin-right: 0.8rem;
+}
+
+.often_one_right .gun_list .static_add .static_list>.current_buy>span {
+  color: #ffd300;
+}
+
+.often_one_right .gun_list .static_add .static_list>a {
+  font-size: 0.75rem;
+  color: #e60012;
+  text-decoration: none;
+}
+
+.often_one_right .one_right_count {
+  position: absolute;
+  left: 2rem;
+  top: 19rem;
+  font-size: 1.125rem;
+}
+
+.often_one_right .one_right_count .money_count_right {
+  font-size: 1.25rem;
+  color: #ffd300;
+  margin-left: 1rem;
+}
+
+.often_one_right .static_buy {
+  position: absolute;
+  left: 50%;
+  top: 25rem;
+  transform: translateX(-50%);
+  width: 9rem;
+  height: 2.5rem;
+  background-color: #ffd300;
+  line-height: 2.5rem;
+  color: rgba(51, 51, 51, 0.8);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.often_one_right .static_buy:hover {
+  opacity: 1;
+}
+
+.often_one_right .gw_num {
+  border: 1px solid #dbdbdb;
+  border-radius: 0.2rem;
+  vertical-align: middle;
+  line-height: 1.8rem;
+  overflow: hidden;
+  display: inline-block;
+  height: 1.8rem;
+}
+
+.often_one_right .gw_num em {
+  display: block;
+  background: rgba(255, 255, 255, 0.13);
+  height: 1.8rem;
+  width: 2rem;
+  float: left;
+  color: #7A7979;
+  border-right: 1px solid #dbdbdb;
+  text-align: center;
+  cursor: pointer;
+  line-height: 1.6rem;
+}
+
+.often_one_right .gw_num .num {
+  display: block;
+  float: left;
+  color: white;
+  text-align: center;
+  width: 3.5rem;
+  font-style: normal;
+  font-size: 1rem;
+  height: 1.8rem;
+  border: 0;
+}
+
+.often_one_right .gw_num em.add {
+  float: right;
+  border-right: 0;
+  border-left: 1px solid #dbdbdb;
+}
+
+.often_one_right .gw_num em.add_changxiao {
+  float: right;
+  border-right: 0;
+  border-left: 1px solid #dbdbdb;
+}
+
+.often_one_right .table_scroll_p {
+  font-size: 1rem;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffd300;
+  top: 3rem;
+}
+
+.xiong_swrap {
+  padding: 1rem;
+  height: 600px;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.xiong_swrap_one {
+  padding: 1rem;
+  height: 52rem;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.table_scroll_one {
+  position: relative;
+  top: 2rem;
+}
+
+.table_two {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 3rem;
+}
+
+@media (max-width: 1200px) {
+  .xiong_swrap_one{
+    background-color: transparent;
+  }
+  .xiong_swrap {
+    height: 68.5rem;
+  }
+
+  .often_one_left {
+    width: 41rem;
+    height: 27rem;
+    left: 0px;
+    top: 1rem;
+    background-color: rgba(49, 49, 49, 0.6);
+  }
+
+  .often_one_right {
+    width: 25rem;
+    height: 30rem;
+    left: 0rem;
+    top: 31rem;
+  }
+
+  .often_one_right .gun_list {
+    width: 28rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .table_scroll_one {
+    position: relative;
+    top: 7rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .often_one_left>.tab-content {
+    position: absolute;
+    left: 8.8rem;
+    width: 27rem;
+    height: 26rem;
+    top: 1rem;
+    color: #fff;
+  }
+
+  .often_one_left {
+    width: 30rem;
+    height: 27rem;
+    left: 50%;
+    top: 1rem;
+    background-color: rgba(49, 49, 49, 0.6);
+    transform: translateX(-50%);
+  }
+
+  .often_one_right .static_buy {
+    left: 64%;
+  }
+
+  .often_one_right {
+    width: 25rem;
+    height: 30rem;
+    left: 44%;
+    top: 31rem;
+    transform: translateX(-50%);
+  }
+
+  .table_two {
+    position: absolute;
+    left: 107%;
+    transform: translateX(-50%);
+    top: 7rem;
+    /* left: 7rem; */
+  }
+}

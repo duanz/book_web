@@ -8,6 +8,7 @@ from book.models import Book, Chapter, SubscribeBook
 
 # from book_web import celery_app as app
 from book_web.makeBook.makeWord import MakeMyWord
+from book_web.makeBook.makePDF import MakeMyPDF
 from book_web.sendEmail.sendKindle import SendKindleEmail
 
 # from book_web.spiders.sheduler.novelShedulerAsync import BookInsertClient, BOOK_TYPE_DESC, BookUpdateClient, BookAutoInsertClient, SlowAutoInsertBookClient, FastAutoInsertBookClient
@@ -59,7 +60,7 @@ def handle_single_task(task_id):
 
         elif task.task_type in TASK_TYPE_DESC.MAKE_BOOK:
             "书籍打包"
-            s = MakeMyWord(
+            s = MakeMyPDF(
                 book_id=content["book_id"],
                 start_chapter_id=content["start_chapter_id"],
                 end_chapter_id=content["end_chapter_id"],

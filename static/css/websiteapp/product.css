@@ -1,0 +1,175 @@
+.banner-container {
+    /*{#background: url(/static/img/product/bg_banner_1.png) no-repeat center center;#}{#-webkit-background-size: cover;#}{#-moz-background-size: cover;#}{#-o-background-size: cover;#}{#background-size: cover;#} height: 700px;*/
+    /*{#    background: #464646;#}{#    position: relative;#}{#    z-index:-200;#} padding: 0;*/
+}
+
+.fix-container {
+    background: url(/static/img/product/bg_banner_1.png) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 700px;
+    width: 100%;
+    position: fixed;
+    z-index: -100;
+    top: 0;
+    padding: 0;
+}
+
+.gradient_black_bootom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(0deg, rgb(46, 46, 46) 0%, rgba(0, 0, 0, 0) 100%);
+    height: 240px;
+    width: 100%;
+
+}
+
+.gradient_black_top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-image: linear-gradient(180deg, rgb(46, 46, 46) 0%, rgba(0, 0, 0, 0) 100%);
+    height: 240px;
+    width: 100%;
+
+}
+
+.card1 {
+    padding: 3.3rem 1rem 10.5rem;
+    background-image: linear-gradient(0deg, #1b1b1b 0%, #4f4f4f 100%);
+    text-align: center;
+}
+
+.card1:hover p:nth-child(2) {
+    bottom: 6rem;
+
+}
+
+/*{# 第一个p是card1的第二个子元素 #}*/
+.card1 p:nth-child(2) {
+    color: #d6d6d6;
+    font: 1.5rem '微软雅黑', 'sans-serif';
+    opacity: 1;
+    transition: all 1s ease 0s;
+    position: absolute;
+    bottom: 4rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+
+}
+
+.card1 p:nth-child(3) {
+    bottom: 0.5rem;
+    left: 0;
+    right: 0;
+    color: #d6d6d6;
+    font: 1rem '微软雅黑 Light';
+    padding: 0 2.2rem;
+    text-align: left;
+    line-height: 1.5rem;
+    opacity: 0;
+    height: 1rem;
+
+}
+
+.card1:hover p:nth-child(3) {
+    opacity: 1;
+    bottom: 4.5rem;
+    left: 0;
+    right: 0;
+    margin: 1.5rem 0 0 0;
+    transform: translateZ(0);
+    transition: all 1s ease 0s;
+}
+
+@media screen and (max-width: 400px) {
+    .card1:hover p:nth-child(3) {
+        opacity: 1;
+        bottom: 6rem;
+        left: 0;
+        right: 0;
+        margin: 1.5rem 0 0 0;
+        transform: translateZ(0);
+        transition: all 1s ease 0s;
+    }
+
+    .card1:hover p:nth-child(2) {
+        bottom: 7.5rem;
+
+    }
+
+}
+
+.card2 {
+    padding: 2rem 2.5rem 2rem;
+    /*{#border-top-color: #ffd300;#}{#border-top-width: 0.6rem;#}{#border-top-style: solid;#} */
+    border-radius: 0.3rem;
+    opacity: 0.8;
+    /*{#width: 20.3rem;#}{#height: 18.2rem;#} */
+    margin: -100px 2.5rem 0;
+}
+
+.card2 p:nth-child(1) {
+    font-family: MicrosoftYaHei;
+    font-size: 1.5rem;
+    font-weight: normal;
+    font-stretch: normal;
+    letter-spacing: 0rem;
+    color: #f4f4f4;
+    margin-bottom: 0rem;
+
+}
+
+.card2 p:nth-child(2) {
+    font-family: "Arial Narrow";
+    font-size: 1rem;
+    font-weight: normal;
+    font-stretch: normal;
+    letter-spacing: 0rem;
+    color: #d3d3d3;
+    margin: 0 0 1.5rem;
+    text-transform: uppercase;
+}
+
+.card2 p:nth-child(3) {
+    font-family: "微软雅黑 Light";
+    font-size: 1rem;
+    font-weight: normal;
+    font-stretch: normal;
+    letter-spacing: 0rem;
+    color: #d3d3d3;
+}
+
+.col-auto {
+    padding: 1.6rem 7.9rem 0;
+    background-origin: padding-box;
+}
+
+.anchorBL {
+    display: none;
+}
+
+.my_product_title .col-auto ,.my_main .col-auto{
+    font-family: '微软雅黑';
+    font-size: 1.75rem;
+}
+
+@media screen and (max-width: 576px) {
+    .col-auto {
+        padding: 1.6rem 2rem 0;
+        background-origin: padding-box;
+    }
+
+    .my_product_title .col-auto ,.my_main .col-auto{
+        font-size: 1.5rem;
+    }
+}
+
+
+
