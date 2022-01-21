@@ -68,13 +68,15 @@ class Image(BaseModel):
         verbose_name_plural = "图片"
         ordering = ["order"]
 
-    def get_url(self, quality="thumbicon"):
-        path = photo_lib.build_photo_url(self.key, quality)
+    @staticmethod
+    def get_url(key=None, quality="thumbicon"):
+        path = photo_lib.build_photo_url(key, quality)
         path = path.replace("\\", "/")
         return path
 
-    def get_path(self, quality="thumbicon"):
-        path = photo_lib.build_photo_path(self.key, quality)
+    @staticmethod
+    def get_path(key=None, quality="thumbicon"):
+        path = photo_lib.build_photo_path(key, quality)
         path = path.replace("\\", "/")
         return path
 

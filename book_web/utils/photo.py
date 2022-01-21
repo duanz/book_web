@@ -313,21 +313,17 @@ def save_qrcode_photo(
     return photo_info_dict
 
 
-def build_photo_url(photo_name, pic_type="photo", ext="jpg"):
+def build_photo_url(photo_name, pic_type="photo", ext="jpg", flat=True):
     _img_exts = (".jpg", ".png", ".gif")
-    url = ""
+    url = os.path.join("static", "img", "404", "book_404.jpg")
     if photo_name:
         _base_path = os.path.join("media", "photos", pic_type, photo_name[:2])
         if photo_name.endswith(_img_exts):
-            return settings.APP_HOST + "/" + os.path.join(_base_path, photo_name)
+            url = os.path.join(_base_path, photo_name)
         if "." in ext:
             ext = ext.rsplit(".", 1)[-1]
-        return (
-            settings.APP_HOST
-            + "/"
-            + os.path.join(_base_path, "{}.{}".format(photo_name, ext))
-        )
-    return os.path.join(settings.APP_HOST, "images", "no_img.png")
+            url = os.path.join(_base_path, "{}.{}".format(photo_name, ext))
+    return os.path.join(settings.APP_HOST, url) if flat else url
 
 
 def build_photo_path(photo_name, pic_type="photo", ext="jpg"):
@@ -339,7 +335,7 @@ def build_photo_path(photo_name, pic_type="photo", ext="jpg"):
         if "." in ext:
             ext = ext.rsplit(".", 1)[-1]
         return os.path.join(_base_path, "{}.{}".format(photo_name, ext))
-    return os.path.join("media", "images", "no_img.png")
+    return os.path.join("static", "img", "404", "book_404.jpg")
 
 
 def get_img_url_by_obj(img_obj, pic_type="photo", ext="jpg"):

@@ -97,10 +97,10 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_url(self, obj):
-        return obj.get_url(self.context.get("quality", "thumb"))
+        return obj.get_url(obj.key, self.context.get("quality", "thumb"))
 
     def get_path(self, obj):
-        return obj.get_path(self.context.get("quality", "thumb"))
+        return obj.get_path(obj.key, self.context.get("quality", "thumb"))
 
 
 class ImageOnlyUrlSerializer(serializers.ModelSerializer):
@@ -110,8 +110,10 @@ class ImageOnlyUrlSerializer(serializers.ModelSerializer):
         model = Image
         fields = ("url",)
 
-    def get_url(self, obj):
-        return obj.get_url(self.context.get("quality", "thumb"))
+    def get_url(self, obj: Image):
+        return self.context["request"].build_absolute_uri(
+            obj.get_path(obj.key, self.context.get("quality", "thumb"))
+        )
 
 
 class ChapterImageSerializer(serializers.ModelSerializer):
@@ -122,7 +124,7 @@ class ChapterImageSerializer(serializers.ModelSerializer):
         fields = ("url",)
 
     def get_url(self, obj):
-        return obj.image.get_url(self.context.get("quality", "thumb"))
+        return obj.image.get_url(obj.image.key, self.context.get("quality", "thumb"))
 
 
 class ChapterSerializer(serializers.ModelSerializer):
@@ -146,7 +148,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 class ChapterDetailSerializer(serializers.ModelSerializer):
     create_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
     update_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
-    relate_chapter_id = serializers.SerializerMethodField()
+    relate_chapter = serializers.SerializerMethodField()
     book_title = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
 
@@ -162,7 +164,7 @@ class ChapterDetailSerializer(serializers.ModelSerializer):
             "create_at",
             "update_at",
             "origin_addr",
-            "relate_chapter_id",
+            "relate_chapter",
             "content",
             "book_title",
         )
@@ -173,7 +175,7 @@ class ChapterDetailSerializer(serializers.ModelSerializer):
     def get_content(self, obj):
         return obj.content
 
-    def get_relate_chapter_id(self, obj):
+    def get_relate_chapter(self, obj):
         ids = Chapter.normal.filter(
             book=obj.book,
             book_type=obj.book_type,
@@ -195,12 +197,10 @@ class ChapterDetailSerializer(serializers.ModelSerializer):
             if id
             else None
         )
+        relate["pre"] = get_url(relate["pre_id"])
+        relate["next"] = get_url(relate["next_id"])
 
-        relate_rul = {
-            "pre": get_url(relate["pre_id"]),
-            "next": get_url(relate["next_id"]),
-        }
-        return relate_rul
+        return relate
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -245,11 +245,14 @@ class BookSerializer(serializers.ModelSerializer):
         return str(obj.author)
 
     def get_cover(self, obj):
-        data = ImageOnlyUrlSerializer(
-            obj.cover.all(), many=True, context={"quality": "title"}
-        ).data
-        urls = [url["url"] for url in data] if data else []
-        return urls
+        context = self.context
+        context["quality"] = context["quality"] if context.get("quality") else "title"
+        img_obj = obj.cover.last()
+        key = img_obj.key if img_obj else None
+        url = self.context["request"].build_absolute_uri(
+            Image.get_path(key, self.context.get("quality", "thumb"))
+        )
+        return url
 
     def get_subscribe_id(self, obj):
         if not self.context["request"].user.id:
@@ -270,12 +273,8 @@ class BookSerializer(serializers.ModelSerializer):
         return path
 
 
-class BookDetailSerializer(serializers.ModelSerializer):
-    create_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
+class BookDetailSerializer(BookSerializer):
     chapter = serializers.SerializerMethodField()
-    cover = serializers.SerializerMethodField()
-    update_at = serializers.DateTimeField(format="%Y-%m-%d %H:%I:%S", required=False)
-    is_subscribe = serializers.BooleanField(required=False)
 
     class Meta:
         model = Book
@@ -294,7 +293,6 @@ class BookDetailSerializer(serializers.ModelSerializer):
             "author",
             "chapter",
             "cover",
-            "is_subscribe",
         )
 
         read_only_fields = ("chapter", "cover", "is_subscribe")
@@ -302,17 +300,3 @@ class BookDetailSerializer(serializers.ModelSerializer):
     def get_chapter(self, obj):
         chapters = Chapter.normal.filter(book_id=obj.id)
         return ChapterSerializer(chapters, many=True).data
-
-    def get_cover(self, obj):
-        data = ImageOnlyUrlSerializer(obj.cover.all(), many=True).data
-        urls = [url["url"] for url in data] if data else []
-        return urls
-
-    def get_is_subscribe(self, obj):
-        if not self.context["request"].get("user", False):
-            return False
-        elif SubscribeBook.normal.filter(
-            book_id=obj.id, user_id=self.context["request"]["user"].id
-        ).exists():
-            return True
-        return False

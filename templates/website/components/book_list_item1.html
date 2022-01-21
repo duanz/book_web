@@ -1,0 +1,30 @@
+{% load static %}
+<section class="contact-section">
+    <div class="container px-4 px-lg-5 px-md-2">
+        <div class="row gx-4 gx-lg-5 gx-md-2">
+            {% for book in hotbooks %}
+            <div class="col-md-4 col-sm-6">
+                <div class="card  py-2 h-100">
+                    <a class="text-decoration-none text-reset" href="{% url 'website:bookinfo' book.id %}">
+                        <div class="row">
+                            <div class="col-md-4 ml-1 pl-1 justify-content-center">
+                                <img class="rounded mx-auto d-block" src="{{book.cover}}" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{book.title|title}}</h5>
+                                    <p class="card-text">{{book.desc|slice:":34"|cut:"<br />"}}...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="row">
+                        <p class="card-text"><small class="text-muted">{{book.author}}</small>|<small
+                                class="text-muted">{{book.markup}}</small></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

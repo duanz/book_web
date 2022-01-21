@@ -1,0 +1,52 @@
+{% extends 'website/base/base.html' %} {% load static %} {% block title %}
+<title>书市-书籍详情</title>
+{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="//unpkg.com/heti/umd/heti.min.css">
+<style>
+</style>
+{% endblock %}
+<!-- 导航菜单-->
+{% block nav_menu %} {% include "website/base/nav_menu.html" %} {% endblock %}
+
+
+<!-- About-->
+{%block content %}
+
+<section class="contact-section" id="content">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5">
+                <section class="demo">
+                    <div class="heti heti--ancient">
+                        <h1>{{chapter.title}}</h1>
+                        <p class="heti-meta heti-x-large text-end">
+                            <abbr class="me-4" title=""><a class="text-decoration-none text-reset" href="{% url 'website:chapter_detail' chapter.relate_chapter.pre_id %}">
+                                上一章
+                            </a></abbr>
+                            <abbr class="me-4" title=""><a class="text-decoration-none text-reset" href="{% url 'website:bookinfo' chapter.book %}">
+                            目录
+                            </a></abbr>
+                            <abbr title=""><a class="text-decoration-none text-reset" href="{% url 'website:chapter_detail' chapter.relate_chapter.next_id %}">
+                                下一章
+                            </a></abbr>
+                        </p>
+                        {{chapter.content|linebreaks}}
+                        <p class="heti-meta heti-x-large text-end">
+                            <abbr class="me-4" title=""><a class="text-decoration-none text-reset" href="{% url 'website:chapter_detail' chapter.relate_chapter.pre_id %}">
+                                上一章
+                            </a></abbr>
+                            <abbr class="me-4" title=""><a class="text-decoration-none text-reset" href="{% url 'website:bookinfo' chapter.book %}">
+                                目录
+                                </a></abbr>
+                            <abbr title=""><a class="text-decoration-none text-reset" href="{% url 'website:chapter_detail' chapter.relate_chapter.next_id %}">
+                                下一章
+                            </a></abbr>
+                        </p>
+                    </div>
+                </section>
+        </div>
+    </div>
+</section>
+{% endblock %}
+<!-- Footer-->
+{% block footer %}{% include "website/base/footer.html" %}{% endblock %}

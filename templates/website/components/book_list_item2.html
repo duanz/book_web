@@ -1,0 +1,45 @@
+{% load static %}
+<section class="contact-section" style="margin-top: -1rem;">
+    <div class="container px-4 px-lg-5">
+        {% for book in books %}
+        <div class="row gx-4 gx-lg-5 mb-2 shadow ">
+            <div class="col-md-2 h-80">
+                <img height=100 width=100 src="{{book.cover}}" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body p-0">
+                    <h5 class="card-title mb-0">{{book.title|title}}</h5>
+                    <p class="card-text mb-1"><small class="text-muted">{{book.author}}</small></p>
+                    <p class="card-text text-sm">{{book.desc|slice:":74"|cut:"<br/>"}}...</p>
+                    <p class="card-text"><small class="text-muted">{{book.markup}}</small></p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                {% if user.is_authenticated %}
+                {% if book.subscribe_id  %}
+                <button type="button" class="btn btn-danger btn-sm">退订</button>
+                {% else %}
+                <button type="button" class="btn btn-success btn-sm">订阅</button>
+                {% endif %}
+                {% endif %}
+                <a class="btn btn-info stretched-link btn-sm" href="{% url 'website:bookinfo' book.id %}">详情</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link">上一页</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="{% url 'website:bookmarket' %}?page=1">1</a></li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+</section>

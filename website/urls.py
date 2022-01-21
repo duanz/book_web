@@ -1,6 +1,13 @@
 from django.urls import path
 
-from website.views import IndexView, AboutView, UserCenterView, BookMarketView
+from website.views import (
+    BookInfoView,
+    ChapterDetailView,
+    IndexView,
+    AboutView,
+    UserCenterView,
+    BookMarketView,
+)
 
 app_name = "website"
 
@@ -8,6 +15,8 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("about", AboutView.as_view(), name="about"),
     path("bookmarket", BookMarketView.as_view(), name="bookmarket"),
+    path("bookinfo/<int:pk>", BookInfoView.as_view(), name="bookinfo"),
+    path("chapter/<int:pk>", ChapterDetailView.as_view(), name="chapter_detail"),
     path("usercenter", UserCenterView.as_view(), name="usercenter"),
     # path("", HomePageView.as_view(), name="home"),
     # path("formset", DefaultFormsetView.as_view(), name="formset_default"),

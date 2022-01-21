@@ -9,9 +9,13 @@ from django.views.generic.list import ListView, BaseListView
 
 from django.shortcuts import render
 from django.views.generic.base import View
-from book.models import Book
+from book.models import Book, Chapter
 from website.forms import ContactForm, ContactFormSet, FilesForm
-from book.serializers import BookSerializer
+from book.serializers import (
+    BookDetailSerializer,
+    BookSerializer,
+    ChapterDetailSerializer,
+)
 
 # http://yuji.wordpress.com/2013/01/30/django-form-field-in-initial-data-requires-a-fieldfile-instance/
 class FakeField(object):
@@ -56,7 +60,44 @@ class BookMarketView(TemplateView, ListView):
         context[self.context_object_name] = BookSerializer(
             context[self.context_object_name],
             many=True,
-            context={"request": self.request},
+            context={"request": self.request, "quality": "thumbicon"},
+        ).data
+        context["hotbooks"] = BookSerializer(
+            Book.objects.filter(on_shelf=True).order_by("-click_num")[:10],
+            many=True,
+            context={"request": self.request, "quality": "thumbicon"},
+        ).data
+        for i in ["paginator", "page_obj", "is_paginated"]:
+            print(context[i])
+        return context
+
+
+class BookInfoView(TemplateView):
+    """书籍详情"""
+
+    template_name = "website/bookinfo.html"
+
+    def get_context_data(self, **kwargs):
+        print(kwargs)
+        context = super().get_context_data(**kwargs)
+        context["book"] = BookDetailSerializer(
+            Book.objects.get(id=kwargs.get("pk")),
+            context={"request": self.request, "quality": "title"},
+        ).data
+        return context
+
+
+class ChapterDetailView(TemplateView):
+    """章节详情"""
+
+    template_name = "website/chapter_detail.html"
+
+    def get_context_data(self, **kwargs):
+        print(kwargs)
+        context = super().get_context_data(**kwargs)
+        context["chapter"] = ChapterDetailSerializer(
+            Chapter.objects.get(id=kwargs.get("pk")),
+            context={"request": self.request, "quality": "title"},
         ).data
         return context
 

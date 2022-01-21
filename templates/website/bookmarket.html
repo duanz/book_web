@@ -7,10 +7,18 @@
 <!-- 刊头-->
 
 {% block masthead %}
-{% include "website/base/masthead.html" %}
+<header class="masthead">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <div class="d-flex justify-content-center">
+            {% include "website/components/book_list_item1.html" %}
+        </div>
+    </div>
+</header>
 {% endblock %}
 
 <!-- About-->
-{%block content %}{% include "website/components/book_list_item.html" %}{% endblock %}
+{%block content %}
+{% include "website/components/book_list_item2.html" %}
+{% endblock %}
 <!-- Footer-->
 {% block footer %}{% include "website/base/footer.html" %}{% endblock %}
