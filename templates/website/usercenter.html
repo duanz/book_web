@@ -7,10 +7,21 @@
 <!-- 刊头-->
 
 {% block masthead %}
-{% include "website/base/masthead.html" %}
+<header class="masthead">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <div class="d-flex justify-content-center">
+            <div class="jumbotron">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-sm btn btn-primary">退出</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
 {% endblock %}
 
 <!-- About-->
-{%block content %}{% include "website/components/search_book.html" %}{% endblock %}
+{%block content %}{% endblock %}
 <!-- Footer-->
 {% block footer %}{% include "website/base/footer.html" %}{% endblock %}

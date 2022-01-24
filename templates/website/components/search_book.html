@@ -1,13 +1,38 @@
 {% load static %}
-<header class="masthead">
-    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-        <div class="d-flex justify-content-center">
-            <div class="text-center">
-                <h1 class="mx-auto my-0 text-uppercase">BOOKMARTKET</h1>
-                <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by
-                    Start Bootstrap.</h2>
-                <a class="btn btn-primary" href="#about">Get Started</a>
+<section id="booksearch" class="contact-section" style="margin-top: -1rem;">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 mb-2 shadow ">
+            <div class="col-md-8">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="input1" class="col-sm-2 col-form-label">标签</label>
+                        <div class="col-sm-10">
+                            <ul class="nav">
+                                {% for label in labels %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.GET.markup == label %}active{% endif %}" href="javascript:void(0);" onclick="search_book_form('search__book_label', '{{label}}')">{{label}}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="javascript:void(0);" onclick="search_book_form('search__book_label', '{{label}}')">{{label}}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="input2" class="col-sm-2 col-form-label">标题</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="search__book_title" value="{{request.GET.title}}">
+                          <input type="text" class="form-control" hidden id="search__book_label" value="{{request.GET.markup}}">
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-3 offset-md-1 align-self-sm-end" onclick="search_book()">
+                <a class="nav-link active" href="javascript:void(0);" >
+                    <h2 class="text-center"><i class="bi-search"></i>搜索</h2>
+                </a>
             </div>
         </div>
     </div>
-</header>
+</section>

@@ -1,5 +1,5 @@
 {% load static %}
-<section class="contact-section" style="margin-top: -1rem;">
+<section id="booklist2" class="contact-section" style="margin-top: -1rem;">
     <div class="container px-4 px-lg-5">
         {% for book in books %}
         <div class="row gx-4 gx-lg-5 mb-2 shadow ">
@@ -22,7 +22,7 @@
                 <button type="button" class="btn btn-success btn-sm">订阅</button>
                 {% endif %}
                 {% endif %}
-                <a class="btn btn-info stretched-link btn-sm" href="{% url 'website:bookinfo' book.id %}">详情</a>
+                <a class="btn btn-info btn-sm" href="{% url 'website:bookinfo' book.id %}">详情</a>
             </div>
         </div>
         {% endfor %}
@@ -30,15 +30,27 @@
     <nav aria-label="...">
         <ul class="pagination justify-content-center">
           <li class="page-item">
-            <a class="page-link">上一页</a>
+            {% if page_obj.has_previous %}
+              <a class="page-link" href="?{{fixed_url}}&page=1#booklist2">&laquo; 首页</a>
+            {% endif %}
           </li>
-          <li class="page-item"><a class="page-link" href="{% url 'website:bookmarket' %}?page=1">1</a></li>
-          <li class="page-item active" aria-current="page">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
           <li class="page-item">
-            <a class="page-link" href="#">Next</a>
+            {% if page_obj.has_previous %}
+              <a class="page-link" href="?{{fixed_url}}&page={{ page_obj.previous_page_number }}#booklist2">上一页</a>
+            {% endif %}
+          </li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+          </li>
+          <li class="page-item">
+            {% if page_obj.has_next %}
+              <a class="page-link" href="?{{fixed_url}}&page={{ page_obj.next_page_number }}#booklist2">下一页</a>
+            {% endif %}
+          </li>
+          <li class="page-item">
+            {% if page_obj.has_next %}
+              <a class="page-link" href="?{{fixed_url}}&page={{ page_obj.paginator.num_pages }}#booklist2">尾页 &raquo;</a>
+            {% endif %}
           </li>
         </ul>
       </nav>

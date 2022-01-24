@@ -5,7 +5,7 @@
 */
 //
 // Scripts
-// 
+//
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     };
 
-    // Shrink the navbar 
+    // Shrink the navbar
     navbarShrink();
 
     // Shrink the navbar when page is scrolled
@@ -51,4 +51,14 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+
 });
+function search_book(baseUrl){
+    book_title = document.getElementById("search__book_title").value;
+    book_markup = document.getElementById("search__book_label").value;
+    window.location.href = '?&title=' + book_title + '&markup=' + book_markup + '#booklist2';
+}
+
+function search_book_form(l_id, val){
+    document.getElementById(l_id).value = val;
+}

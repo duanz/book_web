@@ -1,16 +1,18 @@
 from threading import local
 from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from django.core.files.storage import default_storage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models.fields.files import FieldFile
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView, BaseListView
-
-from django.shortcuts import render
+from django.http.request import QueryDict
+from django.core.cache import cache
+from django.shortcuts import redirect, render
 from django.views.generic.base import View
 from book.models import Book, Chapter
-from website.forms import ContactForm, ContactFormSet, FilesForm
+from website.forms import ContactForm, ContactFormSet, FilesForm, LoginForm
 from book.serializers import (
     BookDetailSerializer,
     BookSerializer,
@@ -40,23 +42,33 @@ class AboutView(TemplateView):
     template_name = "website/about.html"
 
 
-class BookMarketView(TemplateView, ListView):
+class BookMarketView(BaseListView, TemplateView):
     """书市"""
 
     template_name = "website/bookmarket.html"
     allow_empty = True
-    queryset = Book.objects.filter(on_shelf=True)
-    object_list = Book.objects.filter(on_shelf=True)
+    queryset = Book.objects.filter()
+    # object_list = Book.objects.filter(on_shelf=True)
     model = Book
-    # paginate_by = None
+    paginate_by = 3
     # paginate_orphans = 0
     context_object_name = "books"
     # paginator_class = Paginator
     # page_kwarg = 'page'
     # ordering = None
 
+    def build_url_query_string(self, popkey: list):
+        query_parmas = ""
+        for key, val in self.request.GET.items():
+            if key not in popkey:
+                query_parmas += f"&{key}={val}"
+        query_parmas = query_parmas.removeprefix("&")
+        return query_parmas
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context["fixed_url"] = self.build_url_query_string(["page"])
         context[self.context_object_name] = BookSerializer(
             context[self.context_object_name],
             many=True,
@@ -67,9 +79,25 @@ class BookMarketView(TemplateView, ListView):
             many=True,
             context={"request": self.request, "quality": "thumbicon"},
         ).data
-        for i in ["paginator", "page_obj", "is_paginated"]:
-            print(context[i])
+        if not cache.get("book_labels"):
+            cache.set(
+                "book_labels",
+                set(Book.objects.filter().values_list("markup", flat=True)),
+                60 * 60 * 24 * 1,
+            )
+        context["labels"] = cache.get("book_labels")
         return context
+
+    def get_queryset(self):
+        print(self.request.GET)
+        qs = super().get_queryset()
+        if markup := self.request.GET.get("markup"):
+            qs = qs.filter(markup=markup)
+        if title := self.request.GET.get("title"):
+            qs = qs.filter(title__icontains=title)
+
+        print(qs.count())
+        return qs
 
 
 class BookInfoView(TemplateView):
@@ -93,7 +121,6 @@ class ChapterDetailView(TemplateView):
     template_name = "website/chapter_detail.html"
 
     def get_context_data(self, **kwargs):
-        print(kwargs)
         context = super().get_context_data(**kwargs)
         context["chapter"] = ChapterDetailSerializer(
             Chapter.objects.get(id=kwargs.get("pk")),
@@ -107,6 +134,40 @@ class UserCenterView(TemplateView):
 
     template_name = "website/usercenter.html"
 
+    def post(self, *args, **kwargs):
+        logout(self.request)
+        return redirect("website:index")
+
+
+class LoginView(TemplateView):
+    """登录页面"""
+
+    template_name = "website/login.html"
+
+    def post(self, *args, **kwargs):
+        username = self.request.POST.get("username")
+        password = self.request.POST.get("password")
+        user = authenticate(username=username, password=password)
+        context = self.get_context_data(**kwargs)
+
+        if user is not None:
+            if user.is_active:
+                login(self.request, user)
+                # 跳转到成功页面.
+                return redirect("website:usercenter")
+            else:
+                # 返回一个无效帐户的错误
+                context["error"] = "账号未激活"
+        else:
+            context["error"] = "用户名或密码错误"
+            # 返回登录失败页面。
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = LoginForm()
+        return context
+
 
 class HomePageView(TemplateView):
     template_name = "website/home.html"
@@ -117,9 +178,9 @@ class HomePageView(TemplateView):
         return context
 
 
-# class DefaultFormsetView(FormView):
-#     template_name = "website/formset.html"
-#     form_class = ContactFormSet
+class DefaultFormsetView(FormView):
+    template_name = "website/login.html"
+    form_class = ContactFormSet
 
 
 # class DefaultFormView(FormView):

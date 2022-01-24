@@ -5,6 +5,7 @@ from website.views import (
     ChapterDetailView,
     IndexView,
     AboutView,
+    LoginView,
     UserCenterView,
     BookMarketView,
 )
@@ -18,6 +19,7 @@ urlpatterns = [
     path("bookinfo/<int:pk>", BookInfoView.as_view(), name="bookinfo"),
     path("chapter/<int:pk>", ChapterDetailView.as_view(), name="chapter_detail"),
     path("usercenter", UserCenterView.as_view(), name="usercenter"),
+    path("login", LoginView.as_view(), name="login"),
     # path("", HomePageView.as_view(), name="home"),
     # path("formset", DefaultFormsetView.as_view(), name="formset_default"),
     # path("form", DefaultFormView.as_view(), name="form_default"),

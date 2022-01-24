@@ -7,7 +7,20 @@
 <!-- 刊头-->
 
 {% block masthead %}
+<header class="masthead">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <div class="d-flex justify-content-center">
 
+            <div class="jumbotron">
+                <h1 class="display-4">{{book.title}}</h1>
+                <p class="lead">{{book.author}}</p>
+                <hr class="my-4">
+                <p>{{book.desc|safe}}</p>
+                <a class="btn btn-primary btn-lg" href="#content" role="button">查看章节</a>
+            </div>
+        </div>
+    </div>
+</header>
 {% endblock %}
 
 <!-- About-->

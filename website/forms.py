@@ -25,28 +25,43 @@ class TestForm(forms.Form):
         required=True,
         widget=forms.TextInput(attrs={"placeholder": "placeholdertest"}),
     )
-    xss_field = forms.CharField(label='XSS" onmouseover="alert(\'Hello, XSS\')" foo="', max_length=100)
+    xss_field = forms.CharField(
+        label='XSS" onmouseover="alert(\'Hello, XSS\')" foo="', max_length=100
+    )
     password = forms.CharField(widget=forms.PasswordInput)
     message = forms.CharField(required=False, help_text="<i>my_help_text</i>")
-    sender = forms.EmailField(label="Sender © unicode", help_text='E.g., "me@example.com"')
+    sender = forms.EmailField(
+        label="Sender © unicode", help_text='E.g., "me@example.com"'
+    )
     secret = forms.CharField(initial=42, widget=forms.HiddenInput)
     cc_myself = forms.BooleanField(
-        required=False, help_text='cc stands for "carbon copy." You will get a copy in your mailbox.'
+        required=False,
+        help_text='cc stands for "carbon copy." You will get a copy in your mailbox.',
     )
     select1 = forms.ChoiceField(choices=RADIO_CHOICES)
-    select2 = forms.MultipleChoiceField(choices=RADIO_CHOICES, help_text="Check as many as you like.")
+    select2 = forms.MultipleChoiceField(
+        choices=RADIO_CHOICES, help_text="Check as many as you like."
+    )
     select3 = forms.ChoiceField(choices=MEDIA_CHOICES)
-    select4 = forms.MultipleChoiceField(choices=MEDIA_CHOICES, help_text="Check as many as you like.")
+    select4 = forms.MultipleChoiceField(
+        choices=MEDIA_CHOICES, help_text="Check as many as you like."
+    )
     category1 = forms.ChoiceField(choices=RADIO_CHOICES, widget=forms.RadioSelect)
     category2 = forms.MultipleChoiceField(
-        choices=RADIO_CHOICES, widget=forms.CheckboxSelectMultiple, help_text="Check as many as you like."
+        choices=RADIO_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        help_text="Check as many as you like.",
     )
     category3 = forms.ChoiceField(widget=forms.RadioSelect, choices=MEDIA_CHOICES)
     category4 = forms.MultipleChoiceField(
-        choices=MEDIA_CHOICES, widget=forms.CheckboxSelectMultiple, help_text="Check as many as you like."
+        choices=MEDIA_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        help_text="Check as many as you like.",
     )
     category5 = forms.ChoiceField(widget=RadioSelectButtonGroup, choices=MEDIA_CHOICES)
-    addon = forms.CharField(widget=forms.TextInput(attrs={"addon_before": "before", "addon_after": "after"}))
+    addon = forms.CharField(
+        widget=forms.TextInput(attrs={"addon_before": "before", "addon_after": "after"})
+    )
 
     required_css_class = "bootstrap4-req"
 
@@ -56,7 +71,9 @@ class TestForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        raise forms.ValidationError("This error was added to show the non field errors styling.")
+        raise forms.ValidationError(
+            "This error was added to show the non field errors styling."
+        )
         return cleaned_data
 
 
@@ -70,10 +87,14 @@ class ContactBaseFormSet(BaseFormSet):
 
     def clean(self):
         super().clean()
-        raise forms.ValidationError("This error was added to show the non form errors styling")
+        raise forms.ValidationError(
+            "This error was added to show the non form errors styling"
+        )
 
 
-ContactFormSet = formset_factory(TestForm, formset=ContactBaseFormSet, extra=2, max_num=4, validate_max=True)
+ContactFormSet = formset_factory(
+    TestForm, formset=ContactBaseFormSet, extra=2, max_num=4, validate_max=True
+)
 
 
 class FilesForm(forms.Form):
@@ -85,11 +106,18 @@ class FilesForm(forms.Form):
     file4 = forms.FileField(required=False, widget=forms.ClearableFileInput)
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
 class ArticleForm(forms.Form):
     title = forms.CharField()
     pub_date = forms.DateField()
 
     def clean(self):
         cleaned_data = super().clean()
-        raise forms.ValidationError("This error was added to show the non field errors styling.")
+        raise forms.ValidationError(
+            "This error was added to show the non field errors styling."
+        )
         return cleaned_data
