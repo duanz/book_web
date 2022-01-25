@@ -4,6 +4,7 @@
         <div class="row gx-4 gx-lg-5 mb-2 shadow ">
             <div class="col-md-8">
                 <div class="card-body">
+                    {% if labels %}
                     <div class="form-group row">
                         <label for="input1" class="col-sm-2 col-form-label">标签</label>
                         <div class="col-sm-10">
@@ -19,6 +20,7 @@
                             </ul>
                         </div>
                     </div>
+                    {%endif%}
                     <div class="form-group row">
                         <label for="input2" class="col-sm-2 col-form-label">标题</label>
                         <div class="col-sm-10">
@@ -28,7 +30,7 @@
                       </div>
                 </div>
             </div>
-            <div class="col-md-3 offset-md-1 align-self-sm-end" onclick="search_book()">
+            <div class="col-md-3 offset-md-1 align-self-sm-end" onclick="search_book('{% url 'website:bookmarket' %}')">
                 <a class="nav-link active" href="javascript:void(0);" >
                     <h2 class="text-center"><i class="bi-search"></i>搜索</h2>
                 </a>

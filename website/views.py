@@ -17,6 +17,7 @@ from book.serializers import (
     BookDetailSerializer,
     BookSerializer,
     ChapterDetailSerializer,
+    ChapterSerializer,
 )
 
 # http://yuji.wordpress.com/2013/01/30/django-form-field-in-initial-data-requires-a-fieldfile-instance/
@@ -30,10 +31,29 @@ fieldfile = FieldFile(None, FakeField, "dummy.txt")
 # Create your views here.
 
 
-class IndexView(TemplateView):
+class IndexView(BaseListView, TemplateView):
     """首页"""
 
     template_name = "website/index.html"
+
+    allow_empty = True
+    queryset = Chapter.objects.filter(
+        book_id__in=Book.objects.filter(markup="新闻").values_list("id", flat=True)
+    )
+    # object_list = Book.objects.filter(on_shelf=True)
+    model = Chapter
+    paginate_by = 20
+    # paginate_orphans = 0
+    context_object_name = "chapters"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context[self.context_object_name] = ChapterSerializer(
+            context[self.context_object_name],
+            many=True,
+            context={"request": self.request, "quality": "thumbicon"},
+        ).data
+        return context
 
 
 class AboutView(TemplateView):
@@ -50,7 +70,7 @@ class BookMarketView(BaseListView, TemplateView):
     queryset = Book.objects.filter()
     # object_list = Book.objects.filter(on_shelf=True)
     model = Book
-    paginate_by = 3
+    paginate_by = 15
     # paginate_orphans = 0
     context_object_name = "books"
     # paginator_class = Paginator

@@ -1,0 +1,55 @@
+* 已越狱的 Kindle 升级前注意！ 如果你对新固件更新内容不感兴趣，可不更新，以减少越狱失效的风险。如果确需更新，强烈建议在升级前安装最新版本 JailBreak Hotfix，以最大程度上避免越狱失效。。
+此次更新固件版本为 5.13.6，涵盖的 Kindle 设备型号包括：。
+Kindle Oasis 3 (KO3)Kindle Oasis 2 (KO2)Kindle Oasis 1 (KO1)Kindle Voyage (KV)658 入门版 Kindle (Kindle 10)558 入门版 Kindle (Kindle 8)Kindle Paperwhite 4 (KPW4)Kindle Paperwhite 3 (KPW3)。
+一、更新内容。
+本次更新包含性能改善、问题修复、及其他一般性功能加强。。
+如果你对更新有反馈意见，请致信 Kindle 团队：kindle-feedback@amazon.cn。。
+二、固件下载。
+如遇到和升级固件相关的问题，请参阅《Kindle 固件/系统更新相关问题和注意事项》这篇文章。。
+一般 Kindle 在连接 WiFi 的状态下，收到亚马逊的升级推送后会自动升级到最新版本固件，无需手动干预，但时间不确定，少则两三天，多则一两周半个月。若没有或等不及自动升级，也可以在此下载和自己的 Kindle 设备型号相对应的固件版本手动升级。推荐网盘下载，官网链接建议使用迅雷下载。。
+注意，如使用迅雷等下载工具下载官网链接时速度过慢，请把链接中的 https 改为 http（去掉“s”）。。
+● Kindle Oasis 3 (KO3)。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : 9cmi〉。
+固件文件名：update_kindle_all_new_oasis_v2_5.13.6.bin
+MD5 校验码：8ba6b9ec2a40bee90e840504625bf036
+SHA1 校验码：8968bccf5cd1cbd8d7abcc74ee87aa72c974a369。
+● Kindle Oasis 2 (KO2)。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : 9hea〉。
+固件文件名：update_kindle_all_new_oasis_5.13.6.bin
+MD5 校验码：28b11e912090b8ae0eab089ccd5d2111
+SHA1 校验码：16118f4e69a553eb9d78a58a1625097254dffd6d。
+● Kindle Oasis 1 (KO1) 。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : 23gn〉。
+固件文件名：update_kindle_oasis_5.13.6.bin
+MD5 校验码：31211183f661d6e92127b4b4a5e0aa71
+SHA1 校验码：7c5885c89e108f0576d2df8bc7d680f589043f3b。
+● Kindle Voyage (KV)。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : awxy〉。
+固件文件名：update_kindle_voyage_5.13.6.bin
+MD5 校验码：f588ea0c411810398aa2d7d46dd279e8
+SHA1 校验码：06de29ec6dca50c557eb3e1e32228e723fe8e65c。
+● 658 入门版 Kindle (Kindle 10)。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : vda1〉。
+固件文件名：update_kindle_10th_5.13.6.bin
+MD5 校验码：aa1f388997a357305eda17d12c0e5435
+SHA1 校验码：5e11902b68c2050a31e22d1651c50c85a49003a2。
+* 提示：Kindle 10 即中亚售有“黑/白”两款的 658 元入门款/基础版 Kindle。。
+● 558 入门版 Kindle (Kindle 8)。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : rv73〉。
+固件文件名：update_kindle_8th_5.13.6.bin
+MD5 校验码：b43e342a57b083ad5df0d2eff60a78fd
+SHA1 校验码：78b6760bf2e44bc5189aed8b59692accc4777805。
+* 提示：Kindle 8 即中亚售有“黑/白”两款的 558 元入门款/基础版 Kindle。。
+● Kindle Paperwhite 4 (KPW4) 。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : ueeq〉。
+固件文件名：update_kindle_all_new_paperwhite_v2_5.13.6.bin
+MD5 校验码：eeef5e0e1d162e7fca1996b83968b2fe
+SHA1 校验码：4899a6252226ca85e08d1802cfe1676980bf8f51。
+● Kindle Paperwhite 3 (KPW3) 。
+5.13.6 固件下载：官方下载 ｜ 百度网盘〈提取码 : m2gf〉。
+固件文件名：update_kindle_all_new_paperwhite_5.13.6.bin
+MD5 校验码：4bb0daa7c511775c0c52eba3b87c8c7b
+SHA1 校验码：c19c5ddf22526e374b490c0572d2345e929b17fe。
+————————————。
+Kindle 固件升级相关阅读：。
+升级固件有何好处详细固件升级步骤怎样查看固件版本如何查询设备型号Kindle 固件大全。

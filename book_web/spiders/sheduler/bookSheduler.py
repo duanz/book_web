@@ -526,7 +526,7 @@ class BookUpdateClient(BaseClient):
             book_id (int): [书籍ID,当传入此参数，则更新整本书籍章节]. Defaults to None.
             chapter_id (int): [章节ID,当传入此参数，则只更新本章节]. Defaults to None.
             -- chapter/book， 二选一
-            insert_type (str): [更新章节采用形式]. 默认 "only_chapters"表示更新章节信息，不更新章节内容.
+            insert_type (str): [更新章节采用形式]. 默认 "without_content"表示更新章节信息，不更新章节内容.
             fast (bool, optional): [description]. Defaults to False.
         """
         self.book_id = book_id
@@ -549,3 +549,19 @@ class BookUpdateClient(BaseClient):
             chapter = Chapter.normal.get(id=self.chapter_id)
             ccc = ChapterContentClient(chapter=chapter)
             ccc.handler()
+
+
+class BookFereNewsUpdateClient(BaseClient):
+    def handler(self):
+        url = "http://bookfere.com/post/category/news"
+        author, _ = Author.objects.get_or_create(name="bookfere.com")
+        book, _ = Book.objects.get_or_create(
+            on_shelf=False,
+            author=author,
+            book_type=BOOK_TYPE_DESC.Novel,
+            title="bookfere-news",
+            markup="新闻",
+            origin_addr=url,
+            desc="新闻",
+        )
+        BookUpdateClient(book_id=book.id, update_type="with_content").handler()

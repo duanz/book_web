@@ -7,10 +7,17 @@
 <!-- 刊头-->
 
 {% block masthead %}
-{% include "website/base/masthead.html" %}
+<header class="masthead">
+    <div class="container justify-content-center mt-3">
+        {% include "website/components/search_book.html" %}
+        {% include "website/components/chapter_list_item.html" %}
+    </div>
+</header>
 {% endblock %}
 
 <!-- About-->
-{%block content %}{% include "website/components/search_book.html" %}{% endblock %}
+{%block content %}
+
+{% endblock %}
 <!-- Footer-->
 {% block footer %}{% include "website/base/footer.html" %}{% endblock %}

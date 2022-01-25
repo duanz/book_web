@@ -14,6 +14,7 @@ novel_regular = {
     "biquge.tv": "BiqugexParser",
     "qbiqu.com": "BiqugexParser",
     "qb5.tw": "TwQb5Parser",
+    "bookfere.com": "BookfereParser",
     # "quanben.net": "NetQuanbenParser",
 }
 
